@@ -1,15 +1,17 @@
-import 'dart:math';
-
+import 'package:coligny_calendar/month.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
-import 'package:meeus/moonphase.dart';
-import 'package:meeus/julian.dart';
 
 class Day extends StatelessWidget {
-  Day({@required this.date, @required this.isCurrentMonth});
+  Day({
+    @required this.date,
+    @required this.isCurrentMonth,
+    @required this.event,
+  });
 
   final DateTime date;
   final bool isCurrentMonth;
+  final MoonInfo event;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class Day extends StatelessWidget {
         aspectRatio: 1.0,
         child: Container(
           alignment: Alignment.center,
-          child: _buildDayInfo(date, theme),
+          child: _buildDayInfo(theme),
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.black,
@@ -38,34 +40,20 @@ class Day extends StatelessWidget {
     );
   }
 
-  Widget _buildDayInfo(DateTime date, ThemeData theme) {
-    var daysBetween = date.differenceInDays(date.startOfYear);
-    var yearFraction = date.year + (daysBetween / 356.25);
-    var isFirst = jdToDateTime(first(yearFraction)).isSameDay(date);
-    var isFull = jdToDateTime(full(yearFraction)).isSameDay(date);
-    var isThird = jdToDateTime(last(yearFraction)).isSameDay(date);
-    var isNew = jdToDateTime(newMoon(yearFraction)).isSameDay(date);
-
-    var label = isFirst
+  Widget _buildDayInfo(ThemeData theme) {
+    var label = event.phase == Phase.first
         ? 'First Quarter'
-        : isFull
+        : event.phase == Phase.full
             ? 'Full Moon'
-            : isThird
+            : event.phase == Phase.third
                 ? 'Third Quarter'
-                : isNew
+                : event.phase == Phase.newMoon
                     ? 'New Moon'
                     : '';
 
     return Column(
       children: [
-        Text(
-          '${date.getDate}',
-          style: TextStyle(
-            color: isCurrentMonth
-                ? theme.textTheme.bodyText1.color
-                : theme.textTheme.bodyText2.color,
-          ),
-        ),
+        Text('${date.getDate}'),
         Text(label),
       ],
     );
