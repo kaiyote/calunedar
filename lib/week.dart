@@ -1,14 +1,14 @@
 import 'package:coligny_calendar/day.dart';
-import 'package:coligny_calendar/month.dart';
+import 'package:coligny_calendar/month_info.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
 
 class Week extends StatelessWidget {
-  Week({@required this.start, @required this.month, @required this.events});
+  Week({@required this.start, @required this.month, @required this.monthInfo});
 
   final int month;
   final DateTime start;
-  final Set<MoonInfo> events;
+  final MonthInfo monthInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +21,16 @@ class Week extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: dates.map((DateTime date) {
-        return Day(
-          date: date,
-          isCurrentMonth: date.month == month,
-          event: events.firstWhere(
-            (element) => element.when.isSameDay(date),
-            orElse: () => MoonInfo(phase: Phase.INVALID, when: Date.today),
-          ),
-        );
-      }).toList(),
+      children: dates
+          .map((date) => Day(
+                date: date,
+                isCurrentMonth: date.month == month,
+                event: monthInfo.lunarEvents.firstWhere(
+                  (element) => element.when.isSameDay(date),
+                  orElse: () => DateInfo(phase: Event.none, when: date),
+                ),
+              ))
+          .toList(),
     );
   }
 }

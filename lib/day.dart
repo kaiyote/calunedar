@@ -1,17 +1,13 @@
-import 'package:coligny_calendar/month.dart';
+import 'package:coligny_calendar/month_info.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
 
 class Day extends StatelessWidget {
-  Day({
-    @required this.date,
-    @required this.isCurrentMonth,
-    @required this.event,
-  });
+  Day({@required this.date, @required this.isCurrentMonth, this.event});
 
   final DateTime date;
   final bool isCurrentMonth;
-  final MoonInfo event;
+  final DateInfo event;
 
   @override
   Widget build(BuildContext context) {
@@ -22,39 +18,28 @@ class Day extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1.0,
         child: Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0),
           alignment: Alignment.center,
-          child: _buildDayInfo(theme),
+          child: _buildDay(),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.black,
-              width: 1,
+              color: isToday ? theme.accentColor : Colors.black,
+              width: isToday ? 3 : 1,
             ),
-            color: isToday
-                ? theme.accentColor
-                : !isCurrentMonth
-                    ? theme.disabledColor
-                    : theme.scaffoldBackgroundColor,
+            color: !isCurrentMonth
+                ? theme.disabledColor
+                : theme.scaffoldBackgroundColor,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDayInfo(ThemeData theme) {
-    var label = event.phase == Phase.first
-        ? 'First Quarter'
-        : event.phase == Phase.full
-            ? 'Full Moon'
-            : event.phase == Phase.third
-                ? 'Third Quarter'
-                : event.phase == Phase.newMoon
-                    ? 'New Moon'
-                    : '';
-
+  Widget _buildDay() {
     return Column(
       children: [
         Text('${date.getDate}'),
-        Text(label),
+        event.icon(),
       ],
     );
   }

@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.0
   dart_date: ^1.0.9
+  enum_to_string: ^1.0.14
   meeus: ^0.2.2
 
 dev_dependencies:
