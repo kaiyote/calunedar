@@ -108,19 +108,19 @@ class MonthInfo {
 
       dates.add(DateInfo(
         phase: Event.firstQuarter,
-        when: jdToDateTime(first(yearFraction)),
+        when: jdToDateTime(first(yearFraction)).local,
       ));
       dates.add(DateInfo(
         phase: Event.fullMoon,
-        when: jdToDateTime(full(yearFraction)),
+        when: jdToDateTime(full(yearFraction)).local,
       ));
       dates.add(DateInfo(
         phase: Event.thirdQuarter,
-        when: jdToDateTime(last(yearFraction)),
+        when: jdToDateTime(last(yearFraction)).local,
       ));
       dates.add(DateInfo(
         phase: Event.newMoon,
-        when: jdToDateTime(newMoon(yearFraction)),
+        when: jdToDateTime(newMoon(yearFraction)).local,
       ));
     }
 
