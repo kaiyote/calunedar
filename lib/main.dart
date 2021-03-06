@@ -6,10 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
 
 void main() {
-  runApp(MaterialApp(
-    title: 'Shopping App',
-    home: ColignyCalendar(),
-  ));
+  runApp(
+    MaterialApp(
+      title: 'Shopping App',
+      home: ColignyCalendar(),
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.cyan,
+          backgroundColor: Colors.white,
+        ),
+      ),
+    ),
+  );
 }
 
 class ColignyCalendar extends StatefulWidget {
