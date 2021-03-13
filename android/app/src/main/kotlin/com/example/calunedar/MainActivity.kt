@@ -1,4 +1,4 @@
-package com.example.coligny_calendar
+package com.example.calunedar
 
 import io.flutter.embedding.android.FlutterActivity
 

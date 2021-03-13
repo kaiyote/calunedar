@@ -1,4 +1,4 @@
-name: coligny_calendar
+name: calunedar
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -27,11 +27,13 @@ dependencies:
   dart_date: ^1.0.9
   enum_to_string: ^1.0.14
   meeus: ^0.2.2
+  provider: ^5.0.0
+  shared_preferences: ^2.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.8.0"
+  flutter_launcher_icons: ^0.9.0
 
 flutter_icons:
   android: true

@@ -1,5 +1,5 @@
-import 'package:coligny_calendar/celestial_event.dart';
-import 'package:coligny_calendar/month_info.dart';
+import 'package:calunedar/celestial_event.dart';
+import 'package:calunedar/month_info.dart';
 import 'package:flutter/material.dart';
 
 class MonthReadout extends StatelessWidget {

@@ -1,5 +1,5 @@
-import 'package:coligny_calendar/day.dart';
-import 'package:coligny_calendar/month_info.dart';
+import 'package:calunedar/day.dart';
+import 'package:calunedar/month_info.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
 
