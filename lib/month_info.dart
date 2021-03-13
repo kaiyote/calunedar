@@ -47,10 +47,10 @@ class DateInfo implements Comparable {
         icon = Icons.brightness_2;
         break;
       case Event.fullMoon:
-        icon = Icons.brightness_1;
+        icon = Icons.brightness_1_outlined;
         break;
       case Event.newMoon:
-        icon = Icons.brightness_1_outlined;
+        icon = Icons.brightness_1;
         break;
       case Event.vernalEquinox:
       case Event.autumnalEquinox:

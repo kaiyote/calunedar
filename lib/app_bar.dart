@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:coligny_calendar/coligny.dart';
 
 class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
   CalendarAppBar({@required this.date, @required this.setDate});
@@ -14,7 +15,7 @@ class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       title: Center(
         child: Text(
-          _formatter.format(date),
+          "${_formatter.format(date)}/${date.toColignyDate(true).month.name} ${date.toColignyDate(true).year}",
           style: TextStyle(fontSize: 24.0),
         ),
       ),

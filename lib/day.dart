@@ -1,6 +1,7 @@
 import 'package:coligny_calendar/month_info.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:coligny_calendar/coligny.dart';
 
 class Day extends StatelessWidget {
   Day({@required this.date, @required this.isCurrentMonth, this.event});
@@ -16,7 +17,7 @@ class Day extends StatelessWidget {
 
     return Expanded(
       child: AspectRatio(
-        aspectRatio: 1.0,
+        aspectRatio: 0.94,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 5.0),
           alignment: Alignment.center,
@@ -37,9 +38,11 @@ class Day extends StatelessWidget {
 
   Widget _buildDay() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text('${date.getDate}'),
         event.icon(),
+        Text('${date.toColignyDate(true).day}')
       ],
     );
   }
