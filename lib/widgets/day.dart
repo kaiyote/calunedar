@@ -1,4 +1,4 @@
-import 'package:calunedar/month_info.dart';
+import 'package:calunedar/widgets/month_info.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:calunedar/coligny.dart';

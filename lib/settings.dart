@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+const SETTINGS_KEY = "calunedar_settings";
 
 enum CalendarType {
   GREGORIAN,
@@ -11,9 +15,13 @@ class Settings with ChangeNotifier {
   Color _primaryColor;
   CalendarType _calendar;
   MaterialColor _colorSwatch;
+  bool _metonic;
 
-  Settings([this._primaryColor, this._calendar = CalendarType.GREGORIAN]) {
-    this._primaryColor = this._primaryColor ?? Colors.teal.shade500;
+  Settings(
+      [this._primaryColor,
+      this._calendar = CalendarType.GREGORIAN,
+      this._metonic = true]) {
+    this._primaryColor = this._primaryColor ?? Colors.cyan.shade500;
     this._colorSwatch = Settings._createMaterialColor(this._primaryColor);
   }
 
@@ -22,6 +30,8 @@ class Settings with ChangeNotifier {
   CalendarType get calendar => _calendar;
 
   MaterialColor get colorSwatch => _colorSwatch;
+
+  bool get metonic => _metonic;
 
   set primaryColor(Color newPrimary) {
     this._primaryColor = newPrimary;
@@ -36,10 +46,16 @@ class Settings with ChangeNotifier {
     _persistChanges();
   }
 
+  set metonic(bool metonic) {
+    this._metonic = metonic;
+
+    _persistChanges();
+  }
+
   _persistChanges() async {
     var prefs = await SharedPreferences.getInstance();
     notifyListeners();
-    prefs.setString('calunedar_settings', this.toJson().toString());
+    prefs.setString(SETTINGS_KEY, jsonEncode(this));
   }
 
   static _createMaterialColor(Color primaryColor) {
@@ -68,6 +84,7 @@ class Settings with ChangeNotifier {
 
   Settings.fromJson(Map<String, dynamic> json)
       : _primaryColor = Color(json['primaryColor']),
+        _metonic = json['metonic'],
         _calendar = CalendarType.values.firstWhere(
           (e) => describeEnum(e) == json['calendar'],
         ),
@@ -78,5 +95,6 @@ class Settings with ChangeNotifier {
   Map<String, dynamic> toJson() => {
         'primaryColor': _primaryColor.value,
         'calendar': describeEnum(_calendar),
+        'metonic': _metonic
       };
 }
