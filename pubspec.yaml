@@ -27,6 +27,7 @@ dependencies:
   dart_date: ^1.0.9
   enum_to_string: ^1.0.14
   meeus: ^0.2.2
+  o_color_picker: ^0.1.0
   provider: ^5.0.0
   shared_preferences: ^2.0.3
 
