@@ -2,7 +2,7 @@ import 'package:calunedar/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dart_date/dart_date.dart';
-import 'package:calunedar/coligny.dart';
+import 'package:calunedar/calendar/coligny.dart';
 import 'package:provider/provider.dart';
 
 class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
