@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:calunedar/widgets/app_bar.dart';
-import 'package:calunedar/widgets/month.dart';
-import 'package:calunedar/widgets/month_info.dart';
+import 'package:calunedar/widgets/gregorian_month.dart';
+import 'package:calunedar/month_info.dart';
 import 'package:calunedar/widgets/month_readout.dart';
 import 'package:calunedar/widgets/settings_drawer.dart';
 import 'package:dart_date/dart_date.dart';
@@ -45,7 +45,7 @@ class _CalunedarState extends State<Calunedar> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Month(date: _date, monthInfo: monthInfo),
+                  GregorianMonth(date: _date, monthInfo: monthInfo),
                   Divider(
                     color: Colors.black,
                     thickness: 1.0,

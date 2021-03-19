@@ -1,8 +1,8 @@
+import 'package:calunedar/calendar/coligny_calendar.dart';
 import 'package:calunedar/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dart_date/dart_date.dart';
-import 'package:calunedar/calendar/coligny.dart';
 import 'package:provider/provider.dart';
 
 class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -47,8 +47,8 @@ class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
   String _displayTextForCalendar(CalendarType calendar, bool metonic) {
     switch (calendar) {
       case CalendarType.COLIGNY:
-        final coligny = date.toColignyDate(metonic);
-        return "${coligny.month.name} ${coligny.year}";
+        final coligny = ColignyCalendar.now(metonic);
+        return "${coligny.monthName} ${coligny.year}";
       default:
         return _formatter.format(date);
     }

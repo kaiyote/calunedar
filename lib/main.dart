@@ -1,15 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:calunedar/calunedar.dart';
-import 'package:calunedar/widgets/app_bar.dart';
-import 'package:calunedar/widgets/month.dart';
-import 'package:calunedar/widgets/month_info.dart';
-import 'package:calunedar/widgets/month_readout.dart';
 import 'package:calunedar/settings.dart';
-import 'package:calunedar/widgets/settings_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:dart_date/dart_date.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

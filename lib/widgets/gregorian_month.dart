@@ -1,10 +1,10 @@
-import 'package:calunedar/widgets/month_info.dart';
+import 'package:calunedar/month_info.dart';
 import 'package:calunedar/widgets/week.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
 
-class Month extends StatelessWidget {
-  Month({@required this.date, @required this.monthInfo});
+class GregorianMonth extends StatelessWidget {
+  GregorianMonth({@required this.date, @required this.monthInfo});
 
   final DateTime date;
   final MonthInfo monthInfo;

@@ -1,4 +1,4 @@
-import 'package:calunedar/widgets/month_info.dart';
+import 'package:calunedar/month_info.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

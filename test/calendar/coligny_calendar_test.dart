@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:calunedar/calendar/coligny_calendar.dart';
@@ -29,6 +28,55 @@ void main() {
       test('it will make the correct coligny date from gregorian $input', () {
         expect(ColignyCalendar.fromDateTime(input, true), equals(expected[0]));
         expect(ColignyCalendar.fromDateTime(input), equals(expected[1]));
+      });
+    });
+
+    final metonicTestStartDate = ColignyCalendar(5020, 10, 29, true);
+    final saturnTestStartDate = ColignyCalendar(5020, 10, 28);
+    final daysInputToBeExpected = {
+      -1: [ColignyCalendar(5020, 10, 28, true), ColignyCalendar(5020, 10, 27)],
+      1: [ColignyCalendar(5020, 11, 1, true), ColignyCalendar(5020, 10, 29)],
+      30: [ColignyCalendar(5020, 11, 30, true), ColignyCalendar(5020, 11, 29)],
+    };
+
+    daysInputToBeExpected.forEach((daysToAdd, expectedDates) {
+      test('will add $daysToAdd days correctly', () {
+        expect(
+            metonicTestStartDate.addDays(daysToAdd), equals(expectedDates[0]));
+        expect(
+            saturnTestStartDate.addDays(daysToAdd), equals(expectedDates[1]));
+      });
+    });
+
+    final monthsInputToBeExpected = {
+      -10: [ColignyCalendar(5019, 13, 29, true), ColignyCalendar(5019, 12, 28)],
+      -1: [ColignyCalendar(5020, 9, 29, true), ColignyCalendar(5020, 9, 28)],
+      1: [ColignyCalendar(5020, 11, 29, true), ColignyCalendar(5020, 11, 28)],
+      3: [ColignyCalendar(5021, 1, 29, true), ColignyCalendar(5020, 13, 28)],
+      13: [ColignyCalendar(5021, 11, 29, true), ColignyCalendar(5021, 10, 28)]
+    };
+
+    monthsInputToBeExpected.forEach((monthsToAdd, expectedDates) {
+      test('will add $monthsToAdd months correctly', () {
+        expect(metonicTestStartDate.addMonths(monthsToAdd),
+            equals(expectedDates[0]));
+        expect(saturnTestStartDate.addMonths(monthsToAdd),
+            equals(expectedDates[1]));
+      });
+    });
+
+    final yearsInputToBeExpected = {
+      -5: [ColignyCalendar(5015, 10, 29, true), ColignyCalendar(5015, 10, 28)],
+      1: [ColignyCalendar(5021, 10, 29, true), ColignyCalendar(5021, 10, 28)],
+      10: [ColignyCalendar(5030, 10, 29, true), ColignyCalendar(5030, 10, 28)]
+    };
+
+    yearsInputToBeExpected.forEach((yearsToAdd, expectedDates) {
+      test('will add $yearsToAdd years correctly', () {
+        expect(metonicTestStartDate.addYears(yearsToAdd),
+            equals(expectedDates[0]));
+        expect(
+            saturnTestStartDate.addYears(yearsToAdd), equals(expectedDates[1]));
       });
     });
   });

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:calunedar/calendar/lunar_calendar.dart';
 import 'package:dart_date/dart_date.dart';
 
@@ -153,12 +155,11 @@ class ColignyYear {
 }
 
 class ColignyCalendar implements LunarCalendar {
-  final int _year;
+  int _year;
   int _day;
   final bool _metonic;
   ColignyYear _fullYear;
   ColignyMonth _month;
-  int _dayOfYear;
 
   ColignyCalendar(
     this._year, [
@@ -173,16 +174,11 @@ class ColignyCalendar implements LunarCalendar {
       throw new RangeError("Invalid Month");
     else
       _month = _fullYear.months[month - 1];
-
-    _dayOfYear = _day;
-    for (int i = 0; i < _month.index; i++) {
-      _dayOfYear += _fullYear.months[i].days;
-    }
   }
 
   @override
   ColignyCalendar addDays(int days) {
-    ColignyCalendar output = this.copy();
+    var output = this.copy();
     output._day += days;
 
     while (output.day > output._month.days) {
@@ -197,7 +193,7 @@ class ColignyCalendar implements LunarCalendar {
 
     while (output.day < 1) {
       if (output.month == 1) {
-        int newMonthLength =
+        var newMonthLength =
             ColignyYear(output.year - 1, output._metonic).months.length;
         output = new ColignyCalendar(output.year - 1, newMonthLength - 1,
             output.day + output._month.days, output._metonic);
@@ -210,22 +206,50 @@ class ColignyCalendar implements LunarCalendar {
     return output;
   }
 
+  /// this will add or subtract the given number of months from the date
+  /// it keeps the same day, but caps to the maximum allowable date in a month
+  /// (i.e. 5020/11/30 - 1 month == 5020/10/29 since there are only 29 days in that month)
   @override
   ColignyCalendar addMonths(int months) {
-    // TODO: implement addMonths
-    throw UnimplementedError();
+    var output = this.copy();
+    var targetDay = output._day;
+
+    // negative monthing across the year boundary
+    while (output._month.index + months < 0) {
+      months += output.month;
+      output = ColignyCalendar(_year - 1,
+          ColignyYear(_year - 1, _metonic).months.length, 1, _metonic);
+    }
+
+    // positive monthing across the year boundary
+    while (output._month.index + months >= output._fullYear.months.length) {
+      months -= (output._fullYear.months.length - output._month.index);
+      output = ColignyCalendar(_year + 1, 1, 1, _metonic);
+    }
+
+    output._month = output._fullYear.months[output._month.index + months];
+    output._day = min(output._month.days, targetDay);
+
+    return output
+        .copy(); // there's probably some re-mathing that needs to happen, so copy to make sure
   }
 
   @override
   ColignyCalendar addWeeks(int weeks) {
-    // TODO: implement addWeeks
-    throw UnimplementedError();
+    return addDays(weeks * 7);
   }
 
+  /// Like `addMonths`, this will cap any potential overflow into the final year
+  /// ie. 5019/13/29 + 1 year will produce 5020/12/29
+  /// does this mean you'll almost never land in a leap month when adding years?
+  /// yes ¯\_(ツ)_/¯
   @override
   ColignyCalendar addYears(int years) {
-    // TODO: implement addYears
-    throw UnimplementedError();
+    var targetYear = ColignyYear(_year + years, _metonic);
+    var targetMonthInYear = min(month, targetYear.months.length);
+
+    return ColignyCalendar(targetYear._year, targetMonthInYear,
+        min(day, targetYear.months[targetMonthInYear - 1].days), _metonic);
   }
 
   @override
@@ -278,10 +302,20 @@ class ColignyCalendar implements LunarCalendar {
   int get day => _day;
 
   @override
-  int get dayOfYear => _dayOfYear;
+  int get dayOfYear {
+    int dayOfYear = _day;
+
+    for (int i = 0; i < _month.index; i++) {
+      dayOfYear += _fullYear.months[i].days;
+    }
+
+    return dayOfYear;
+  }
 
   @override
   int get month => _month.index + 1;
+
+  String get monthName => _month.name;
 
   int _differenceInDays(ColignyCalendar target) {
     if (this == target) {
@@ -322,6 +356,10 @@ class ColignyCalendar implements LunarCalendar {
       return gregorianStart.addDays(daysBetween, true);
     else
       return gregorianStart;
+  }
+
+  ColignyCalendar switchCycle() {
+    return ColignyCalendar.fromDateTime(this.toDateTime(), !this._metonic);
   }
 
   @override

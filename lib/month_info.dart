@@ -67,12 +67,7 @@ class DateInfo implements Comparable {
 
     return Transform.rotate(
       angle: phase == Event.thirdQuarter ? pi : 0.0,
-      child: phase == Event.none
-          ? null
-          : Icon(
-              icon,
-              size: phase == Event.none ? 0 : 20.0,
-            ),
+      child: phase == Event.none ? null : Icon(icon, size: 20.0),
     );
   }
 }
