@@ -1,12 +1,17 @@
 import 'dart:math';
 
+import 'package:calunedar/calendar/coligny_calendar.dart';
+import 'package:calunedar/settings.dart';
 import 'package:calunedar/widgets/app_bar.dart';
-import 'package:calunedar/widgets/gregorian_month.dart';
-import 'package:calunedar/month_info.dart';
+import 'package:calunedar/widgets/gregorian/month.dart';
+import 'package:calunedar/widgets/coligny/month.dart' as C;
+import 'package:calunedar/widgets/month_info/coligny.dart';
+import 'package:calunedar/widgets/month_info/month_info.dart';
 import 'package:calunedar/widgets/month_readout.dart';
 import 'package:calunedar/widgets/settings_drawer.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Calunedar extends StatefulWidget {
   @override
@@ -18,8 +23,19 @@ class _CalunedarState extends State<Calunedar> {
 
   @override
   Widget build(BuildContext context) {
-    final monthInfo = MonthInfo(date: _date);
     final media = MediaQuery.of(context);
+    final calendar = context.select<Settings, CalendarType>((s) => s.calendar);
+    final metonic = context.select<Settings, bool>((s) => s.metonic);
+
+    MonthInfo monthInfo;
+    switch (calendar) {
+      case CalendarType.GREGORIAN:
+        monthInfo = MonthInfo(date: _date);
+        break;
+      case CalendarType.COLIGNY:
+        monthInfo = ColignyMonthInfo(date: _date, metonic: metonic);
+        break;
+    }
 
     return Scaffold(
       drawer: SettingsDrawer(),
@@ -45,7 +61,11 @@ class _CalunedarState extends State<Calunedar> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  GregorianMonth(date: _date, monthInfo: monthInfo),
+                  _calendar(
+                    monthInfo: monthInfo,
+                    calendar: calendar,
+                    metonic: metonic,
+                  ),
                   Divider(
                     color: Colors.black,
                     thickness: 1.0,
@@ -59,5 +79,21 @@ class _CalunedarState extends State<Calunedar> {
         ],
       ),
     );
+  }
+
+  Widget _calendar({
+    @required MonthInfo monthInfo,
+    @required CalendarType calendar,
+    @required bool metonic,
+  }) {
+    switch (calendar) {
+      case CalendarType.GREGORIAN:
+        return GregorianMonth(date: _date, monthInfo: monthInfo);
+      case CalendarType.COLIGNY:
+        return C.ColignyMonth(
+            date: ColignyCalendar.fromDateTime(_date, metonic),
+            monthInfo: monthInfo);
+    }
+    return null;
   }
 }

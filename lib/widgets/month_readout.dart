@@ -1,5 +1,5 @@
 import 'package:calunedar/widgets/celestial_event.dart';
-import 'package:calunedar/month_info.dart';
+import 'package:calunedar/widgets/month_info/month_info.dart';
 import 'package:flutter/material.dart';
 
 class MonthReadout extends StatelessWidget {

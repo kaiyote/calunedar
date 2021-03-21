@@ -47,7 +47,7 @@ class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
   String _displayTextForCalendar(CalendarType calendar, bool metonic) {
     switch (calendar) {
       case CalendarType.COLIGNY:
-        final coligny = ColignyCalendar.now(metonic);
+        final coligny = ColignyCalendar.fromDateTime(date, metonic);
         return "${coligny.monthName} ${coligny.year}";
       default:
         return _formatter.format(date);

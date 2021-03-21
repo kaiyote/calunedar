@@ -34,9 +34,7 @@ class DateInfo implements Comparable {
   int get hashCode => this.phase.hashCode + this.when.hashCode;
 
   @override
-  int compareTo(other) {
-    return when.compareTo(other.when);
-  }
+  int compareTo(other) => when.compareTo(other.when);
 
   Widget icon() {
     IconData icon;
@@ -73,16 +71,9 @@ class DateInfo implements Comparable {
 }
 
 class MonthInfo {
-  MonthInfo({this.date}) {
-    var firstDay = date.startOfMonth.isSunday
-        ? date.startOfMonth
-        : date.startOfMonth.startOfWeek;
-
-    this.weeks = List.generate(6, (index) => firstDay.addWeeks(index));
-  }
+  MonthInfo({this.date});
 
   final DateTime date;
-  List<DateTime> weeks;
   Set<DateInfo> _lunarEvents = Set();
 
   Set<DateInfo> get lunarEvents {

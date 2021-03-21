@@ -271,7 +271,7 @@ class ColignyCalendar implements LunarCalendar {
 
   @override
   ColignyCalendar copy() {
-    return ColignyCalendar(year, month, day, _metonic);
+    return ColignyCalendar(year, month, day, metonic);
   }
 
   @override
@@ -280,7 +280,7 @@ class ColignyCalendar implements LunarCalendar {
         year == other.year &&
         month == other.month &&
         day == other.day &&
-        _metonic == other._metonic;
+        metonic == other.metonic;
   }
 
   @override
@@ -289,7 +289,7 @@ class ColignyCalendar implements LunarCalendar {
     result = 37 * result + year.hashCode;
     result = 37 * result + month.hashCode;
     result = 37 * result + day.hashCode;
-    result = 37 * result + _metonic.hashCode;
+    result = 37 * result + metonic.hashCode;
     return result;
   }
 
@@ -372,8 +372,7 @@ class ColignyCalendar implements LunarCalendar {
 
   @override
   int toInt() {
-    // TODO: implement toInt
-    throw UnimplementedError();
+    return year * 10000 + month * 100 + day;
   }
 
   @override
@@ -384,6 +383,8 @@ class ColignyCalendar implements LunarCalendar {
 
   @override
   int get yearLength => _fullYear.daysInYear;
+
+  bool get metonic => _metonic;
 
   static ColignyCalendar fromDateTime(DateTime dt, [bool metonic = false]) {
     dt.setHour(0, 0, 0, 0, 0);
