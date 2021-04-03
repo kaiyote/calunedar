@@ -1,17 +1,18 @@
-import 'package:calunedar/widgets/month_info/month_info.dart';
+import 'package:calunedar/calendar/coligny_calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:dart_date/dart_date.dart';
+
+import 'month_info.dart';
 
 class Day extends StatelessWidget {
   Day({@required this.date, @required this.isCurrentMonth, this.event});
 
-  final DateTime date;
+  final ColignyCalendar date;
   final bool isCurrentMonth;
   final DateInfo event;
 
   @override
   Widget build(BuildContext context) {
-    var isToday = date.isToday;
+    var isToday = date == ColignyCalendar.now(date.metonic);
     var theme = Theme.of(context);
 
     return Expanded(
@@ -39,7 +40,7 @@ class Day extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Text('${date.getDate}'),
+        Text('${date.day}'),
         event.icon(),
       ],
     );

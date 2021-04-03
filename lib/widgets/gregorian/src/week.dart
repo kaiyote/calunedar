@@ -1,7 +1,8 @@
-import './day.dart';
-import 'package:calunedar/widgets/month_info/month_info.dart';
-import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter/material.dart';
+
+import 'day.dart';
+import 'month_info.dart';
 
 class Week extends StatelessWidget {
   Week({@required this.start, @required this.month, @required this.monthInfo});

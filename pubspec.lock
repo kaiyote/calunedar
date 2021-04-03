@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.14"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.6"
   fake_async:
     dependency: transitive
     description:
@@ -184,13 +177,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  o_color_picker:
-    dependency: "direct main"
-    description:
-      name: o_color_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   path:
     dependency: transitive
     description:
