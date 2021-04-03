@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'month_info.dart';
+import '../../gregorian/src/month_info.dart' hide MonthInfo;
 
 class Readout extends StatelessWidget {
   Readout({this.monthInfo});

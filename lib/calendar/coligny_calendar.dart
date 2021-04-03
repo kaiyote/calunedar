@@ -261,7 +261,11 @@ class ColignyCalendar {
 
   ColignyCalendar lastDayOfYear() {
     return ColignyCalendar(
-        year, _fullYear.months.length, _fullYear.months.last.days, metonic);
+      year,
+      _fullYear.months.length,
+      _fullYear.months.last.days,
+      metonic,
+    );
   }
 
   int compareTo(ColignyCalendar other) {
@@ -315,6 +319,8 @@ class ColignyCalendar {
   int get month => _month.index + 1;
 
   String get monthName => _month.name;
+
+  int get monthLength => _month.days;
 
   int _differenceInDays(ColignyCalendar target) {
     if (this == target) {

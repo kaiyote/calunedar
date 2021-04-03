@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:calunedar/calendar/coligny_calendar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dart_date/dart_date.dart';
 
 const SETTINGS_KEY = "calunedar_settings";
 
@@ -15,11 +16,9 @@ class AppState with ChangeNotifier {
   CalendarType _calendar;
   bool _metonic;
   DateTime _date;
-  ColignyCalendar _colignyDate;
 
   AppState([this._calendar = CalendarType.GREGORIAN, this._metonic = true]) {
     _date = DateTime.now();
-    _colignyDate = ColignyCalendar.fromDateTime(_date, _metonic);
   }
 
   CalendarType get calendar => _calendar;
@@ -28,7 +27,8 @@ class AppState with ChangeNotifier {
 
   DateTime get date => _date;
 
-  ColignyCalendar get colignyDate => _colignyDate;
+  ColignyCalendar get colignyDate =>
+      ColignyCalendar.fromDateTime(_date, _metonic);
 
   set calendar(CalendarType newCalendar) {
     _calendar = newCalendar;
@@ -38,26 +38,30 @@ class AppState with ChangeNotifier {
 
   set metonic(bool metonic) {
     _metonic = metonic;
-    _colignyDate = ColignyCalendar.fromDateTime(date, metonic);
 
     _persistChanges();
   }
 
   set date(DateTime date) {
     _date = date;
-    _colignyDate = ColignyCalendar.fromDateTime(date, metonic);
-    notifyListeners();
-  }
-
-  set colignyDate(ColignyCalendar colignyDate) {
-    _colignyDate = colignyDate;
-    _date = colignyDate.toDateTime();
     notifyListeners();
   }
 
   void toToday() {
     _date = DateTime.now();
-    _colignyDate = ColignyCalendar.fromDateTime(date, metonic);
+    notifyListeners();
+  }
+
+  void addMonths(int months) {
+    switch (_calendar) {
+      case CalendarType.GREGORIAN:
+        _date = _date.addMonths(months);
+        break;
+      case CalendarType.COLIGNY:
+        var coligny = ColignyCalendar.fromDateTime(_date, _metonic);
+        _date = _date.addDays(coligny.monthLength * months.sign);
+        break;
+    }
     notifyListeners();
   }
 

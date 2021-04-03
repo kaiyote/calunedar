@@ -1,15 +1,23 @@
 import 'package:calunedar/calendar/coligny_calendar.dart';
+import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 
 import 'day.dart';
 import 'month_info.dart';
+import '../../gregorian/src/month_info.dart' hide MonthInfo;
 
 class Week extends StatelessWidget {
-  Week({@required this.start, @required this.month, @required this.monthInfo});
+  Week({
+    @required this.start,
+    @required this.month,
+    @required this.monthInfo,
+    @required this.metonic,
+  });
 
   final int month;
-  final ColignyCalendar start;
+  final DateTime start;
   final MonthInfo monthInfo;
+  final bool metonic;
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +34,14 @@ class Week extends StatelessWidget {
           .map(
             (date) => Day(
               date: date,
-              isCurrentMonth: date.month == month,
+              isCurrentMonth:
+                  ColignyCalendar.fromDateTime(date, metonic).month == month,
+              metonic: metonic,
               event: monthInfo.lunarEvents.firstWhere(
                 (element) => element.when.day == date.day,
                 orElse: () => DateInfo(
                   phase: Event.none,
-                  when: date.toDateTime(),
+                  when: date,
                 ),
               ),
             ),

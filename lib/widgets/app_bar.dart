@@ -1,7 +1,6 @@
 import 'package:calunedar/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:dart_date/dart_date.dart';
 import 'package:provider/provider.dart';
 
 class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -19,14 +18,7 @@ class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
           IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              switch (state.calendar) {
-                case CalendarType.GREGORIAN:
-                  state.date = state.date.addMonths(-1);
-                  break;
-                case CalendarType.COLIGNY:
-                  state.colignyDate = state.colignyDate.addMonths(-1);
-                  break;
-              }
+              state.addMonths(-1);
             },
             tooltip: 'Previous Month',
           ),
@@ -37,14 +29,7 @@ class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
           IconButton(
             icon: Icon(Icons.arrow_forward),
             onPressed: () {
-              switch (state.calendar) {
-                case CalendarType.GREGORIAN:
-                  state.date = state.date.addMonths(1);
-                  break;
-                case CalendarType.COLIGNY:
-                  state.colignyDate = state.colignyDate.addMonths(1);
-                  break;
-              }
+              state.addMonths(1);
             },
             tooltip: 'Next Month',
           ),
