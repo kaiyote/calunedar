@@ -33,18 +33,14 @@ class Week extends StatelessWidget {
       children: dates
           .map(
             (date) => Day(
-              date: date,
-              isCurrentMonth:
-                  ColignyCalendar.fromDateTime(date, metonic).month == month,
-              metonic: metonic,
-              event: monthInfo.lunarEvents.firstWhere(
-                (element) => element.when.day == date.day,
-                orElse: () => DateInfo(
-                  phase: Event.none,
-                  when: date,
-                ),
-              ),
-            ),
+                date: date,
+                isCurrentMonth:
+                    ColignyCalendar.fromDateTime(date, metonic).month == month,
+                metonic: metonic,
+                event: monthInfo.lunarEvents.firstWhere(
+                  (element) => element.when.isSameDay(date),
+                  orElse: () => DateInfo(phase: Event.none, when: date),
+                )),
           )
           .toList(),
     );

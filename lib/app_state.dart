@@ -62,6 +62,7 @@ class AppState with ChangeNotifier {
         _date = _date.addDays(coligny.monthLength * months.sign);
         break;
     }
+
     notifyListeners();
   }
 

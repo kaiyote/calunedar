@@ -20,8 +20,9 @@ class MonthInfo {
   }
 
   Set<DateInfo> _generateLunarEvents() {
-    var firstDay = date.startOfMonth;
-    var lastDay = date.endOfMonth.startOfDay;
+    var colignyDate = ColignyCalendar.fromDateTime(date, metonic);
+    var firstDay = date.addDays(-(colignyDate.day - 1)).startOfDay;
+    var lastDay = date.addDays(colignyDate.monthLength).startOfDay;
     var midpoint = firstDay.addDays(lastDay.differenceInDays(firstDay) ~/ 2);
 
     var dates = Set<DateInfo>();

@@ -17,10 +17,8 @@ class Month extends StatelessWidget {
   final bool metonic;
 
   List<DateTime> _eachWeekOfMonth() {
-    var firstDay = ColignyCalendar.fromDateTime(date, metonic)
-        .firstDayOfMonth()
-        .toDateTime();
-
+    var colignyDate = ColignyCalendar.fromDateTime(date, metonic);
+    var firstDay = date.addDays(-(colignyDate.day - 1));
     var firstWeek = firstDay.isSunday ? firstDay : firstDay.startOfWeek;
 
     return List.generate(
