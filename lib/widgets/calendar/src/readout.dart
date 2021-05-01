@@ -1,14 +1,13 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'month_info.dart';
 
 class Readout extends StatelessWidget {
-  Readout({this.monthInfo});
+  Readout({this.monthInfo, this.formatDate});
 
   final MonthInfo monthInfo;
-  final _dateFormatter = DateFormat.MMMMd().addPattern('\'at\'').add_jm();
+  final String Function(DateTime) formatDate;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,7 @@ class Readout extends StatelessWidget {
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 5.0),
             child: Text(
-              _dateFormatter.format(dateInfo.when.toLocal()),
+              formatDate(dateInfo.when.toLocal()),
               style: TextStyle(fontSize: 16.0),
               textAlign: TextAlign.center,
             ),

@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:calunedar/app_state.dart';
 import 'package:calunedar/widgets/app_bar.dart';
-import 'package:calunedar/widgets/coligny/main.dart';
-import 'package:calunedar/widgets/gregorian/main.dart';
+import 'package:calunedar/widgets/calendar/coligny.dart';
+import 'package:calunedar/widgets/calendar/gregorian.dart';
 import 'package:calunedar/widgets/settings_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

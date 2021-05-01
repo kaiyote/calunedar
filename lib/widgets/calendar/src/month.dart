@@ -1,4 +1,3 @@
-import 'package:calunedar/calendar/coligny_calendar.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 
@@ -7,20 +6,18 @@ import 'week.dart';
 
 class Month extends StatelessWidget {
   Month({
-    @required this.date,
+    @required this.firstWeek,
     @required this.monthInfo,
-    @required this.metonic,
+    @required this.isCurrentMonth,
+    @required this.getTextForDay,
   });
 
-  final DateTime date;
+  final DateTime firstWeek;
   final MonthInfo monthInfo;
-  final bool metonic;
+  final bool Function(DateTime) isCurrentMonth;
+  final String Function(DateTime) getTextForDay;
 
   List<DateTime> _eachWeekOfMonth() {
-    var colignyDate = ColignyCalendar.fromDateTime(date, metonic);
-    var firstDay = date.addDays(-(colignyDate.day - 1));
-    var firstWeek = firstDay.isSunday ? firstDay : firstDay.startOfWeek;
-
     return List.generate(
       6,
       (index) => firstWeek.addWeeks(index),
@@ -35,9 +32,9 @@ class Month extends StatelessWidget {
       children: _eachWeekOfMonth()
           .map((weekStart) => Week(
                 start: weekStart,
-                month: ColignyCalendar.fromDateTime(date, metonic).month,
+                isCurrentMonth: isCurrentMonth,
                 monthInfo: monthInfo,
-                metonic: metonic,
+                getTextForDay: getTextForDay,
               ))
           .toList(),
     );

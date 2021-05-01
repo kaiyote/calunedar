@@ -5,9 +5,15 @@ import 'day.dart';
 import 'month_info.dart';
 
 class Week extends StatelessWidget {
-  Week({@required this.start, @required this.month, @required this.monthInfo});
+  Week({
+    @required this.start,
+    @required this.isCurrentMonth,
+    @required this.monthInfo,
+    @required this.getTextForDay,
+  });
 
-  final int month;
+  final bool Function(DateTime) isCurrentMonth;
+  final String Function(DateTime) getTextForDay;
   final DateTime start;
   final MonthInfo monthInfo;
 
@@ -24,12 +30,14 @@ class Week extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: dates
           .map((date) => Day(
-              date: date,
-              isCurrentMonth: date.month == month,
-              event: monthInfo.lunarEvents.firstWhere(
-                (element) => element.when.isSameDay(date),
-                orElse: () => DateInfo(phase: Event.none, when: date),
-              )))
+                date: date,
+                isCurrentMonth: isCurrentMonth(date),
+                event: monthInfo.lunarEvents.firstWhere(
+                  (element) => element.when.isSameDay(date),
+                  orElse: () => DateInfo(phase: Event.none, when: date),
+                ),
+                getTextForDay: getTextForDay,
+              ))
           .toList(),
     );
   }

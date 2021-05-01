@@ -70,10 +70,23 @@ class DateInfo implements Comparable {
   }
 }
 
+class EventPinDates {
+  EventPinDates({@required this.start, @required this.end});
+
+  final DateTime start;
+  final DateTime end;
+}
+
 class MonthInfo {
-  MonthInfo({this.date});
+  MonthInfo({
+    @required this.date,
+    @required this.generatePinDates,
+    @required this.isSameMonth,
+  });
 
   final DateTime date;
+  final EventPinDates Function(DateTime date) generatePinDates;
+  final bool Function(DateTime currentDate, DateTime other) isSameMonth;
   Set<DateInfo> _lunarEvents = Set();
 
   Set<DateInfo> get lunarEvents {
@@ -85,12 +98,12 @@ class MonthInfo {
   }
 
   Set<DateInfo> _generateLunarEvents() {
-    var firstDay = date.startOfMonth;
-    var lastDay = date.endOfMonth.startOfDay;
-    var midpoint = firstDay.addDays(lastDay.differenceInDays(firstDay) ~/ 2);
+    var pinDates = generatePinDates(date);
+    var midDate = pinDates.start
+        .addDays(pinDates.end.differenceInDays(pinDates.start) ~/ 2);
 
     var dates = Set<DateInfo>();
-    for (var date in [firstDay, lastDay, midpoint]) {
+    for (var date in [pinDates.start, pinDates.end, midDate]) {
       var daysBetween = date.differenceInDays(date.startOfYear);
       var yearFraction = date.year + (daysBetween / 356.25);
 
@@ -112,6 +125,6 @@ class MonthInfo {
       ));
     }
 
-    return dates.where((element) => element.when.isSameMonth(date)).toSet();
+    return dates.where((element) => isSameMonth(date, element.when)).toSet();
   }
 }
