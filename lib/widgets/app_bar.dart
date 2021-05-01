@@ -11,6 +11,7 @@ class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
     final state = context.read<AppState>();
 
     return AppBar(
+      titleSpacing: 0.0,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -24,7 +25,7 @@ class CalendarAppBar extends StatelessWidget with PreferredSizeWidget {
           ),
           Text(
             _displayTextForCalendar(state),
-            style: TextStyle(fontSize: 24.0),
+            style: TextStyle(fontSize: 20.0),
           ),
           IconButton(
             icon: Icon(Icons.arrow_forward),

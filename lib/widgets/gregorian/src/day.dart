@@ -38,7 +38,7 @@ class Day extends StatelessWidget {
 
   Widget _buildDay() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text('${date.getDate}'),
         event.icon(),

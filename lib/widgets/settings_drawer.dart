@@ -29,6 +29,7 @@ class SettingsDrawer extends StatelessWidget {
     final calendarList = <Widget>[
       ListTile(
         leading: Text('Calendar: '),
+        dense: true,
         title: DropdownButton<CalendarType>(
           value: calendar,
           onChanged: (CalendarType newValue) {
@@ -52,6 +53,7 @@ class SettingsDrawer extends StatelessWidget {
       calendarList.add(ListTile(
         title: Icon(!metonic ? Icons.check_circle_outline : Icons.check_circle),
         leading: Text('Metonic: '),
+        dense: true,
         onTap: () {
           Provider.of<AppState>(context, listen: false).metonic = !metonic;
         },
