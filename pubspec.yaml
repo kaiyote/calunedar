@@ -1,5 +1,5 @@
 name: calunedar
-description: A new Flutter project.
+description: does calendar stuff + moon phases, good for gregorian and coligny right now
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -23,12 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.3
   dart_date: ^1.0.9
   enum_to_string: ^2.0.1
   meeus: ^0.2.2
   provider: ^5.0.0
-  shared_preferences: ^2.0.3
+  shared_preferences: ^2.0.6
 
 dev_dependencies:
   flutter_test:

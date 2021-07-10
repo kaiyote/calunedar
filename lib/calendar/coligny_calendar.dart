@@ -1,4 +1,5 @@
 import 'package:dart_date/dart_date.dart';
+import './coligny_calendar_inscriptions.dart';
 
 class ColignyMonth {
   final String _name;
@@ -97,6 +98,7 @@ class ColignyYear {
   bool get metonic => _metonic;
   List<ColignyMonth> get months => _months;
   int get daysInYear => _yearDays;
+  int get ident => _ident;
 
   static Map<int, int> _metonicMap = {
     -18: 3,
@@ -202,49 +204,6 @@ class ColignyCalendar {
     return output;
   }
 
-  /// this will add or subtract the given number of months from the date
-  /// it keeps the same day, but caps to the maximum allowable date in a month
-  /// (i.e. 5020/11/30 - 1 month == 5020/10/29 since there are only 29 days in that month)
-  // ColignyCalendar addMonths(int months) {
-  //   var output = this.copy();
-  //   var targetDay = output._day;
-
-  //   // negative monthing across the year boundary
-  //   while (output._month.index + months < 0) {
-  //     months += output.month;
-  //     output = ColignyCalendar(_year - 1,
-  //         ColignyYear(_year - 1, _metonic).months.length, 1, _metonic);
-  //   }
-
-  //   // positive monthing across the year boundary
-  //   while (output._month.index + months >= output._fullYear.months.length) {
-  //     months -= (output._fullYear.months.length - output._month.index);
-  //     output = ColignyCalendar(_year + 1, 1, 1, _metonic);
-  //   }
-
-  //   output._month = output._fullYear.months[output._month.index + months];
-  //   output._day = min(output._month.days, targetDay);
-
-  //   return output
-  //       .copy(); // there's probably some re-mathing that needs to happen, so copy to make sure
-  // }
-
-  // ColignyCalendar addWeeks(int weeks) {
-  //   return addDays(weeks * 7);
-  // }
-
-  /// Like `addMonths`, this will cap any potential overflow into the final year
-  /// ie. 5019/13/29 + 1 year will produce 5020/12/29
-  /// does this mean you'll almost never land in a leap month when adding years?
-  /// yes ¯\_(ツ)_/¯
-  // ColignyCalendar addYears(int years) {
-  //   var targetYear = ColignyYear(_year + years, _metonic);
-  //   var targetMonthInYear = min(month, targetYear.months.length);
-
-  //   return ColignyCalendar(targetYear._year, targetMonthInYear,
-  //       min(day, targetYear.months[targetMonthInYear - 1].days), _metonic);
-  // }
-
   ColignyCalendar firstDayOfMonth() {
     return ColignyCalendar(year, month, 1, metonic);
   }
@@ -320,49 +279,47 @@ class ColignyCalendar {
 
   int get monthLength => _month.days;
 
-  // int _differenceInDays(ColignyCalendar target) {
-  //   if (this == target) {
-  //     return 0;
-  //   } else if (year == target.year && month == target.month) {
-  //     return (day - target.day).abs();
-  //   } else if (target.compareTo(this) < 0) {
-  //     return target._differenceInDays(this);
-  //   } else if (year == target.year) {
-  //     return (dayOfYear - target.dayOfYear).abs();
-  //   } else {
-  //     int count = this.yearLength - this.dayOfYear;
-  //     count += target.dayOfYear;
+  List<String> get inscription =>
+      inscriptions[monthName][_fullYear.ident - 1][day - 1];
 
-  //     for (int i = year + 1; i < target.year; i++) {
-  //       ColignyYear current = ColignyYear(i, _metonic);
-  //       count += current.daysInYear;
-  //     }
+  int _differenceInDays(ColignyCalendar target) {
+    if (this.metonic != target.metonic) {
+      throw ArgumentError("Cannot diff between different cycles");
+    } else if (year == target.year) {
+      return (dayOfYear - target.dayOfYear).abs();
+    } else if (target.compareTo(this) < 0) {
+      return target._differenceInDays(this);
+    } else {
+      int count = this.yearLength - this.dayOfYear + target.dayOfYear;
 
-  //     return count;
-  //   }
-  // }
+      for (int i = year + 1; i < target.year; i++) {
+        ColignyYear current = ColignyYear(i, metonic);
+        count += current.daysInYear;
+      }
 
-  // DateTime toDateTime() {
-  //   DateTime gregorianStart;
-  //   ColignyCalendar colignyStart;
-  //   if (_metonic) {
-  //     gregorianStart = DateTime(1999, 5, 22);
-  //     colignyStart = ColignyCalendar(4999, 1, 1, true);
-  //   } else {
-  //     gregorianStart = DateTime(1998, 5, 3);
-  //     colignyStart = ColignyCalendar(4998, 1, 1);
-  //   }
+      return count.abs();
+    }
+  }
 
-  //   var daysBetween = _differenceInDays(colignyStart);
-  //   if (this.compareTo(colignyStart) != 0)
-  //     return gregorianStart.addDays(daysBetween, true);
-  //   else
-  //     return gregorianStart;
-  // }
+  DateTime toDateTime() {
+    DateTime gregorianStart;
+    ColignyCalendar colignyStart;
 
-  // ColignyCalendar switchCycle() {
-  //   return ColignyCalendar.fromDateTime(this.toDateTime(), !this._metonic);
-  // }
+    if (metonic) {
+      gregorianStart = DateTime(1999, 5, 22);
+      colignyStart = ColignyCalendar(4999, 1, 1, true);
+    } else {
+      gregorianStart = DateTime(1998, 5, 3);
+      colignyStart = ColignyCalendar(4998, 1, 1);
+    }
+
+    var daysBetween = _differenceInDays(colignyStart);
+
+    if (this.compareTo(colignyStart) < 0)
+      return gregorianStart.addDays(-daysBetween, true);
+    else
+      return gregorianStart.addDays(daysBetween, true);
+  }
 
   String toIS08601String() {
     final paddedYear = year.toString().padLeft(4, '0');
@@ -371,11 +328,7 @@ class ColignyCalendar {
     return "$paddedYear-$paddedMonth-$paddedDay";
   }
 
-  int toInt() {
-    return year * 10000 + month * 100 + day;
-  }
-
-  // int get weekday => this.toDateTime().weekday;
+  int toInt() => year * 10000 + month * 100 + day;
 
   int get year => _year;
 
@@ -384,13 +337,15 @@ class ColignyCalendar {
   bool get metonic => _metonic;
 
   static ColignyCalendar fromDateTime(DateTime dt, [bool metonic = false]) {
-    int diffInDays;
     ColignyCalendar output;
+    // push it to "tomorrow" if its after 6pm (ver rough "sunset")
+    int diffInDays = dt.getHours >= 18 ? 1 : 0;
+
     if (metonic) {
-      diffInDays = dt.differenceInDays(DateTime(1999, 5, 22));
+      diffInDays += dt.differenceInDays(DateTime(1999, 5, 22));
       output = ColignyCalendar(4999, 1, 1, true);
     } else {
-      diffInDays = dt.differenceInDays(DateTime(1998, 5, 3));
+      diffInDays += dt.differenceInDays(DateTime(1998, 5, 3));
       output = ColignyCalendar(4998, 1, 1);
     }
 
