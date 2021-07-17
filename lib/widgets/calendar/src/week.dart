@@ -29,15 +29,17 @@ class Week extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: dates
-          .map((date) => Day(
-                date: date,
-                isCurrentMonth: isCurrentMonth(date),
-                event: monthInfo.lunarEvents.firstWhere(
-                  (element) => element.when.isSameDay(date),
-                  orElse: () => DateInfo(phase: Event.none, when: date),
-                ),
-                getTextForDay: getTextForDay,
-              ))
+          .map(
+            (date) => Day(
+              date: date,
+              isCurrentMonth: isCurrentMonth(date),
+              event: monthInfo.lunarEvents.firstWhere(
+                (element) => element.when.isSameDay(date),
+                orElse: () => DateInfo(phase: Event.none, when: date),
+              ),
+              getTextForDay: getTextForDay,
+            ),
+          )
           .toList(),
     );
   }
