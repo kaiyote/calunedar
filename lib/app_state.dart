@@ -16,9 +16,11 @@ class AppState with ChangeNotifier {
   CalendarType _calendar;
   bool _metonic;
   DateTime _date;
+  bool _showActionButton;
 
   AppState([this._calendar = CalendarType.GREGORIAN, this._metonic = true]) {
     _date = DateTime.now();
+    _showActionButton = false;
   }
 
   CalendarType get calendar => _calendar;
@@ -26,6 +28,8 @@ class AppState with ChangeNotifier {
   bool get metonic => _metonic;
 
   DateTime get date => _date;
+
+  bool get showActionButton => _showActionButton;
 
   ColignyCalendar get colignyDate =>
       ColignyCalendar.fromDateTime(_date, _metonic);
@@ -44,6 +48,11 @@ class AppState with ChangeNotifier {
 
   set date(DateTime date) {
     _date = date;
+    notifyListeners();
+  }
+
+  set showActionButton(bool showActionButton) {
+    _showActionButton = showActionButton;
     notifyListeners();
   }
 
