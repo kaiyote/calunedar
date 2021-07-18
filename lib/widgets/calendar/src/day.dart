@@ -28,7 +28,8 @@ class Day extends StatelessWidget {
         aspectRatio: 0.94,
         child: GestureDetector(
           onTap: () {
-            if (getSubTextForDay != null && getSubTextForDay(date).isNotEmpty) {
+            if (getSubTextForDay != null &&
+                getSubTextForDay(date, event: event).isNotEmpty) {
               final snackBar = SnackBar(
                 content: Text(
                   getSubTextForDay(date, event: event),
