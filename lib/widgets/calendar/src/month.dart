@@ -10,12 +10,14 @@ class Month extends StatelessWidget {
     @required this.monthInfo,
     @required this.isCurrentMonth,
     @required this.getTextForDay,
+    this.getSubTextForDay,
   });
 
   final DateTime firstWeek;
   final MonthInfo monthInfo;
   final bool Function(DateTime) isCurrentMonth;
   final String Function(DateTime) getTextForDay;
+  final String Function(DateTime, {DateInfo event}) getSubTextForDay;
 
   List<DateTime> _eachWeekOfMonth() {
     return List.generate(
@@ -35,6 +37,7 @@ class Month extends StatelessWidget {
                 isCurrentMonth: isCurrentMonth,
                 monthInfo: monthInfo,
                 getTextForDay: getTextForDay,
+                getSubTextForDay: getSubTextForDay,
               ))
           .toList(),
     );

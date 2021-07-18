@@ -280,7 +280,7 @@ class ColignyCalendar {
   int get monthLength => _month.days;
 
   List<String> get inscription =>
-      inscriptions[monthName][_fullYear.ident - 1][day - 1];
+      colignyInscriptions[monthName][_fullYear.ident - 1][day - 1];
 
   int _differenceInDays(ColignyCalendar target) {
     if (this.metonic != target.metonic) {

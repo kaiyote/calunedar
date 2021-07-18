@@ -10,10 +10,12 @@ class Week extends StatelessWidget {
     @required this.isCurrentMonth,
     @required this.monthInfo,
     @required this.getTextForDay,
+    this.getSubTextForDay,
   });
 
   final bool Function(DateTime) isCurrentMonth;
   final String Function(DateTime) getTextForDay;
+  final String Function(DateTime, {DateInfo event}) getSubTextForDay;
   final DateTime start;
   final MonthInfo monthInfo;
 
@@ -38,6 +40,7 @@ class Week extends StatelessWidget {
                 orElse: () => DateInfo(phase: Event.none, when: date),
               ),
               getTextForDay: getTextForDay,
+              getSubTextForDay: getSubTextForDay,
             ),
           )
           .toList(),

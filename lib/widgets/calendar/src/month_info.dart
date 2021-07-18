@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:dart_date/dart_date.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:meeus/julian.dart';
 import 'package:meeus/meeus.dart';
+import 'package:intl/intl.dart';
 
 enum Event {
   firstQuarter,
@@ -18,12 +20,27 @@ enum Event {
 }
 
 class DateInfo implements Comparable {
-  Event phase;
-  DateTime when;
+  final Event phase;
+  final DateTime when;
 
-  DateInfo({this.phase, this.when});
+  const DateInfo({this.phase, this.when});
 
-  String toString() => "{ ${this.phase.toString()}, $when }";
+  String toString({bool date = true, bool phase = true, bool time = true}) {
+    var str = "";
+    if (this.phase == Event.none) return str;
+
+    if (date) {
+      str += DateFormat.yMMMMd().format(when);
+    }
+    if (phase) {
+      str += " " + EnumToString.convertToString(this.phase, camelCase: true);
+    }
+    if (time) {
+      str += " at " + DateFormat.jm().format(when);
+    }
+
+    return str.trim();
+  }
 
   bool operator ==(other) {
     if (other is! DateInfo) return false;
@@ -36,7 +53,7 @@ class DateInfo implements Comparable {
   @override
   int compareTo(other) => when.compareTo(other.when);
 
-  Widget icon() {
+  Widget icon({size = 20.0}) {
     IconData icon;
 
     switch (phase) {
@@ -65,7 +82,7 @@ class DateInfo implements Comparable {
 
     return Transform.rotate(
       angle: phase == Event.thirdQuarter ? pi : 0.0,
-      child: phase == Event.none ? null : Icon(icon, size: 20.0),
+      child: phase == Event.none ? null : Icon(icon, size: size),
     );
   }
 }

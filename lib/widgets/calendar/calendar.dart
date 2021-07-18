@@ -50,6 +50,16 @@ class Calendar extends StatelessWidget {
       isCurrentMonth: (testDate) =>
           ColignyCalendar.fromDateTime(testDate, state.metonic).month ==
           colignyDate.month,
+      getSubTextForDay: (
+        testDate, {
+        event = const DateInfo(phase: Event.none),
+      }) {
+        final date = ColignyCalendar.fromDateTime(testDate, state.metonic);
+        final inscriptions = date.inscription.join(" | ").trim();
+
+        return "${date.monthName} ${date.day}, ${date.year}: $inscriptions\n${event.toString(date: false)}"
+            .trim();
+      },
     );
   }
 }

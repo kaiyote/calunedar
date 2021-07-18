@@ -1,4 +1,4 @@
-Map<String, List<List<List<String>>>> inscriptions = {
+const Map<String, List<List<List<String>>>> colignyInscriptions = {
   "Quimonios": [
     [
       ["MD SIMIUIS GIAMONI", "IVOS"],
