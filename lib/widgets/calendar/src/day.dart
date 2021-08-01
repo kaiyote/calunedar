@@ -5,18 +5,18 @@ import 'month_info.dart';
 
 class Day extends StatelessWidget {
   Day({
-    @required this.date,
-    @required this.isCurrentMonth,
-    @required this.event,
-    @required this.getTextForDay,
-    this.getSubTextForDay,
+    required this.date,
+    required this.isCurrentMonth,
+    required this.event,
+    required this.getTextForDay,
+    required this.getSubTextForDay,
   });
 
   final DateTime date;
   final bool isCurrentMonth;
   final DateInfo event;
   final String Function(DateTime) getTextForDay;
-  final String Function(DateTime, {DateInfo event}) getSubTextForDay;
+  final String Function(DateTime, [DateInfo? event]) getSubTextForDay;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +28,10 @@ class Day extends StatelessWidget {
         aspectRatio: 0.94,
         child: GestureDetector(
           onTap: () {
-            if (getSubTextForDay != null &&
-                getSubTextForDay(date, event: event).isNotEmpty) {
+            if (getSubTextForDay(date, event).isNotEmpty) {
               final snackBar = SnackBar(
                 content: Text(
-                  getSubTextForDay(date, event: event),
+                  getSubTextForDay(date, event),
                   textAlign: TextAlign.center,
                 ),
                 behavior: SnackBarBehavior.floating,
@@ -71,10 +70,10 @@ class Day extends StatelessWidget {
 
 class _Day extends StatelessWidget {
   _Day({
-    @required this.date,
-    @required this.isCurrentMonth,
-    @required this.event,
-    @required this.getTextForDay,
+    required this.date,
+    required this.isCurrentMonth,
+    required this.event,
+    required this.getTextForDay,
   });
 
   final DateTime date;

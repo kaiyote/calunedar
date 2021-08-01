@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 
 class Calendar extends StatelessWidget {
   Calendar({
-    @required this.state,
-    @required this.monthInfo,
+    required this.state,
+    required this.monthInfo,
   });
 
   final AppState state;
@@ -34,12 +34,7 @@ class Calendar extends StatelessWidget {
       firstWeek: firstWeek,
       isCurrentMonth: (testDate) => testDate.month == state.date.month,
       getTextForDay: (testDate) => testDate.day.toString(),
-      getSubTextForDay: (
-        testDate, {
-        event = const DateInfo(phase: Event.none),
-      }) {
-        return event.toString();
-      },
+      getSubTextForDay: (testDate, [event]) => '',
     );
   }
 
@@ -56,14 +51,11 @@ class Calendar extends StatelessWidget {
       isCurrentMonth: (testDate) =>
           ColignyCalendar.fromDateTime(testDate, state.metonic).month ==
           colignyDate.month,
-      getSubTextForDay: (
-        testDate, {
-        event = const DateInfo(phase: Event.none),
-      }) {
+      getSubTextForDay: (testDate, [event]) {
         final date = ColignyCalendar.fromDateTime(testDate, state.metonic);
         final inscriptions = date.inscription.join(" | ").trim();
 
-        return "${date.monthName} ${date.day}, ${date.year}: $inscriptions\n${event.toString(date: false)}"
+        return "${date.monthName} ${date.day}, ${date.year}: $inscriptions\n${event?.toString(date: false)}"
             .trim();
       },
     );

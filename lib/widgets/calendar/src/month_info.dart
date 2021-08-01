@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:calunedar/moon_phase/julian.dart';
+import 'package:calunedar/moon_phase/moon_phase.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:meeus/julian.dart';
-import 'package:meeus/meeus.dart';
 import 'package:intl/intl.dart';
 
 enum Event {
@@ -23,7 +23,7 @@ class DateInfo implements Comparable {
   final Event phase;
   final DateTime when;
 
-  const DateInfo({this.phase, this.when});
+  const DateInfo({required this.phase, required this.when});
 
   String toString({bool date = true, bool phase = true, bool time = true}) {
     var str = "";
@@ -88,7 +88,7 @@ class DateInfo implements Comparable {
 }
 
 class EventPinDates {
-  EventPinDates({@required this.start, @required this.end});
+  EventPinDates({required this.start, required this.end});
 
   final DateTime start;
   final DateTime end;
@@ -96,9 +96,9 @@ class EventPinDates {
 
 class MonthInfo {
   MonthInfo({
-    @required this.date,
-    @required this.generatePinDates,
-    @required this.isSameMonth,
+    required this.date,
+    required this.generatePinDates,
+    required this.isSameMonth,
   });
 
   final DateTime date;

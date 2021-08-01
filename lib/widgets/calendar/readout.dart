@@ -11,8 +11,8 @@ final watcherKey = GlobalKey();
 
 class Readout extends StatelessWidget {
   Readout({
-    @required this.state,
-    @required this.monthInfo,
+    required this.state,
+    required this.monthInfo,
   });
 
   final AppState state;

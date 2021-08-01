@@ -22,7 +22,7 @@ class SettingsDrawer extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildCalendar({@required BuildContext context}) {
+  List<Widget> _buildCalendar({required BuildContext context}) {
     final calendar = context.select<AppState, CalendarType>((s) => s.calendar);
     final metonic = context.select<AppState, bool>((s) => s.metonic);
 
@@ -32,8 +32,9 @@ class SettingsDrawer extends StatelessWidget {
         dense: true,
         title: DropdownButton<CalendarType>(
           value: calendar,
-          onChanged: (CalendarType newValue) {
-            Provider.of<AppState>(context, listen: false).calendar = newValue;
+          onChanged: (CalendarType? newValue) {
+            Provider.of<AppState>(context, listen: false).calendar =
+                newValue ?? CalendarType.GREGORIAN;
           },
           isDense: true,
           items: CalendarType.values

@@ -4,20 +4,22 @@ import 'package:flutter/material.dart';
 import 'month_info.dart';
 import 'week.dart';
 
+String _defaultSubText(DateTime dt, [DateInfo? event]) => '';
+
 class Month extends StatelessWidget {
   Month({
-    @required this.firstWeek,
-    @required this.monthInfo,
-    @required this.isCurrentMonth,
-    @required this.getTextForDay,
-    this.getSubTextForDay,
+    required this.firstWeek,
+    required this.monthInfo,
+    required this.isCurrentMonth,
+    required this.getTextForDay,
+    this.getSubTextForDay = _defaultSubText,
   });
 
   final DateTime firstWeek;
   final MonthInfo monthInfo;
   final bool Function(DateTime) isCurrentMonth;
   final String Function(DateTime) getTextForDay;
-  final String Function(DateTime, {DateInfo event}) getSubTextForDay;
+  final String Function(DateTime, [DateInfo? event]) getSubTextForDay;
 
   List<DateTime> _eachWeekOfMonth() {
     return List.generate(

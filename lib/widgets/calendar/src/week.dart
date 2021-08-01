@@ -6,16 +6,16 @@ import 'month_info.dart';
 
 class Week extends StatelessWidget {
   Week({
-    @required this.start,
-    @required this.isCurrentMonth,
-    @required this.monthInfo,
-    @required this.getTextForDay,
-    this.getSubTextForDay,
+    required this.start,
+    required this.isCurrentMonth,
+    required this.monthInfo,
+    required this.getTextForDay,
+    required this.getSubTextForDay,
   });
 
   final bool Function(DateTime) isCurrentMonth;
   final String Function(DateTime) getTextForDay;
-  final String Function(DateTime, {DateInfo event}) getSubTextForDay;
+  final String Function(DateTime, [DateInfo? event]) getSubTextForDay;
   final DateTime start;
   final MonthInfo monthInfo;
 

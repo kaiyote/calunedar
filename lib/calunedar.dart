@@ -21,7 +21,7 @@ class Calunedar extends StatelessWidget {
         child: FloatingActionButton(
           child: const Icon(Icons.brightness_2_outlined),
           onPressed: () => Scrollable.ensureVisible(
-            watcherKey.currentContext,
+            watcherKey.currentContext!,
             duration: const Duration(milliseconds: 250),
           ),
         ),

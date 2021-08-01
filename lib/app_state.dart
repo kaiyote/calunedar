@@ -18,10 +18,9 @@ class AppState with ChangeNotifier {
   DateTime _date;
   bool _showActionButton;
 
-  AppState([this._calendar = CalendarType.GREGORIAN, this._metonic = true]) {
-    _date = DateTime.now();
-    _showActionButton = false;
-  }
+  AppState([this._calendar = CalendarType.GREGORIAN, this._metonic = true])
+      : this._date = DateTime.now(),
+        this._showActionButton = false;
 
   CalendarType get calendar => _calendar;
 

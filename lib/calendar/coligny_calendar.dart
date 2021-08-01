@@ -4,7 +4,7 @@ import './coligny_calendar_inscriptions.dart';
 class ColignyMonth {
   final String _name;
   int days;
-  int index;
+  late int index;
 
   ColignyMonth(this._name, this.days) {
     if (days != 30 && days != 29)
@@ -20,9 +20,9 @@ class ColignyMonth {
 class ColignyYear {
   final int _year;
   final bool _metonic;
-  List<ColignyMonth> _months;
-  int _ident;
-  int _yearDays;
+  late List<ColignyMonth> _months;
+  late int _ident;
+  late int _yearDays;
 
   ColignyYear(this._year, [this._metonic = false]) {
     _months = <ColignyMonth>[
@@ -40,8 +40,8 @@ class ColignyYear {
     ];
 
     _ident = _metonic
-        ? _metonicMap[(_year - 4999) % 19]
-        : _saturnMap[(_year - 4998) % 5];
+        ? _metonicMap[(_year - 4999) % 19]!
+        : _saturnMap[(_year - 4998) % 5]!;
 
     final saturnCycleYear = (_year - 4998) % 30;
 
@@ -157,8 +157,8 @@ class ColignyCalendar {
   int _year;
   int _day;
   final bool _metonic;
-  ColignyYear _fullYear;
-  ColignyMonth _month;
+  late ColignyYear _fullYear;
+  late ColignyMonth _month;
 
   ColignyCalendar(
     this._year, [
@@ -280,7 +280,7 @@ class ColignyCalendar {
   int get monthLength => _month.days;
 
   List<String> get inscription =>
-      colignyInscriptions[monthName][_fullYear.ident - 1][day - 1];
+      colignyInscriptions[monthName]![_fullYear.ident - 1][day - 1];
 
   int _differenceInDays(ColignyCalendar target) {
     if (this.metonic != target.metonic) {

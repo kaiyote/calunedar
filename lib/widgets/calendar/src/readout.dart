@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'month_info.dart';
 
 class Readout extends StatelessWidget {
-  Readout({this.monthInfo, this.formatDate});
+  Readout({
+    required this.monthInfo,
+    required this.formatDate,
+  });
 
   final MonthInfo monthInfo;
   final String Function(DateTime) formatDate;
@@ -40,7 +43,7 @@ class Readout extends StatelessWidget {
     );
   }
 
-  TableRow _buildRow({DateInfo dateInfo}) {
+  TableRow _buildRow({required DateInfo dateInfo}) {
     return TableRow(
       children: [
         TableCell(
