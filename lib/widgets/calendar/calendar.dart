@@ -34,7 +34,7 @@ class Calendar extends StatelessWidget {
       firstWeek: firstWeek,
       isCurrentMonth: (testDate) => testDate.month == state.date.month,
       getTextForDay: (testDate) => testDate.day.toString(),
-      getSubTextForDay: (testDate, [event]) => '',
+      getSubTextForDay: (testDate, [event]) => event?.toString() ?? '',
     );
   }
 

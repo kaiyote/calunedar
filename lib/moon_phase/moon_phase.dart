@@ -108,7 +108,7 @@ num last(num year) {
 class _MoonPhase {
   late num k, T;
   late num E, M, mPrime, F, omega;
-  List<num> A = [14];
+  List<num> A = List.filled(14, 0);
 
   _MoonPhase({required this.k});
 
