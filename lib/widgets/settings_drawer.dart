@@ -1,7 +1,6 @@
-import 'package:calunedar/app_state.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:calunedar/state/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 class SettingsDrawer extends StatelessWidget {
@@ -23,8 +22,8 @@ class SettingsDrawer extends StatelessWidget {
   }
 
   List<Widget> _buildCalendar({required BuildContext context}) {
-    final calendar = context.select<AppState, CalendarType>((s) => s.calendar);
-    final metonic = context.select<AppState, bool>((s) => s.metonic);
+    final calendar = context.select<Settings, CalendarType>((s) => s.calendar);
+    final metonic = context.select<Settings, bool>((s) => s.metonic);
 
     final calendarList = <Widget>[
       ListTile(
@@ -33,7 +32,7 @@ class SettingsDrawer extends StatelessWidget {
         title: DropdownButton<CalendarType>(
           value: calendar,
           onChanged: (CalendarType? newValue) {
-            Provider.of<AppState>(context, listen: false).calendar =
+            Provider.of<Settings>(context, listen: false).calendar =
                 newValue ?? CalendarType.GREGORIAN;
           },
           isDense: true,
@@ -56,7 +55,7 @@ class SettingsDrawer extends StatelessWidget {
         leading: Text('Metonic: '),
         dense: true,
         onTap: () {
-          Provider.of<AppState>(context, listen: false).metonic = !metonic;
+          Provider.of<Settings>(context, listen: false).metonic = !metonic;
         },
       ));
     }

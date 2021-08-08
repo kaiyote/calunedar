@@ -53,7 +53,7 @@ class DateInfo implements Comparable {
   @override
   int compareTo(other) => when.compareTo(other.when);
 
-  Widget icon({size = 20.0}) {
+  Widget icon({double size = 20.0}) {
     IconData icon;
 
     switch (phase) {

@@ -338,8 +338,7 @@ class ColignyCalendar {
 
   static ColignyCalendar fromDateTime(DateTime dt, [bool metonic = false]) {
     ColignyCalendar output;
-    // push it to "tomorrow" if its after 6pm (ver rough "sunset")
-    int diffInDays = dt.getHours >= 18 ? 1 : 0;
+    int diffInDays = 0;
 
     if (metonic) {
       diffInDays += dt.differenceInDays(DateTime(1999, 5, 22));
