@@ -20,7 +20,8 @@ class Calendar extends StatelessWidget {
       isCurrentMonth: (testDate) =>
           dateFormatter.isSameMonth(state.date, testDate),
       getSubTextForDay: (date, [event]) =>
-          '${dateFormatter.dateSubText(date) ?? ''}\n${event?.toString(date: calendar == CalendarType.GREGORIAN)}',
+          '${dateFormatter.dateSubText(date) ?? ''}\n${event?.toString(date: calendar == CalendarType.GREGORIAN)}'
+              .trim(),
     );
   }
 }
