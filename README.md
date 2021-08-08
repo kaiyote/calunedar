@@ -4,16 +4,17 @@ It's a calendar. But with a Lunar bent. It tells you the day. Basically it.
 
 ## Features
 
-### The App Bar
+### Navigation
 ![App Bar](./assets/doc/appbar.png)
 
-From left to right the elements are:
-1. The Hamburger menu opens the Settings Drawer where you can
-switch which type of calendar you want to view
-2. The left arrow moves back a month
-3. The text displays the Currently Displayed Month and Year in the selected calendar
-4. The right arrow moves forward a month
-5. The "refresh" icon will return to the current month
+The App Bar shows the currently displayed Month & Year.
+You can click on the gear to open the settings drawer.
+
+![Bottom Navigation](./assets/doc/bottom_nav.png)
+
+The Bottom Navigation is how you maneuver through the months in the app.
+Hit Previous Month or Next Month to go to the previous or next month.
+Tapping Current Month will return you to "Today".
 
 ### The Settings Drawer
 ![Settings Drawer](./assets/doc/settings_drawer.png)

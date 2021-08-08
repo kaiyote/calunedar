@@ -1,7 +1,7 @@
 import 'package:calunedar/state/app_state.dart';
 import 'package:calunedar/state/date_formatter.dart';
 import 'package:calunedar/state/settings.dart';
-import 'package:calunedar/widgets/calendar/src/readout.dart' as S;
+import 'package:calunedar/widgets/calendar/src/readout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -21,7 +21,7 @@ class Readout extends StatelessWidget {
         Provider.of<AppState>(context, listen: false).showActionButton =
             (visibilityInfo.visibleFraction < 0.2);
       },
-      child: S.Readout(
+      child: ReadoutImpl(
         monthInfo: monthInfo,
         formatDate: dateFormatter.formatForReadout,
       ),

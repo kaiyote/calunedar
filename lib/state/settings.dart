@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:calunedar/state/date_formatter.dart';
-import 'package:calunedar/state/src/coligny_date_formatter.dart';
-import 'package:calunedar/state/src/gregorian_date_formatter.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import './date_formatter.dart';
+import './src/coligny_date_formatter.dart';
+import './src/gregorian_date_formatter.dart';
 
 const SETTINGS_KEY = "calunedar_settings";
 

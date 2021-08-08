@@ -1,4 +1,4 @@
-import 'package:calunedar/calendar/coligny_calendar.dart';
+import 'package:calunedar/calendar/coligny_date.dart';
 import 'package:calunedar/state/app_state.dart';
 import 'package:calunedar/state/date_formatter.dart';
 import 'package:calunedar/state/settings.dart';
@@ -81,7 +81,7 @@ class Calunedar extends StatelessWidget {
       case CalendarType.GREGORIAN:
         return date.addMonths(months);
       case CalendarType.COLIGNY:
-        var coligny = ColignyCalendar.fromDateTime(date, settings.metonic);
+        var coligny = ColignyDate.fromDateTime(date, settings.metonic);
         return date.addDays(coligny.monthLength * months.sign);
     }
   }

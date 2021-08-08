@@ -1,5 +1,5 @@
 import 'package:dart_date/dart_date.dart';
-import './coligny_calendar_inscriptions.dart';
+import 'coligny_inscriptions.dart';
 
 class ColignyMonth {
   final String _name;
@@ -153,14 +153,14 @@ class ColignyYear {
   };
 }
 
-class ColignyCalendar {
+class ColignyDate {
   int _year;
   int _day;
   final bool _metonic;
   late ColignyYear _fullYear;
   late ColignyMonth _month;
 
-  ColignyCalendar(
+  ColignyDate(
     this._year, [
     int month = 1,
     this._day = 1,
@@ -175,16 +175,16 @@ class ColignyCalendar {
       _month = _fullYear.months[month - 1];
   }
 
-  ColignyCalendar addDays(int days) {
+  ColignyDate addDays(int days) {
     var output = this.copy();
     output._day += days;
 
     while (output.day > output._month.days) {
       if (output._month.index == output._fullYear.months.length - 1) {
-        output = ColignyCalendar(output.year + 1, 1,
+        output = ColignyDate(output.year + 1, 1,
             output.day - output._month.days, output._metonic);
       } else {
-        output = ColignyCalendar(output.year, output.month + 1,
+        output = ColignyDate(output.year, output.month + 1,
             output.day - output._month.days, output._metonic);
       }
     }
@@ -193,10 +193,10 @@ class ColignyCalendar {
       if (output.month == 1) {
         var newMonthLength =
             ColignyYear(output.year - 1, output._metonic).months.length;
-        output = new ColignyCalendar(output.year - 1, newMonthLength - 1,
+        output = new ColignyDate(output.year - 1, newMonthLength - 1,
             output.day + output._month.days, output._metonic);
       } else {
-        output = new ColignyCalendar(output.year, output.month - 1,
+        output = new ColignyDate(output.year, output.month - 1,
             output.day + output._month.days, output._metonic);
       }
     }
@@ -204,20 +204,20 @@ class ColignyCalendar {
     return output;
   }
 
-  ColignyCalendar firstDayOfMonth() {
-    return ColignyCalendar(year, month, 1, metonic);
+  ColignyDate firstDayOfMonth() {
+    return ColignyDate(year, month, 1, metonic);
   }
 
-  ColignyCalendar lastDayOfMonth() {
-    return ColignyCalendar(year, month, _month.days, metonic);
+  ColignyDate lastDayOfMonth() {
+    return ColignyDate(year, month, _month.days, metonic);
   }
 
-  ColignyCalendar firstDayOfYear() {
-    return ColignyCalendar(year, 1, 1, metonic);
+  ColignyDate firstDayOfYear() {
+    return ColignyDate(year, 1, 1, metonic);
   }
 
-  ColignyCalendar lastDayOfYear() {
-    return ColignyCalendar(
+  ColignyDate lastDayOfYear() {
+    return ColignyDate(
       year,
       _fullYear.months.length,
       _fullYear.months.last.days,
@@ -225,7 +225,7 @@ class ColignyCalendar {
     );
   }
 
-  int compareTo(ColignyCalendar other) {
+  int compareTo(ColignyDate other) {
     if (_metonic != other._metonic)
       throw new ArgumentError("other must be same cycle as this");
 
@@ -236,12 +236,12 @@ class ColignyCalendar {
     return 0;
   }
 
-  ColignyCalendar copy() {
-    return ColignyCalendar(year, month, day, metonic);
+  ColignyDate copy() {
+    return ColignyDate(year, month, day, metonic);
   }
 
   bool operator ==(Object other) {
-    return other is ColignyCalendar &&
+    return other is ColignyDate &&
         year == other.year &&
         month == other.month &&
         day == other.day &&
@@ -282,7 +282,7 @@ class ColignyCalendar {
   List<String> get inscription =>
       colignyInscriptions[monthName]![_fullYear.ident - 1][day - 1];
 
-  int _differenceInDays(ColignyCalendar target) {
+  int _differenceInDays(ColignyDate target) {
     if (this.metonic != target.metonic) {
       throw ArgumentError("Cannot diff between different cycles");
     } else if (year == target.year) {
@@ -303,14 +303,14 @@ class ColignyCalendar {
 
   DateTime toDateTime() {
     DateTime gregorianStart;
-    ColignyCalendar colignyStart;
+    ColignyDate colignyStart;
 
     if (metonic) {
       gregorianStart = DateTime(1999, 5, 22);
-      colignyStart = ColignyCalendar(4999, 1, 1, true);
+      colignyStart = ColignyDate(4999, 1, 1, true);
     } else {
       gregorianStart = DateTime(1998, 5, 3);
-      colignyStart = ColignyCalendar(4998, 1, 1);
+      colignyStart = ColignyDate(4998, 1, 1);
     }
 
     var daysBetween = _differenceInDays(colignyStart);
@@ -336,22 +336,22 @@ class ColignyCalendar {
 
   bool get metonic => _metonic;
 
-  static ColignyCalendar fromDateTime(DateTime dt, [bool metonic = false]) {
-    ColignyCalendar output;
+  static ColignyDate fromDateTime(DateTime dt, [bool metonic = false]) {
+    ColignyDate output;
     int diffInDays = 0;
 
     if (metonic) {
       diffInDays += dt.differenceInDays(DateTime(1999, 5, 22));
-      output = ColignyCalendar(4999, 1, 1, true);
+      output = ColignyDate(4999, 1, 1, true);
     } else {
       diffInDays += dt.differenceInDays(DateTime(1998, 5, 3));
-      output = ColignyCalendar(4998, 1, 1);
+      output = ColignyDate(4998, 1, 1);
     }
 
     return output.addDays(diffInDays);
   }
 
-  static ColignyCalendar now([bool metonic = false]) {
-    return ColignyCalendar.fromDateTime(DateTime.now(), metonic);
+  static ColignyDate now([bool metonic = false]) {
+    return ColignyDate.fromDateTime(DateTime.now(), metonic);
   }
 }

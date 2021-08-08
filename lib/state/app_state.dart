@@ -1,7 +1,8 @@
-import 'package:calunedar/state/settings.dart';
 import 'package:calunedar/widgets/calendar/src/month_info.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import './settings.dart';
 
 class AppState with ChangeNotifier {
   DateTime _date;

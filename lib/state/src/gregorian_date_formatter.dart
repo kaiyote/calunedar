@@ -1,8 +1,9 @@
-import 'package:calunedar/state/date_formatter.dart';
 import 'package:calunedar/widgets/calendar/src/month_info.dart';
+import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:dart_date/dart_date.dart';
+
+import '../date_formatter.dart';
 
 class GregorianDateFormatter extends DateFormatter {
   final DateFormat _dateFormatter;

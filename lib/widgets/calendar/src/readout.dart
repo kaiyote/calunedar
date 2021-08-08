@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'month_info.dart';
 
-class Readout extends StatelessWidget {
-  Readout({
+class ReadoutImpl extends StatelessWidget {
+  ReadoutImpl({
     required this.monthInfo,
     required this.formatDate,
   });
