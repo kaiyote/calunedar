@@ -2,57 +2,48 @@
 // Copyright 2013 Sonia Keys
 // License: MIT
 
-/// Returns the integer floor of the fractional value (x / y).
+import './src/math.dart';
+
+/// CalendarGregorianToJD converts a Gregorian year, month, and day of month
+/// to Julian day.
 ///
-/// It uses integer math only, so is more efficient than using floating point
-/// intermediate values.  This function can be used in many places where INT()
-/// appears in AA.  As with built in integer division, it panics with y == 0.
-int _floorDiv(int x, y) {
-  var q = x ~/ y;
-  if ((x < 0) != (y < 0) && x % y != 0) {
-    q--;
+/// Negative years are valid, back to JD 0.  The result is not valid for
+/// dates before JD 0.
+num calendarGregorianToJD(int y, int m, num d) {
+  switch (m) {
+    case 1:
+    case 2:
+      y--;
+      m += 12;
   }
-  return q;
+  final a = floorDiv(y, 100);
+  final b = 2 - a + floorDiv(a, 4);
+  // (7.1) p. 61
+  return (floorDiv(36525 * (y + 4716), 100)) +
+      (floorDiv(306 * (m + 1), 10) + b) +
+      d -
+      1524.5;
 }
 
-/// Modf returns integer and fractional floating-point numbers
-/// that sum to f. Both values have the same sign as f.
-_ModfResult _modf(num v) {
-  final a = v.truncate();
-  final b = v - a;
-  return _ModfResult(a, b);
-}
-
-/// Integer and fractional floating-point numbers that sum to some value.
-class _ModfResult {
-  /// Integer part
-  final int intPart;
-
-  /// Fractional part
-  final num fracPart;
-
-  const _ModfResult(this.intPart, this.fracPart);
-}
-
-class _Calendar {
-  final int year;
-  final int month;
-  final num day;
-
-  const _Calendar(this.year, this.month, this.day);
-}
-
-_Calendar _jdToCalendarGregorian(num jd) {
-  final modfResult = _modf(jd + .5);
-  final z = modfResult.intPart;
-  final alpha = _floorDiv(z * 100 - 186721625, 3652425);
-  final a = z + 1 + alpha - _floorDiv(alpha, 4);
+/// Returns the Gregorian calendar date for the given jd.
+///
+/// Note that it returns a Gregorian date even for dates before the start of
+/// the Gregorian calendar.
+Calendar jdToCalendar(num jd) {
+  final modfResult = modf(jd + .5);
+  final int z = modfResult.intPart;
+  int a = z;
+  int alpha;
+  if (z >= 2299151) {
+    alpha = floorDiv(z * 100 - 186721625, 3652425);
+    a = z + 1 + alpha - floorDiv(alpha, 4);
+  }
   final b = a + 1524;
-  final c = _floorDiv(b * 100 - 12210, 36525);
-  final d = _floorDiv(36525 * c, 100);
-  final e = _floorDiv(((b - d) * 1e4).truncate(), 306001);
+  final c = floorDiv(b * 100 - 12210, 36525);
+  final d = floorDiv(36525 * c, 100);
+  final e = floorDiv(((b - d) * 1e4).truncate(), 306001);
   // compute return values
-  final day = ((b - d) - _floorDiv(306001 * e, 1e4)) + modfResult.fracPart;
+  final day = ((b - d) - floorDiv(306001 * e, 1e4)) + modfResult.fracPart;
   var month, year;
   switch (e) {
     case 14:
@@ -70,7 +61,46 @@ _Calendar _jdToCalendarGregorian(num jd) {
     default:
       year = c - 4716;
   }
-  return _Calendar(year, month, day);
+  return Calendar(year, month, day);
+}
+
+class Calendar {
+  final int year;
+  final int month;
+  final num day;
+
+  const Calendar(this.year, this.month, this.day);
+}
+
+Calendar _jdToCalendarGregorian(num jd) {
+  final modfResult = modf(jd + .5);
+  final z = modfResult.intPart;
+  final alpha = floorDiv(z * 100 - 186721625, 3652425);
+  final a = z + 1 + alpha - floorDiv(alpha, 4);
+  final b = a + 1524;
+  final c = floorDiv(b * 100 - 12210, 36525);
+  final d = floorDiv(36525 * c, 100);
+  final e = floorDiv(((b - d) * 1e4).truncate(), 306001);
+  // compute return values
+  final day = ((b - d) - floorDiv(306001 * e, 1e4)) + modfResult.fracPart;
+  var month, year;
+  switch (e) {
+    case 14:
+    case 15:
+      month = e - 13;
+      break;
+    default:
+      month = e - 1;
+  }
+  switch (month) {
+    case 1:
+    case 2:
+      year = c - 4715;
+      break;
+    default:
+      year = c - 4716;
+  }
+  return Calendar(year, month, day);
 }
 
 /// Takes a JD and returns a Dart DateTime value.
@@ -80,4 +110,19 @@ DateTime jdToDateTime(num jd) {
   final dt = DateTime.utc(cal.year, cal.month, 0, 0, 0, 0, 0);
   return dt.add(
       Duration(seconds: (cal.day * 24 * Duration.secondsPerHour).truncate()));
+}
+
+/// Takes a Dart core.DateTime and returns a JD as a num.
+///
+/// Any time zone offset in the DateTime is ignored and the time is
+/// treated as UTC.
+num dateTimeToJD(DateTime dt) {
+  return calendarGregorianToJD(
+      dt.year,
+      dt.month,
+      dt.day +
+          dt.hour / Duration.hoursPerDay +
+          dt.minute / Duration.minutesPerDay +
+          dt.second / Duration.secondsPerDay +
+          dt.millisecond / Duration.millisecondsPerDay);
 }

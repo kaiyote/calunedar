@@ -19,23 +19,21 @@ class Calunedar extends StatelessWidget {
         context.select<AppState, bool>((s) => s.showActionButton);
 
     return Scaffold(
-      endDrawer: SettingsDrawer(),
+      drawer: SettingsDrawer(),
       appBar: AppBar(
         title: Text(formatter.formatForHeader(date)),
         centerTitle: true,
-        actions: [
-          Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-                tooltip: 'Open Settings Menu',
-              );
-            },
-          ),
-        ],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: 'Open Settings Menu',
+            );
+          },
+        ),
       ),
       body: TallBody(),
       floatingActionButton: Offstage(

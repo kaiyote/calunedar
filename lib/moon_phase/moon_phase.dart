@@ -6,26 +6,14 @@
 
 import 'dart:math' as math;
 
-const _ck = 1 / 1236.85;
+import './src/math.dart';
 
-/// Evaluates a polynomal with coefficients c at x.  The constant
-/// term is [c.first].  The function panics with an empty coefficient list.
-num _horner(num x, List<num> c) {
-  var i = c.length - 1;
-  var y = c[i];
-  while (i > 0) {
-    i--;
-    y = y * x + c[i]; // sorry, no fused multiply-add in Go
-  }
-  return y;
-}
+const _ck = 1 / 1236.85;
 
 /// (49.1) p. 349
 num _mean(num T) {
-  return _horner(
-    T,
-    [2451550.09766, 29.530588861 / _ck, .00015437, -.00000015, .00000000073],
-  );
+  return horner(T,
+      [2451550.09766, 29.530588861 / _ck, .00015437, -.00000015, .00000000073]);
 }
 
 /// Returns k at specified quarter q nearest year y.
@@ -106,76 +94,77 @@ num last(num year) {
 }
 
 class _MoonPhase {
-  late num k, T;
-  late num E, M, mPrime, F, omega;
+  final num k;
+  late num T;
+  late num E, M, MPrime, F, omega;
   List<num> A = List.filled(14, 0);
 
   _MoonPhase({required this.k});
 
   /// new or full corrections
   num _nfc(List<num> c) {
-    return c[0] * math.sin(mPrime) +
+    return c[0] * math.sin(MPrime) +
         c[1] * math.sin(M) * E +
-        c[2] * math.sin(2 * mPrime) +
+        c[2] * math.sin(2 * MPrime) +
         c[3] * math.sin(2 * F) +
-        c[4] * math.sin(mPrime - M) * E +
-        c[5] * math.sin(mPrime + M) * E +
+        c[4] * math.sin(MPrime - M) * E +
+        c[5] * math.sin(MPrime + M) * E +
         c[6] * math.sin(2 * M) * E * E +
-        c[7] * math.sin(mPrime - 2 * F) +
-        c[8] * math.sin(mPrime + 2 * F) +
-        c[9] * math.sin(2 * mPrime + M) * E +
-        c[10] * math.sin(3 * mPrime) +
+        c[7] * math.sin(MPrime - 2 * F) +
+        c[8] * math.sin(MPrime + 2 * F) +
+        c[9] * math.sin(2 * MPrime + M) * E +
+        c[10] * math.sin(3 * MPrime) +
         c[11] * math.sin(M + 2 * F) * E +
         c[12] * math.sin(M - 2 * F) * E +
-        c[13] * math.sin(2 * mPrime - M) * E +
+        c[13] * math.sin(2 * MPrime - M) * E +
         c[14] * math.sin(omega) +
-        c[15] * math.sin(mPrime + 2 * M) +
-        c[16] * math.sin(2 * (mPrime - F)) +
+        c[15] * math.sin(MPrime + 2 * M) +
+        c[16] * math.sin(2 * (MPrime - F)) +
         c[17] * math.sin(3 * M) +
-        c[18] * math.sin(mPrime + M - 2 * F) +
-        c[19] * math.sin(2 * (mPrime + F)) +
-        c[20] * math.sin(mPrime + M + 2 * F) +
-        c[21] * math.sin(mPrime - M + 2 * F) +
-        c[22] * math.sin(mPrime - M - 2 * F) +
-        c[23] * math.sin(3 * mPrime + M) +
-        c[24] * math.sin(4 * mPrime);
+        c[18] * math.sin(MPrime + M - 2 * F) +
+        c[19] * math.sin(2 * (MPrime + F)) +
+        c[20] * math.sin(MPrime + M + 2 * F) +
+        c[21] * math.sin(MPrime - M + 2 * F) +
+        c[22] * math.sin(MPrime - M - 2 * F) +
+        c[23] * math.sin(3 * MPrime + M) +
+        c[24] * math.sin(4 * MPrime);
   }
 
   /// first or last corrections
   num _flc() {
-    return -.62801 * math.sin(mPrime) +
+    return -.62801 * math.sin(MPrime) +
         .17172 * math.sin(M) * E +
-        -.01183 * math.sin(mPrime + M) * E +
-        .00862 * math.sin(2 * mPrime) +
+        -.01183 * math.sin(MPrime + M) * E +
+        .00862 * math.sin(2 * MPrime) +
         .00804 * math.sin(2 * F) +
-        .00454 * math.sin(mPrime - M) * E +
+        .00454 * math.sin(MPrime - M) * E +
         .00204 * math.sin(2 * M) * E * E +
-        -.0018 * math.sin(mPrime - 2 * F) +
-        -.0007 * math.sin(mPrime + 2 * F) +
-        -.0004 * math.sin(3 * mPrime) +
-        -.00034 * math.sin(2 * mPrime - M) +
+        -.0018 * math.sin(MPrime - 2 * F) +
+        -.0007 * math.sin(MPrime + 2 * F) +
+        -.0004 * math.sin(3 * MPrime) +
+        -.00034 * math.sin(2 * MPrime - M) +
         .00032 * math.sin(M + 2 * F) * E +
         .00032 * math.sin(M - 2 * F) * E +
-        -.00028 * math.sin(mPrime + 2 * M) * E * E +
-        .00027 * math.sin(2 * mPrime + M) * E +
+        -.00028 * math.sin(MPrime + 2 * M) * E * E +
+        .00027 * math.sin(2 * MPrime + M) * E +
         -.00017 * math.sin(omega) +
-        -.00005 * math.sin(mPrime - M - 2 * F) +
-        .00004 * math.sin(2 * mPrime + 2 * F) +
-        -.00004 * math.sin(mPrime + M + 2 * F) +
-        .00004 * math.sin(mPrime - 2 * M) +
-        .00003 * math.sin(mPrime + M - 2 * F) +
+        -.00005 * math.sin(MPrime - M - 2 * F) +
+        .00004 * math.sin(2 * MPrime + 2 * F) +
+        -.00004 * math.sin(MPrime + M + 2 * F) +
+        .00004 * math.sin(MPrime - 2 * M) +
+        .00003 * math.sin(MPrime + M - 2 * F) +
         .00003 * math.sin(3 * M) +
-        .00002 * math.sin(2 * mPrime - 2 * F) +
-        .00002 * math.sin(mPrime - M + 2 * F) +
-        -.00002 * math.sin(3 * mPrime + M);
+        .00002 * math.sin(2 * MPrime - 2 * F) +
+        .00002 * math.sin(MPrime - M + 2 * F) +
+        -.00002 * math.sin(3 * MPrime + M);
   }
 
   num _w() {
     return .00306 -
         .00038 * E * math.cos(M) +
-        .00026 * math.cos(mPrime) -
+        .00026 * math.cos(MPrime) -
         .00002 *
-            (math.cos(mPrime - M) - math.cos(mPrime + M) - math.cos(2 * F));
+            (math.cos(MPrime - M) - math.cos(MPrime + M) - math.cos(2 * F));
   }
 
   /// additional corrections
@@ -212,24 +201,24 @@ _MoonPhase _newMp(num y, num q) {
   m.T = m.k * _ck;
 
   /// (49.3)  p. 350
-  m.E = _horner(m.T, [1, -.002516, -.0000074]);
-  m.M = _horner(m.T,
+  m.E = horner(m.T, [1, -.002516, -.0000074]);
+  m.M = horner(m.T,
       [2.5534 * _p, 29.1053567 * _p / _ck, -.0000014 * _p, -.00000011 * _p]);
-  m.mPrime = _horner(m.T, [
+  m.MPrime = horner(m.T, [
     201.5643 * _p,
     385.81693528 * _p / _ck,
     .0107582 * _p,
     .00001238 * _p,
     -.000000058 * _p
   ]);
-  m.F = _horner(m.T, [
+  m.F = horner(m.T, [
     160.7108 * _p,
     390.67050284 * _p / _ck,
     -.0016118 * _p,
     -.00000227 * _p,
     .000000011 * _p
   ]);
-  m.omega = _horner(m.T,
+  m.omega = horner(m.T,
       [124.7746 * _p, -1.56375588 * _p / _ck, .0020672 * _p, .00000215 * _p]);
   m.A[0] = 299.7 * _p + .107408 * _p * m.k - .009173 * m.T * m.T;
   m.A[1] = 251.88 * _p + .016321 * _p * m.k;
