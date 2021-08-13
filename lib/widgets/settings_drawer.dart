@@ -1,4 +1,3 @@
-import 'package:calunedar/state/app_state.dart';
 import 'package:calunedar/state/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -10,8 +9,6 @@ const _sourceUrl = "https://github.com/kaiyote/calunedar";
 class SettingsDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final license = context.select<AppState, String>((s) => s.license);
-
     return Drawer(
       child: LayoutBuilder(builder: (context, constraints) {
         return SingleChildScrollView(
@@ -40,23 +37,11 @@ class SettingsDrawer extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: AboutListTile(
                           applicationName: 'Calunedar',
-                          applicationLegalese:
-                              'Copyright (c) 2021 Tim Huddle\n\n' + license,
+                          applicationLegalese: 'Copyright (c) 2021 Tim Huddle',
                           aboutBoxChildren: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                TextButton(
-                                  child: Text('Source'),
-                                  onPressed: _launchUrl,
-                                ),
-                                TextButton(
-                                  child: Text('License Text'),
-                                  onPressed: () => _launchUrl(
-                                    '$_sourceUrl/blob/main/LICENSE',
-                                  ),
-                                ),
-                              ],
+                            TextButton(
+                              child: Text('Source'),
+                              onPressed: _launchUrl,
                             ),
                           ],
                         ),
@@ -72,8 +57,9 @@ class SettingsDrawer extends StatelessWidget {
     );
   }
 
-  void _launchUrl([String url = _sourceUrl]) async =>
-      await canLaunch(url) ? launch(url) : throw 'Could not launch $url';
+  void _launchUrl() async => await canLaunch(_sourceUrl)
+      ? launch(_sourceUrl)
+      : throw 'Could not launch $_sourceUrl';
 }
 
 class _SettingsDisplay extends StatelessWidget {

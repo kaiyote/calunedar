@@ -9,9 +9,8 @@ class AppState with ChangeNotifier {
   bool _showActionButton;
   CalendarType? _calendar;
   MonthInfo? _monthInfo;
-  final String license;
 
-  AppState(this.license)
+  AppState()
       : _date = DateTime.now(),
         _showActionButton = false;
 
