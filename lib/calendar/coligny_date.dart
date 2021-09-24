@@ -5,7 +5,7 @@ import 'src/coligny_month.dart';
 import 'src/coligny_year.dart';
 
 class ColignyDate {
-  int _year;
+  final int _year;
   int _day;
   final bool _metonic;
   late ColignyYear _fullYear;
@@ -17,17 +17,18 @@ class ColignyDate {
     this._day = 1,
     this._metonic = false,
   ]) {
-    if (year < 0) throw new RangeError('Year must be positive');
+    if (year < 0) throw RangeError('Year must be positive');
 
     _fullYear = ColignyYear(_year, _metonic);
-    if (month < 0 || month > _fullYear.months.length)
-      throw new RangeError("Invalid Month");
-    else
+    if (month < 0 || month > _fullYear.months.length) {
+      throw RangeError("Invalid Month");
+    } else {
       _month = _fullYear.months[month - 1];
+    }
   }
 
   ColignyDate addDays(int days) {
-    var output = this.copy();
+    var output = copy();
     output._day += days;
 
     while (output.day > output._month.days) {
@@ -44,10 +45,10 @@ class ColignyDate {
       if (output.month == 1) {
         var newMonthLength =
             ColignyYear(output.year - 1, output._metonic).months.length;
-        output = new ColignyDate(output.year - 1, newMonthLength - 1,
+        output = ColignyDate(output.year - 1, newMonthLength - 1,
             output.day + output._month.days, output._metonic);
       } else {
-        output = new ColignyDate(output.year, output.month - 1,
+        output = ColignyDate(output.year, output.month - 1,
             output.day + output._month.days, output._metonic);
       }
     }
@@ -77,8 +78,9 @@ class ColignyDate {
   }
 
   int compareTo(ColignyDate other) {
-    if (_metonic != other._metonic)
-      throw new ArgumentError("other must be same cycle as this");
+    if (_metonic != other._metonic) {
+      throw ArgumentError("other must be same cycle as this");
+    }
 
     if (this == other) return 0;
     if (year != other.year) return year < other.year ? -1 : 1;
@@ -91,6 +93,7 @@ class ColignyDate {
     return ColignyDate(year, month, day, metonic);
   }
 
+  @override
   bool operator ==(Object other) {
     return other is ColignyDate &&
         year == other.year &&
@@ -99,6 +102,7 @@ class ColignyDate {
         metonic == other.metonic;
   }
 
+  @override
   int get hashCode {
     var result = 17;
     result = 37 * result + year.hashCode;
@@ -108,6 +112,7 @@ class ColignyDate {
     return result;
   }
 
+  @override
   String toString() {
     return toIS08601String() + " metonic: $_metonic";
   }
@@ -134,14 +139,14 @@ class ColignyDate {
       colignyInscriptions[monthName]![_fullYear.ident - 1][day - 1];
 
   int _differenceInDays(ColignyDate target) {
-    if (this.metonic != target.metonic) {
+    if (metonic != target.metonic) {
       throw ArgumentError("Cannot diff between different cycles");
     } else if (year == target.year) {
       return (dayOfYear - target.dayOfYear).abs();
     } else if (target.compareTo(this) < 0) {
       return target._differenceInDays(this);
     } else {
-      int count = this.yearLength - this.dayOfYear + target.dayOfYear;
+      int count = yearLength - dayOfYear + target.dayOfYear;
 
       for (int i = year + 1; i < target.year; i++) {
         ColignyYear current = ColignyYear(i, metonic);
@@ -166,10 +171,11 @@ class ColignyDate {
 
     var daysBetween = _differenceInDays(colignyStart);
 
-    if (this.compareTo(colignyStart) < 0)
+    if (compareTo(colignyStart) < 0) {
       return gregorianStart.addDays(-daysBetween, true);
-    else
+    } else {
       return gregorianStart.addDays(daysBetween, true);
+    }
   }
 
   String toIS08601String() {

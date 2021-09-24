@@ -19,7 +19,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider<Settings>(
           create: (_) {
-            final settingsJson = prefs.getString(SETTINGS_KEY);
+            final settingsJson = prefs.getString(settingsKey);
             return settingsJson != null
                 ? Settings.fromJson(jsonDecode(settingsJson))
                 : Settings();
@@ -39,7 +39,7 @@ class _Root extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Calunedar',
-      home: Calunedar(),
+      home: const Calunedar(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData.from(
         colorScheme: ColorScheme.fromSwatch(

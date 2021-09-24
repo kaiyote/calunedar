@@ -83,7 +83,7 @@ class ColignyYear {
   int get daysInYear => _yearDays;
   int get ident => _ident;
 
-  static Map<int, int> _metonicMap = {
+  static const Map<int, int> _metonicMap = {
     -18: 3,
     -17: 4,
     -16: 5,
@@ -123,7 +123,7 @@ class ColignyYear {
     18: 5
   };
 
-  static Map<int, int> _saturnMap = {
+  static const Map<int, int> _saturnMap = {
     -4: 2,
     -3: 3,
     -2: 4,

@@ -44,7 +44,7 @@ Calendar jdToCalendar(num jd) {
   final e = floorDiv(((b - d) * 1e4).truncate(), 306001);
   // compute return values
   final day = ((b - d) - floorDiv(306001 * e, 1e4)) + modfResult.fracPart;
-  var month, year;
+  int month, year;
   switch (e) {
     case 14:
     case 15:
@@ -83,7 +83,7 @@ Calendar _jdToCalendarGregorian(num jd) {
   final e = floorDiv(((b - d) * 1e4).truncate(), 306001);
   // compute return values
   final day = ((b - d) - floorDiv(306001 * e, 1e4)) + modfResult.fracPart;
-  var month, year;
+  int month, year;
   switch (e) {
     case 14:
     case 15:

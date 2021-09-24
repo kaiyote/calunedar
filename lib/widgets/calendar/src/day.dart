@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'month_info.dart';
 
 class Day extends StatelessWidget {
-  Day({
+  const Day({
+    Key? key,
     required this.date,
     required this.isCurrentMonth,
     required this.event,
     required this.getTextForDay,
     required this.getSubTextForDay,
-  });
+  }) : super(key: key);
 
   final DateTime date;
   final bool isCurrentMonth;
@@ -35,7 +36,7 @@ class Day extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 behavior: SnackBarBehavior.floating,
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
               );
               final messenger = ScaffoldMessenger.of(context);
 
@@ -44,7 +45,7 @@ class Day extends StatelessWidget {
             }
           },
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
             alignment: Alignment.center,
             child: _Day(
               date: date,
@@ -54,7 +55,7 @@ class Day extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               border: Border.all(
-                color: isToday ? theme.accentColor : Colors.black,
+                color: isToday ? theme.colorScheme.secondary : Colors.black,
                 width: isToday ? 3 : 1,
               ),
               color: !isCurrentMonth
@@ -69,12 +70,13 @@ class Day extends StatelessWidget {
 }
 
 class _Day extends StatelessWidget {
-  _Day({
+  const _Day({
+    Key? key,
     required this.date,
     required this.isCurrentMonth,
     required this.event,
     required this.getTextForDay,
-  });
+  }) : super(key: key);
 
   final DateTime date;
   final bool isCurrentMonth;

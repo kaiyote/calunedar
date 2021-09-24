@@ -11,7 +11,7 @@ class GregorianDateFormatter extends DateFormatter {
   GregorianDateFormatter(BuildContext context)
       : _dateFormatter = MediaQuery.of(context).alwaysUse24HourFormat
             ? DateFormat.MMMMd().addPattern("'at'").add_Hm()
-            : DateFormat.MMMMd().addPattern("'at;").add_jm();
+            : DateFormat.MMMMd().addPattern("'at'").add_jm();
 
   @override
   String? dateSubText(DateTime date) {

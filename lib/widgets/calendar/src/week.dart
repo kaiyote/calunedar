@@ -5,13 +5,14 @@ import 'day.dart';
 import 'month_info.dart';
 
 class Week extends StatelessWidget {
-  Week({
+  const Week({
+    Key? key,
     required this.start,
     required this.isCurrentMonth,
     required this.monthInfo,
     required this.getTextForDay,
     required this.getSubTextForDay,
-  });
+  }) : super(key: key);
 
   final bool Function(DateTime) isCurrentMonth;
   final String Function(DateTime) getTextForDay;

@@ -96,75 +96,75 @@ num last(num year) {
 class _MoonPhase {
   final num k;
   late num T;
-  late num E, M, MPrime, F, omega;
+  late num E, M, mPrime, F, omega;
   List<num> A = List.filled(14, 0);
 
   _MoonPhase({required this.k});
 
   /// new or full corrections
   num _nfc(List<num> c) {
-    return c[0] * math.sin(MPrime) +
+    return c[0] * math.sin(mPrime) +
         c[1] * math.sin(M) * E +
-        c[2] * math.sin(2 * MPrime) +
+        c[2] * math.sin(2 * mPrime) +
         c[3] * math.sin(2 * F) +
-        c[4] * math.sin(MPrime - M) * E +
-        c[5] * math.sin(MPrime + M) * E +
+        c[4] * math.sin(mPrime - M) * E +
+        c[5] * math.sin(mPrime + M) * E +
         c[6] * math.sin(2 * M) * E * E +
-        c[7] * math.sin(MPrime - 2 * F) +
-        c[8] * math.sin(MPrime + 2 * F) +
-        c[9] * math.sin(2 * MPrime + M) * E +
-        c[10] * math.sin(3 * MPrime) +
+        c[7] * math.sin(mPrime - 2 * F) +
+        c[8] * math.sin(mPrime + 2 * F) +
+        c[9] * math.sin(2 * mPrime + M) * E +
+        c[10] * math.sin(3 * mPrime) +
         c[11] * math.sin(M + 2 * F) * E +
         c[12] * math.sin(M - 2 * F) * E +
-        c[13] * math.sin(2 * MPrime - M) * E +
+        c[13] * math.sin(2 * mPrime - M) * E +
         c[14] * math.sin(omega) +
-        c[15] * math.sin(MPrime + 2 * M) +
-        c[16] * math.sin(2 * (MPrime - F)) +
+        c[15] * math.sin(mPrime + 2 * M) +
+        c[16] * math.sin(2 * (mPrime - F)) +
         c[17] * math.sin(3 * M) +
-        c[18] * math.sin(MPrime + M - 2 * F) +
-        c[19] * math.sin(2 * (MPrime + F)) +
-        c[20] * math.sin(MPrime + M + 2 * F) +
-        c[21] * math.sin(MPrime - M + 2 * F) +
-        c[22] * math.sin(MPrime - M - 2 * F) +
-        c[23] * math.sin(3 * MPrime + M) +
-        c[24] * math.sin(4 * MPrime);
+        c[18] * math.sin(mPrime + M - 2 * F) +
+        c[19] * math.sin(2 * (mPrime + F)) +
+        c[20] * math.sin(mPrime + M + 2 * F) +
+        c[21] * math.sin(mPrime - M + 2 * F) +
+        c[22] * math.sin(mPrime - M - 2 * F) +
+        c[23] * math.sin(3 * mPrime + M) +
+        c[24] * math.sin(4 * mPrime);
   }
 
   /// first or last corrections
   num _flc() {
-    return -.62801 * math.sin(MPrime) +
+    return -.62801 * math.sin(mPrime) +
         .17172 * math.sin(M) * E +
-        -.01183 * math.sin(MPrime + M) * E +
-        .00862 * math.sin(2 * MPrime) +
+        -.01183 * math.sin(mPrime + M) * E +
+        .00862 * math.sin(2 * mPrime) +
         .00804 * math.sin(2 * F) +
-        .00454 * math.sin(MPrime - M) * E +
+        .00454 * math.sin(mPrime - M) * E +
         .00204 * math.sin(2 * M) * E * E +
-        -.0018 * math.sin(MPrime - 2 * F) +
-        -.0007 * math.sin(MPrime + 2 * F) +
-        -.0004 * math.sin(3 * MPrime) +
-        -.00034 * math.sin(2 * MPrime - M) +
+        -.0018 * math.sin(mPrime - 2 * F) +
+        -.0007 * math.sin(mPrime + 2 * F) +
+        -.0004 * math.sin(3 * mPrime) +
+        -.00034 * math.sin(2 * mPrime - M) +
         .00032 * math.sin(M + 2 * F) * E +
         .00032 * math.sin(M - 2 * F) * E +
-        -.00028 * math.sin(MPrime + 2 * M) * E * E +
-        .00027 * math.sin(2 * MPrime + M) * E +
+        -.00028 * math.sin(mPrime + 2 * M) * E * E +
+        .00027 * math.sin(2 * mPrime + M) * E +
         -.00017 * math.sin(omega) +
-        -.00005 * math.sin(MPrime - M - 2 * F) +
-        .00004 * math.sin(2 * MPrime + 2 * F) +
-        -.00004 * math.sin(MPrime + M + 2 * F) +
-        .00004 * math.sin(MPrime - 2 * M) +
-        .00003 * math.sin(MPrime + M - 2 * F) +
+        -.00005 * math.sin(mPrime - M - 2 * F) +
+        .00004 * math.sin(2 * mPrime + 2 * F) +
+        -.00004 * math.sin(mPrime + M + 2 * F) +
+        .00004 * math.sin(mPrime - 2 * M) +
+        .00003 * math.sin(mPrime + M - 2 * F) +
         .00003 * math.sin(3 * M) +
-        .00002 * math.sin(2 * MPrime - 2 * F) +
-        .00002 * math.sin(MPrime - M + 2 * F) +
-        -.00002 * math.sin(3 * MPrime + M);
+        .00002 * math.sin(2 * mPrime - 2 * F) +
+        .00002 * math.sin(mPrime - M + 2 * F) +
+        -.00002 * math.sin(3 * mPrime + M);
   }
 
   num _w() {
     return .00306 -
         .00038 * E * math.cos(M) +
-        .00026 * math.cos(MPrime) -
+        .00026 * math.cos(mPrime) -
         .00002 *
-            (math.cos(MPrime - M) - math.cos(MPrime + M) - math.cos(2 * F));
+            (math.cos(mPrime - M) - math.cos(mPrime + M) - math.cos(2 * F));
   }
 
   /// additional corrections
@@ -204,7 +204,7 @@ _MoonPhase _newMp(num y, num q) {
   m.E = horner(m.T, [1, -.002516, -.0000074]);
   m.M = horner(m.T,
       [2.5534 * _p, 29.1053567 * _p / _ck, -.0000014 * _p, -.00000011 * _p]);
-  m.MPrime = horner(m.T, [
+  m.mPrime = horner(m.T, [
     201.5643 * _p,
     385.81693528 * _p / _ck,
     .0107582 * _p,

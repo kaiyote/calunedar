@@ -4,29 +4,28 @@ import 'package:flutter/material.dart';
 import 'month_info.dart';
 
 class ReadoutImpl extends StatelessWidget {
-  ReadoutImpl({
+  const ReadoutImpl({
+    Key? key,
     required this.monthInfo,
     required this.formatDate,
-  });
+  }) : super(key: key);
 
   final MonthInfo monthInfo;
   final String Function(DateTime) formatDate;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 10.0),
-            child: Text(
-              'Celestial Events',
-              style: TextStyle(fontSize: 24.0),
-            ),
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 10.0),
+          child: const Text(
+            'Celestial Events',
+            style: TextStyle(fontSize: 24.0),
           ),
-          _buildInfo()
-        ],
-      ),
+        ),
+        _buildInfo()
+      ],
     );
   }
 
@@ -48,19 +47,19 @@ class ReadoutImpl extends StatelessWidget {
       children: [
         TableCell(
           child: Container(
-            margin: EdgeInsets.symmetric(vertical: 5.0),
+            margin: const EdgeInsets.symmetric(vertical: 5.0),
             child: Column(
               children: [
                 Text(
                   EnumToString.convertToString(dateInfo.phase, camelCase: true),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Container(
                   child: dateInfo.icon(),
-                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                  margin: const EdgeInsets.symmetric(vertical: 5.0),
                 ),
               ],
             ),
@@ -68,10 +67,10 @@ class ReadoutImpl extends StatelessWidget {
         ),
         TableCell(
           child: Container(
-            margin: EdgeInsets.symmetric(vertical: 5.0),
+            margin: const EdgeInsets.symmetric(vertical: 5.0),
             child: Text(
               formatDate(dateInfo.when.toLocal()),
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
               textAlign: TextAlign.center,
             ),
           ),

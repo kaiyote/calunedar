@@ -25,6 +25,7 @@ class DateInfo implements Comparable {
 
   const DateInfo({required this.phase, required this.when});
 
+  @override
   String toString({bool date = true, bool phase = true, bool time = true}) {
     var str = "";
     if (this.phase == Event.none) return str;
@@ -42,13 +43,14 @@ class DateInfo implements Comparable {
     return str.trim();
   }
 
+  @override
   bool operator ==(other) {
     if (other is! DateInfo) return false;
-    return this.phase == other.phase && this.when == other.when;
+    return phase == other.phase && when == other.when;
   }
 
   @override
-  int get hashCode => this.phase.hashCode + this.when.hashCode;
+  int get hashCode => phase.hashCode + when.hashCode;
 
   @override
   int compareTo(other) => when.compareTo(other.when);
@@ -104,7 +106,7 @@ class MonthInfo {
   final DateTime date;
   final EventPinDates Function(DateTime date) generatePinDates;
   final bool Function(DateTime currentDate, DateTime other) isSameMonth;
-  Set<DateInfo> _lunarEvents = Set();
+  Set<DateInfo> _lunarEvents = {};
 
   Set<DateInfo> get lunarEvents {
     if (_lunarEvents.isEmpty) {
@@ -119,7 +121,7 @@ class MonthInfo {
     var midDate = pinDates.start
         .addDays(pinDates.end.differenceInDays(pinDates.start) ~/ 2);
 
-    var dates = Set<DateInfo>();
+    var dates = <DateInfo>{};
     for (var date in [pinDates.start, pinDates.end, midDate]) {
       var daysBetween = date.differenceInDays(date.startOfYear);
       var yearFraction = date.year + (daysBetween / 356.25);

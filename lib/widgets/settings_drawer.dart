@@ -7,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 const _sourceUrl = "https://github.com/kaiyote/calunedar";
 
 class SettingsDrawer extends StatelessWidget {
+  const SettingsDrawer({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,7 +23,7 @@ class SettingsDrawer extends StatelessWidget {
               child: SafeArea(
                 child: Column(
                   children: [
-                    DrawerHeader(
+                    const DrawerHeader(
                       child: Center(
                         child: Text(
                           'Settings',
@@ -40,7 +42,7 @@ class SettingsDrawer extends StatelessWidget {
                           applicationLegalese: 'Copyright (c) 2021 Tim Huddle',
                           aboutBoxChildren: [
                             TextButton(
-                              child: Text('Source'),
+                              child: const Text('Source'),
                               onPressed: _launchUrl,
                             ),
                           ],
@@ -70,14 +72,14 @@ class _SettingsDisplay extends StatelessWidget {
 
     final calendarList = <Widget>[
       ListTile(
-        leading: Text('Calendar: '),
+        leading: const Text('Calendar: '),
         dense: true,
         visualDensity: VisualDensity.comfortable,
         title: DropdownButton<CalendarType>(
           value: calendar,
           onChanged: (CalendarType? newValue) {
             Provider.of<Settings>(context, listen: false).calendar =
-                newValue ?? CalendarType.GREGORIAN;
+                newValue ?? CalendarType.gregorian;
           },
           isDense: true,
           items: CalendarType.values
@@ -93,10 +95,10 @@ class _SettingsDisplay extends StatelessWidget {
       ),
     ];
 
-    if (calendar != CalendarType.GREGORIAN) {
+    if (calendar != CalendarType.gregorian) {
       calendarList.add(ListTile(
         title: Icon(!metonic ? Icons.check_circle_outline : Icons.check_circle),
-        leading: Text('Metonic: '),
+        leading: const Text('Metonic: '),
         dense: true,
         onTap: () {
           Provider.of<Settings>(context, listen: false).metonic = !metonic;

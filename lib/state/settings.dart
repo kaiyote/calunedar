@@ -8,11 +8,11 @@ import './date_formatter.dart';
 import './src/coligny_date_formatter.dart';
 import './src/gregorian_date_formatter.dart';
 
-const SETTINGS_KEY = "calunedar_settings";
+const settingsKey = "calunedar_settings";
 
 enum CalendarType {
-  GREGORIAN,
-  COLIGNY,
+  gregorian,
+  coligny,
 }
 
 class Settings with ChangeNotifier {
@@ -20,7 +20,7 @@ class Settings with ChangeNotifier {
   bool _metonic;
   DateFormatter? _dateFormatter;
 
-  Settings([this._calendar = CalendarType.GREGORIAN, this._metonic = true]);
+  Settings([this._calendar = CalendarType.gregorian, this._metonic = true]);
 
   CalendarType get calendar => _calendar;
 
@@ -29,7 +29,7 @@ class Settings with ChangeNotifier {
   DateFormatter dateFormatter(BuildContext context) {
     if (!_checkDateFormater()) {
       switch (_calendar) {
-        case CalendarType.COLIGNY:
+        case CalendarType.coligny:
           _dateFormatter = ColignyDateFormatter(context, _metonic);
           break;
         default:
@@ -41,9 +41,9 @@ class Settings with ChangeNotifier {
   }
 
   bool _checkDateFormater() =>
-      (_calendar == CalendarType.COLIGNY &&
+      (_calendar == CalendarType.coligny &&
           _dateFormatter is ColignyDateFormatter) ||
-      (_calendar == CalendarType.GREGORIAN &&
+      (_calendar == CalendarType.gregorian &&
           _dateFormatter is GregorianDateFormatter);
 
   set calendar(CalendarType newCalendar) {
@@ -62,7 +62,7 @@ class Settings with ChangeNotifier {
 
   void _persistChanges() async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString(SETTINGS_KEY, jsonEncode(this));
+    prefs.setString(settingsKey, jsonEncode(this));
   }
 
   Settings.fromJson(Map<String, dynamic> json)

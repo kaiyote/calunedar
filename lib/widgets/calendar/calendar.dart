@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Calendar extends StatelessWidget {
+  const Calendar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
@@ -20,7 +22,7 @@ class Calendar extends StatelessWidget {
       isCurrentMonth: (testDate) =>
           dateFormatter.isSameMonth(state.date, testDate),
       getSubTextForDay: (date, [event]) =>
-          '${dateFormatter.dateSubText(date) ?? ''}\n${event?.toString(date: calendar == CalendarType.GREGORIAN)}'
+          '${dateFormatter.dateSubText(date) ?? ''}\n${event?.toString(date: calendar == CalendarType.gregorian)}'
               .trim(),
     );
   }

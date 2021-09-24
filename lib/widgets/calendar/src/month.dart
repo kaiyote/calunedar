@@ -7,13 +7,14 @@ import 'week.dart';
 String _defaultSubText(DateTime dt, [DateInfo? event]) => '';
 
 class Month extends StatelessWidget {
-  Month({
+  const Month({
+    Key? key,
     required this.firstWeek,
     required this.monthInfo,
     required this.isCurrentMonth,
     required this.getTextForDay,
     this.getSubTextForDay = _defaultSubText,
-  });
+  }) : super(key: key);
 
   final DateTime firstWeek;
   final MonthInfo monthInfo;

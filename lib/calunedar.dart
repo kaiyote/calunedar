@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:dart_date/dart_date.dart';
 
 class Calunedar extends StatelessWidget {
+  const Calunedar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final formatter = context
@@ -19,14 +21,14 @@ class Calunedar extends StatelessWidget {
         context.select<AppState, bool>((s) => s.showActionButton);
 
     return Scaffold(
-      drawer: SettingsDrawer(),
+      drawer: const SettingsDrawer(),
       appBar: AppBar(
         title: Text(formatter.formatForHeader(date)),
         centerTitle: true,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -35,7 +37,7 @@ class Calunedar extends StatelessWidget {
           },
         ),
       ),
-      body: TallBody(),
+      body: const TallBody(),
       floatingActionButton: Offstage(
         offstage: !showActionButton,
         child: FloatingActionButton(
@@ -64,11 +66,12 @@ class Calunedar extends StatelessWidget {
         currentIndex: 1,
         onTap: (index) {
           final settings = Provider.of<Settings>(context, listen: false);
-          if (index == 1)
+          if (index == 1) {
             Provider.of<AppState>(context, listen: false).date = DateTime.now();
-          else
+          } else {
             Provider.of<AppState>(context, listen: false).date =
                 _addMonths(date, index - 1, settings);
+          }
         },
       ),
     );
@@ -76,9 +79,9 @@ class Calunedar extends StatelessWidget {
 
   DateTime _addMonths(DateTime date, int months, Settings settings) {
     switch (settings.calendar) {
-      case CalendarType.GREGORIAN:
+      case CalendarType.gregorian:
         return date.addMonths(months);
-      case CalendarType.COLIGNY:
+      case CalendarType.coligny:
         var coligny = ColignyDate.fromDateTime(date, settings.metonic);
         return date.addDays(coligny.monthLength * months.sign);
     }

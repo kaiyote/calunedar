@@ -9,6 +9,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 final watcherKey = GlobalKey();
 
 class Readout extends StatelessWidget {
+  const Readout({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final monthInfo = context.watch<AppState>().monthInfo(context);
