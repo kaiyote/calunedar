@@ -1,7 +1,6 @@
+import 'package:calunedar/redux/src/month_info.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
-
-import 'month_info.dart';
 
 class Day extends StatelessWidget {
   const Day({

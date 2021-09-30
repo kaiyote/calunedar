@@ -1,7 +1,6 @@
+import 'package:calunedar/redux/src/month_info.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-
-import 'month_info.dart';
 
 class ReadoutImpl extends StatelessWidget {
   const ReadoutImpl({

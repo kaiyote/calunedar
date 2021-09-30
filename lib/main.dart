@@ -1,51 +1,62 @@
-import 'dart:convert';
-
-import 'package:calunedar/extra_licenses.dart';
-import 'package:calunedar/state/settings.dart';
 import 'package:calunedar/calunedar.dart';
-import 'package:calunedar/state/app_state.dart';
+import 'package:calunedar/extra_licenses.dart';
+import 'package:calunedar/redux/models.dart';
+import 'package:calunedar/redux/reducer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_logging/redux_logging.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:redux_persist_flutter/redux_persist_flutter.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LicenseRegistry.addLicense(extraLicenses);
-  final prefs = await SharedPreferences.getInstance();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<Settings>(
-          create: (_) {
-            final settingsJson = prefs.getString(settingsKey);
-            return settingsJson != null
-                ? Settings.fromJson(jsonDecode(settingsJson))
-                : Settings();
-          },
-        ),
-        ChangeNotifierProvider<AppState>(
-          create: (_) => AppState(),
-        ),
-      ],
-      child: _Root(),
+  final persistor = Persistor<AppState>(
+    storage: FlutterStorage(
+      key: 'calunedar',
+      location: kIsWeb
+          ? FlutterSaveLocation.sharedPreferences
+          : FlutterSaveLocation.documentFile,
     ),
+    serializer: JsonSerializer<AppState>(AppState.fromJson)
   );
+
+  final initialState = await persistor.load();
+
+  final store = Store<AppState>(
+    reducer,
+    initialState: initialState ?? AppState(),
+    middleware: [
+      thunkMiddleware,
+      persistor.createMiddleware(),
+      LoggingMiddleware.printer(),
+    ],
+  );
+
+  runApp(_Root(store: store));
 }
 
 class _Root extends StatelessWidget {
+  const _Root({Key? key, required this.store}) : super(key: key);
+
+  final Store<AppState> store;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Calunedar',
-      home: const Calunedar(),
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSwatch(
+    return StoreProvider(
+      store: store,
+      child: MaterialApp(
+        title: 'Calunedar',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
           primarySwatch: Colors.teal,
           backgroundColor: Colors.white,
         ),
+        home: const Calunedar(),
       ),
     );
   }

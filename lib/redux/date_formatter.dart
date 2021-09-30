@@ -1,4 +1,4 @@
-import 'package:calunedar/widgets/calendar/src/month_info.dart';
+import './src/month_info.dart';
 
 abstract class DateFormatter {
   String formatForReadout(DateTime date);

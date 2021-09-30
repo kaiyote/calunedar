@@ -1,22 +1,21 @@
-import 'package:calunedar/state/app_state.dart';
+import 'package:calunedar/redux/actions.dart';
+import 'package:calunedar/redux/models.dart';
 import 'package:calunedar/widgets/calendar/calendar.dart';
 import 'package:calunedar/widgets/calendar/readout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart';
 
 class TallBody extends StatelessWidget {
   const TallBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final positionFuture =
-        context.select<AppState, Future<Position?>>((s) => s.location);
-
-    return FutureBuilder<Position?>(
-      future: positionFuture,
-      builder: (BuildContext context, AsyncSnapshot<Position?> snapshot) {
-        if (snapshot.hasData || snapshot.hasError) {
+    return StoreConnector<AppState, Position?>(
+      onInit: (store) => store.dispatch(updatePosition),
+      converter: (store) => store.state.position,
+      builder: (context, position) {
+        if (position != null) {
           return ListView.separated(
             padding: const EdgeInsets.all(15.0),
             itemCount: 2,

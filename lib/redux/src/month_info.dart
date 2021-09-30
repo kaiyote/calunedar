@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:calunedar/moon_phase/julian.dart';
 import 'package:calunedar/moon_phase/moon_phase.dart';
+import 'package:calunedar/redux/date_formatter.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
@@ -99,13 +100,11 @@ class EventPinDates {
 class MonthInfo {
   MonthInfo({
     required this.date,
-    required this.generatePinDates,
-    required this.isSameMonth,
+    required this.dateFormatter,
   });
 
   final DateTime date;
-  final EventPinDates Function(DateTime date) generatePinDates;
-  final bool Function(DateTime currentDate, DateTime other) isSameMonth;
+  final DateFormatter dateFormatter;
   Set<DateInfo> _lunarEvents = {};
 
   Set<DateInfo> get lunarEvents {
@@ -117,7 +116,7 @@ class MonthInfo {
   }
 
   Set<DateInfo> _generateLunarEvents() {
-    var pinDates = generatePinDates(date);
+    var pinDates = dateFormatter.generatePinDates(date);
     var midDate = pinDates.start
         .addDays(pinDates.end.differenceInDays(pinDates.start) ~/ 2);
 
@@ -144,6 +143,8 @@ class MonthInfo {
       ));
     }
 
-    return dates.where((element) => isSameMonth(date, element.when)).toSet();
+    return dates
+        .where((element) => dateFormatter.isSameMonth(date, element.when))
+        .toSet();
   }
 }

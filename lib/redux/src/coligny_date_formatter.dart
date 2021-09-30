@@ -1,19 +1,16 @@
 import 'package:calunedar/calendar/coligny_date.dart';
-import 'package:calunedar/widgets/calendar/src/month_info.dart';
 import 'package:dart_date/dart_date.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import './month_info.dart';
 import '../date_formatter.dart';
 
 class ColignyDateFormatter extends DateFormatter {
   final bool _metonic;
   final DateFormat _dateFormatter;
 
-  ColignyDateFormatter(BuildContext context, this._metonic)
-      : _dateFormatter = MediaQuery.of(context).alwaysUse24HourFormat
-            ? DateFormat.Hm()
-            : DateFormat.jm();
+  ColignyDateFormatter(this._metonic, bool use24hr)
+      : _dateFormatter = use24hr ? DateFormat.Hm() : DateFormat.jm();
 
   @override
   String? dateSubText(DateTime date) {
@@ -31,7 +28,7 @@ class ColignyDateFormatter extends DateFormatter {
   @override
   String formatForReadout(DateTime date) {
     final colignyDate = ColignyDate.fromDateTime(date, _metonic);
-    return '${colignyDate.monthName} ${colignyDate.day} at ${_dateFormatter.format(date)}';
+    return '${colignyDate.monthName} ${colignyDate.day} at ${_dateFormatter.format(date)} ${date.timeZoneName}';
   }
 
   @override

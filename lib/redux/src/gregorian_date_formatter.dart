@@ -1,15 +1,14 @@
-import 'package:calunedar/widgets/calendar/src/month_info.dart';
 import 'package:dart_date/dart_date.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import './month_info.dart';
 import '../date_formatter.dart';
 
 class GregorianDateFormatter extends DateFormatter {
   final DateFormat _dateFormatter;
 
-  GregorianDateFormatter(BuildContext context)
-      : _dateFormatter = MediaQuery.of(context).alwaysUse24HourFormat
+  GregorianDateFormatter(bool use24hr)
+      : _dateFormatter = use24hr
             ? DateFormat.MMMMd().addPattern("'at'").add_Hm()
             : DateFormat.MMMMd().addPattern("'at'").add_jm();
 
