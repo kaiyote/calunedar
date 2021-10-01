@@ -11,12 +11,14 @@ class _ViewModel {
     required this.date,
     required this.formatter,
     required this.calendarType,
+    required this.use24hr,
   });
 
   final MonthInfo monthInfo;
   final DateTime date;
   final DateFormatter formatter;
   final CalendarType calendarType;
+  final bool use24hr;
 }
 
 class Calendar extends StatelessWidget {
@@ -32,7 +34,7 @@ class Calendar extends StatelessWidget {
         isCurrentMonth: (testDate) =>
             state.formatter.isSameMonth(state.date, testDate),
         getSubTextForDay: (date, [event]) =>
-            '${state.formatter.dateSubText(date) ?? ''}\n${event?.toString(date: state.calendarType == CalendarType.gregorian)}'
+            '${state.formatter.dateSubText(date) ?? ''}\n${event?.toString(date: state.calendarType == CalendarType.gregorian, use24hr: state.use24hr)}'
                 .trim(),
       ),
       converter: (store) => _ViewModel(
@@ -40,6 +42,7 @@ class Calendar extends StatelessWidget {
         date: store.state.date,
         formatter: dateFormatterSelector(store.state),
         calendarType: store.state.settings.calendarType,
+        use24hr: store.state.settings.use24hr,
       ),
     );
   }

@@ -24,7 +24,7 @@ class GregorianDateFormatter extends DateFormatter {
 
   @override
   String formatForReadout(DateTime date) {
-    return _dateFormatter.format(date);
+    return "${_dateFormatter.format(date)} ${DateFormatter.timeZoneAbbr(date)}";
   }
 
   @override

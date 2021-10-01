@@ -28,7 +28,7 @@ class ColignyDateFormatter extends DateFormatter {
   @override
   String formatForReadout(DateTime date) {
     final colignyDate = ColignyDate.fromDateTime(date, _metonic);
-    return '${colignyDate.monthName} ${colignyDate.day} at ${_dateFormatter.format(date)} ${date.timeZoneName}';
+    return '${colignyDate.monthName} ${colignyDate.day} at ${_dateFormatter.format(date)} ${DateFormatter.timeZoneAbbr(date)}';
   }
 
   @override

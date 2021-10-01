@@ -27,7 +27,7 @@ class DateInfo implements Comparable {
   const DateInfo({required this.phase, required this.when});
 
   @override
-  String toString({bool date = true, bool phase = true, bool time = true}) {
+  String toString({bool date = true, bool phase = true, bool time = true, bool use24hr = false}) {
     var str = "";
     if (this.phase == Event.none) return str;
 
@@ -38,7 +38,7 @@ class DateInfo implements Comparable {
       str += " " + EnumToString.convertToString(this.phase, camelCase: true);
     }
     if (time) {
-      str += " at " + DateFormat.jm().format(when);
+      str += " at " + (use24hr ? DateFormat.Hm() : DateFormat.jm()).format(when) + " " + DateFormatter.timeZoneAbbr(when);
     }
 
     return str.trim();
