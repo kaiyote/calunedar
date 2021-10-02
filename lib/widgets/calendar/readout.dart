@@ -45,10 +45,11 @@ class Readout extends StatelessWidget {
         ),
       ),
       converter: (store) => _ViewModel(
-          monthInfo: monthInfoSelector(store.state),
-          formatter: dateFormatterSelector(store.state),
-          dispatch: store.dispatch,
-          showScrollToEvents: store.state.showScrollToEvents),
+        monthInfo: monthInfoSelector(store.state),
+        formatter: dateFormatterSelector(store.state),
+        dispatch: store.dispatch,
+        showScrollToEvents: store.state.showScrollToEvents,
+      ),
     );
   }
 }

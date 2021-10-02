@@ -6,7 +6,9 @@ import 'package:calunedar/redux/date_formatter.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:solar_calculator/solar_calculator.dart';
 
 enum Event {
   firstQuarter,
@@ -21,24 +23,38 @@ enum Event {
 }
 
 class DateInfo implements Comparable {
-  final Event phase;
-  final DateTime when;
+  const DateInfo({
+    required this.when,
+    this.phase = Event.none,
+    this.sunsetTime,
+  });
 
-  const DateInfo({required this.phase, required this.when});
+  final DateTime when;
+  final Event phase;
+  final Instant? sunsetTime;
 
   @override
-  String toString({bool date = true, bool phase = true, bool time = true, bool use24hr = false}) {
+  String toString({
+    bool date = true,
+    bool phase = true,
+    bool time = true,
+    bool use24hr = false,
+  }) {
     var str = "";
-    if (this.phase == Event.none) return str;
 
     if (date) {
       str += DateFormat.yMMMMd().format(when);
     }
     if (phase) {
-      str += " " + EnumToString.convertToString(this.phase, camelCase: true);
+      str += this.phase == Event.none
+          ? ""
+          : " " + EnumToString.convertToString(this.phase, camelCase: true);
     }
     if (time) {
-      str += " at " + (use24hr ? DateFormat.Hm() : DateFormat.jm()).format(when) + " " + DateFormatter.timeZoneAbbr(when);
+      str += " at " +
+          (use24hr ? DateFormat.Hm() : DateFormat.jm()).format(when) +
+          " " +
+          DateFormatter.timeZoneAbbr(when);
     }
 
     return str.trim();
@@ -101,29 +117,40 @@ class MonthInfo {
   MonthInfo({
     required this.date,
     required this.dateFormatter,
-  });
+    required this.position,
+  }) : lunarEvents = _generateLunarEvents(date, dateFormatter, position);
 
   final DateTime date;
   final DateFormatter dateFormatter;
-  Set<DateInfo> _lunarEvents = {};
+  final Position position;
+  final Set<DateInfo> lunarEvents;
 
-  Set<DateInfo> get lunarEvents {
-    if (_lunarEvents.isEmpty) {
-      _lunarEvents = _generateLunarEvents();
-    }
-
-    return _lunarEvents;
-  }
-
-  Set<DateInfo> _generateLunarEvents() {
+  static Set<DateInfo> _generateLunarEvents(
+    DateTime date,
+    DateFormatter dateFormatter,
+    Position position,
+  ) {
     var pinDates = dateFormatter.generatePinDates(date);
     var midDate = pinDates.start
         .addDays(pinDates.end.differenceInDays(pinDates.start) ~/ 2);
 
     var dates = <DateInfo>{};
-    for (var date in [pinDates.start, pinDates.end, midDate]) {
-      var daysBetween = date.differenceInDays(date.startOfYear);
-      var yearFraction = date.year + (daysBetween / 356.25);
+    pinDates.end.eachDay(pinDates.start).forEach((date) {
+      final calcForDay = SolarCalculator(
+        Instant.fromDateTime(date.startOfDay.addHours(12)),
+        position.latitude,
+        position.longitude,
+      );
+
+      dates.add(DateInfo(
+        when: date,
+        sunsetTime: calcForDay.sunsetTime,
+      ));
+    });
+
+    for (final date in [pinDates.start, midDate, pinDates.end]) {
+      final daysBetween = date.differenceInDays(date.startOfYear);
+      final yearFraction = date.year + (daysBetween / 356.25);
 
       dates.add(DateInfo(
         phase: Event.firstQuarter,

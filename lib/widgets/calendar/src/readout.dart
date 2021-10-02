@@ -29,13 +29,17 @@ class ReadoutImpl extends StatelessWidget {
   }
 
   Widget _buildInfo() {
-    var sortedEvents = List.from(monthInfo.lunarEvents);
-    sortedEvents.sort();
+    var events = List<DateInfo>.from(
+      monthInfo.lunarEvents.where(
+        (element) => element.phase != Event.none,
+      ),
+    );
+    events.sort();
 
     return Table(
       border: TableBorder.all(style: BorderStyle.none),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      children: sortedEvents
+      children: events
           .map<TableRow>((dateInfo) => _buildRow(dateInfo: dateInfo))
           .toList(),
     );

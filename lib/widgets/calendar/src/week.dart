@@ -37,8 +37,9 @@ class Week extends StatelessWidget {
               date: date,
               isCurrentMonth: isCurrentMonth(date),
               event: monthInfo.lunarEvents.firstWhere(
-                (element) => element.when.isSameDay(date),
-                orElse: () => DateInfo(phase: Event.none, when: date),
+                (element) =>
+                    element.when.isSameDay(date) && element.phase != Event.none,
+                orElse: () => DateInfo(when: date),
               ),
               getTextForDay: getTextForDay,
               getSubTextForDay: getSubTextForDay,

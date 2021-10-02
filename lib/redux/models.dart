@@ -102,6 +102,8 @@ bool use24hrSelector(AppState state) => state.settings.use24hr;
 
 DateTime dateSelector(AppState state) => state.date;
 
+Position? positionSelector(AppState state) => state.position;
+
 final dateFormatterSelector =
     createSelector3<AppState, CalendarType, bool, bool, DateFormatter>(
   calendarTypeSelector,
@@ -118,8 +120,28 @@ final dateFormatterSelector =
 );
 
 final monthInfoSelector =
-    createSelector2<AppState, DateFormatter, DateTime, MonthInfo>(
+    createSelector3<AppState, DateFormatter, DateTime, Position?, MonthInfo>(
   dateFormatterSelector,
   dateSelector,
-  (formatter, date) => MonthInfo(date: date, dateFormatter: formatter),
+  positionSelector,
+  (formatter, date, position) => MonthInfo(
+    date: date,
+    dateFormatter: formatter,
+    position: position ??
+        Position(
+          // literally in the middle of the atlantic off the coast of
+          // sub-saharan africa
+          // when i get around to mathing out day-start-at-sundown gonna need
+          // to alert to this fact somewhere, since sunset will likely be
+          // significantly off from where the user really is
+          longitude: 0.0,
+          latitude: 0.0,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0,
+        ),
+  ),
 );

@@ -39,7 +39,7 @@ class SetShowFloatingScrollAction {
 class SetPositionAction {
   const SetPositionAction(this.position);
 
-  final Position position;
+  final Position? position;
 }
 
 SetDateAction changeToToday() {
@@ -76,25 +76,6 @@ void updatePosition(Store<AppState> store) async {
       store.state.position!.timestamp! <= DateTime.now().addDays(-1)) {
     final position = await getPosition().catchError((_, __) => null);
 
-    store.dispatch(
-      SetPositionAction(
-        position ??
-            Position(
-              // literally in the middle of the atlantic off the coast of
-              // sub-saharan africa
-              // when i get around to mathing out day-start-at-sundown gonna need
-              // to alert to this fact somewhere, since sunset will likely be
-              // significantly off from where the user really is
-              longitude: 0.0,
-              latitude: 0.0,
-              timestamp: DateTime.now(),
-              accuracy: 0.0,
-              altitude: 0.0,
-              heading: 0.0,
-              speed: 0.0,
-              speedAccuracy: 0.0,
-            ),
-      ),
-    );
+    store.dispatch(SetPositionAction(position));
   }
 }
