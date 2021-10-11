@@ -19,10 +19,9 @@ Tapping Current Month will return you to "Today".
 ### The Settings Drawer
 ![Settings Drawer](./assets/doc/settings_drawer.png)
 
-Here you can swap between implemented calendar types, as well as toggle settings
-unique to that calendar. In the picture, the Coligny Calendar has been selected
-and you can see a setting to set whether you want the metonic cycle version or
-not.
+Here you can change to 24 hour time display, swap between implemented calendar
+types, as well as toggle settings unique to that calendar. In the picture, 24 Hour Time is disabled, the Coligny Calendar has been selected, and you the metonic cycle
+version of the calendar has been enabled.
 
 ### The Calendar
 ![Calendar](./assets/doc/calendar.png)
@@ -35,10 +34,12 @@ months are greyed out.
 ![Event Readout](./assets/doc/readout.png)
 
 Tells you what event is happening at what time on what day. It almost certainly
-displays the time in your local timezone. If your screen is short enough to not
-render both the calendar and the readout at the same time (likely will always
-happen on landscape orientation desktop monitors), this little icon will
-appear in the bottom left corner:
+displays the time in your local timezone, but just in case, the timezone of the
+displayed time is attached to the end. It also respects the 24hr time option
+from the settings above. If your screen is short enough to not render both the
+calendar and the readout at the same time (likely will always happen on
+landscape orientation desktop monitors), this little icon will appear in the
+bottom left corner:
 
 ![Readout Link](./assets/doc/events_link.png)
 
