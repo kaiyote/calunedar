@@ -1,4 +1,5 @@
 import 'package:calunedar/redux/date_formatter.dart';
+import 'package:calunedar/redux/src/attic_date_formatter.dart';
 import 'package:calunedar/redux/src/coligny_date_formatter.dart';
 import 'package:calunedar/redux/src/gregorian_date_formatter.dart';
 import 'package:calunedar/redux/src/month_info.dart';
@@ -46,6 +47,7 @@ class AppState {
 enum CalendarType {
   gregorian,
   coligny,
+  attic,
 }
 
 class Settings {
@@ -53,21 +55,25 @@ class Settings {
     this.calendarType = CalendarType.gregorian,
     this.metonic = true,
     this.use24hr = false,
+    this.useGreekNames = false,
   });
 
   final CalendarType calendarType;
   final bool metonic;
   final bool use24hr;
+  final bool useGreekNames;
 
   Settings copyWith({
     CalendarType? calendarType,
     bool? metonic,
     bool? use24hr,
+    bool? useGreekNames,
   }) =>
       Settings(
         calendarType: calendarType ?? this.calendarType,
         metonic: metonic ?? this.metonic,
         use24hr: use24hr ?? this.use24hr,
+        useGreekNames: useGreekNames ?? this.useGreekNames,
       );
 
   static Settings fromJson(dynamic json) {
@@ -80,6 +86,7 @@ class Settings {
       ),
       metonic: json['metonic'],
       use24hr: json['use24hr'],
+      useGreekNames: json['useGreekNames'],
     );
   }
 
@@ -87,6 +94,7 @@ class Settings {
         'calendarType': describeEnum(calendarType),
         'metonic': metonic,
         'use24hr': use24hr,
+        'useGreekNames': useGreekNames
       };
 }
 
@@ -100,21 +108,26 @@ bool metonicSelector(AppState state) => state.settings.metonic;
 
 bool use24hrSelector(AppState state) => state.settings.use24hr;
 
+bool useGreekNameSelector(AppState state) => state.settings.useGreekNames;
+
 DateTime dateSelector(AppState state) => state.date;
 
 Position? positionSelector(AppState state) => state.position;
 
 final dateFormatterSelector =
-    createSelector3<AppState, CalendarType, bool, bool, DateFormatter>(
+    createSelector4<AppState, CalendarType, bool, bool, bool, DateFormatter>(
   calendarTypeSelector,
   metonicSelector,
   use24hrSelector,
-  (type, metonic, use24hr) {
+  useGreekNameSelector,
+  (type, metonic, use24hr, useGreekName) {
     switch (type) {
       case CalendarType.coligny:
         return ColignyDateFormatter(metonic, use24hr);
       case CalendarType.gregorian:
         return GregorianDateFormatter(use24hr);
+      case CalendarType.attic:
+        return AtticDateFormatter(useGreekName, use24hr);
     }
   },
 );

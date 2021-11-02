@@ -14,10 +14,17 @@ Settings change24hrDisplayReducer(
         Settings settings, Set24HourDisplayAction action) =>
     settings.copyWith(use24hr: action.use24hr);
 
+Settings changeGreekNameDisplayReducer(
+        Settings settings, SetGreekNameDisplayAction action) =>
+    settings.copyWith(useGreekNames: action.useGreekName);
+
 final settingsReducer = combineReducers<Settings>([
   TypedReducer<Settings, SetMetonicAction>(changeMetonicReducer),
   TypedReducer<Settings, SetCalendarTypeAction>(changeCalendarTypeReducer),
   TypedReducer<Settings, Set24HourDisplayAction>(change24hrDisplayReducer),
+  TypedReducer<Settings, SetGreekNameDisplayAction>(
+    changeGreekNameDisplayReducer,
+  ),
 ]);
 
 final dateReducer =

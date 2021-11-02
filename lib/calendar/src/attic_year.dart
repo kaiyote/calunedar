@@ -1,5 +1,6 @@
 import 'attic_month.dart';
 
+// TODO
 class AtticYear {
   final int _year;
   late List<AtticMonth> _months;
@@ -7,17 +8,18 @@ class AtticYear {
 
   AtticYear(this._year) {
     _months = <AtticMonth>[
-      AtticMonth('Samonios', 30),
-      AtticMonth('Dumanios', 29),
-      AtticMonth('Riuros', 30),
-      AtticMonth('Anagantios', 29),
-      AtticMonth('Ogronios', 30),
-      AtticMonth('Cutios', 30),
-      AtticMonth('Giamonios', 29),
-      AtticMonth('Simiuisonna', 30),
-      AtticMonth('Elembi', 29),
-      AtticMonth('Aedrinni', 30),
-      AtticMonth('Cantlos', 29),
+      AtticMonth('Hekatombaiṓn', 30),
+      AtticMonth('Metageitniṓn', 29),
+      AtticMonth('Boēdromiṓn', 30),
+      AtticMonth('Puanopsiṓn', 29),
+      AtticMonth('Maimaktēriṓn', 30),
+      AtticMonth('Posideiṓn', 30),
+      AtticMonth('Gamēliṓn', 29),
+      AtticMonth('Anthestēriṓn', 30),
+      AtticMonth('Elaphēboliṓn', 29),
+      AtticMonth('Mounuchiṓn', 30),
+      AtticMonth('Thargēliṓn', 29),
+      AtticMonth('Skirophoriṓn', 30)
     ];
 
     _yearDays = 0;

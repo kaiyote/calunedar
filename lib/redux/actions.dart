@@ -1,3 +1,4 @@
+import 'package:calunedar/calendar/attic_date.dart';
 import 'package:calunedar/calendar/coligny_date.dart';
 import 'package:calunedar/redux/models.dart';
 import 'package:calunedar/redux/src/location_service.dart';
@@ -22,6 +23,12 @@ class Set24HourDisplayAction {
   const Set24HourDisplayAction(this.use24hr);
 
   final bool use24hr;
+}
+
+class SetGreekNameDisplayAction {
+  const SetGreekNameDisplayAction(this.useGreekName);
+
+  final bool useGreekName;
 }
 
 class SetDateAction {
@@ -64,6 +71,13 @@ ThunkAction<AppState> changeMonth([bool forward = true]) {
         final targetDate = forward
             ? colignyDate.lastDayOfMonth().addDays(1)
             : colignyDate.firstDayOfMonth().addDays(-1).firstDayOfMonth();
+        store.dispatch(SetDateAction(targetDate.toDateTime()));
+        break;
+      case CalendarType.attic:
+        final atticDate = AtticDate.fromDateTime(currentDate);
+        final targetDate = forward
+            ? atticDate.lastDayOfMonth().addDays(1)
+            : atticDate.firstDayOfMonth().addDays(-1).firstDayOfMonth();
         store.dispatch(SetDateAction(targetDate.toDateTime()));
         break;
     }

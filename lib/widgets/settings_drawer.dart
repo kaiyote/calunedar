@@ -70,12 +70,14 @@ class _ViewModel {
     required this.calendarType,
     required this.metonic,
     required this.use24hr,
+    required this.useGreekNames,
     required this.dispatch,
   });
 
   final CalendarType calendarType;
   final bool metonic;
   final bool use24hr;
+  final bool useGreekNames;
   final dynamic Function(dynamic) dispatch;
 }
 
@@ -87,6 +89,7 @@ class _SettingsDisplay extends StatelessWidget {
         calendarType: store.state.settings.calendarType,
         metonic: store.state.settings.metonic,
         use24hr: store.state.settings.use24hr,
+        useGreekNames: store.state.settings.useGreekNames,
         dispatch: store.dispatch,
       ),
       builder: (context, state) {
@@ -128,7 +131,7 @@ class _SettingsDisplay extends StatelessWidget {
           ),
         ];
 
-        if (state.calendarType != CalendarType.gregorian) {
+        if (state.calendarType == CalendarType.coligny) {
           calendarList.add(
             ListTile(
               title: Icon(!state.metonic
@@ -138,6 +141,21 @@ class _SettingsDisplay extends StatelessWidget {
               dense: true,
               onTap: () {
                 state.dispatch(SetMetonicAction(!state.metonic));
+              },
+            ),
+          );
+        }
+
+        if (state.calendarType == CalendarType.attic) {
+          calendarList.add(
+            ListTile(
+              title: Icon(!state.metonic
+                  ? Icons.check_circle_outline
+                  : Icons.check_circle),
+              leading: const Text('Use Greek Names: '),
+              dense: true,
+              onTap: () {
+                state.dispatch(SetGreekNameDisplayAction(!state.useGreekNames));
               },
             ),
           );

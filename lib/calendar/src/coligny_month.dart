@@ -5,7 +5,7 @@ class ColignyMonth {
 
   ColignyMonth(this._name, this.days) {
     if (days != 30 && days != 29) {
-      throw RangeError('Months only have 29 or 30 days');
+      throw RangeError('Months have only 29 or 30 days');
     }
 
     index = 0;
