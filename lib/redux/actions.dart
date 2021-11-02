@@ -78,7 +78,10 @@ ThunkAction<AppState> changeMonth([bool forward = true]) {
         final targetDate = forward
             ? atticDate.lastDayOfMonth().addDays(1)
             : atticDate.firstDayOfMonth().addDays(-1).firstDayOfMonth();
-        store.dispatch(SetDateAction(targetDate.toDateTime()));
+        final diff = atticDate.differenceInDays(targetDate);
+        final gregorianTarget = currentDate.addDays(forward ? diff : -diff);
+
+        store.dispatch(SetDateAction(gregorianTarget));
         break;
     }
   };

@@ -138,11 +138,11 @@ class AtticDate {
     return output;
   }
 
-  int _differenceInDays(AtticDate target) {
+  int differenceInDays(AtticDate target) {
     if (year == target.year) {
       return (dayOfYear - target.dayOfYear).abs();
     } else if (target.compareTo(this) < 0) {
-      return target._differenceInDays(this);
+      return target.differenceInDays(this);
     } else {
       int count = yearLength - dayOfYear + target.dayOfYear;
 
@@ -153,11 +153,6 @@ class AtticDate {
 
       return count.abs();
     }
-  }
-
-  // TODO
-  DateTime toDateTime() {
-    throw Exception('Not Implemented');
   }
 
   // TODO
