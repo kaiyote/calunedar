@@ -43,17 +43,17 @@ void main() {
       });
 
       group('non-metonic', () {
-        var nonMetonicInputsToexpected = {
+        var nonMetonicInputsToExpected = {
           DateTime(2021, 6, 17, 18): ColignyDate(5021, 1, 2),
           DateTime(2021, 7, 9, 18): ColignyDate(5021, 1, 24)
         };
-        nonMetonicInputsToexpected.forEach((input, expected) {
+        nonMetonicInputsToExpected.forEach((input, expected) {
           test('$input to $expected (non-metonic)', () {
             expect(ColignyDate.fromDateTime(input), equals(expected));
           });
         });
       });
-    });
+    }, skip: "not yet implemented");
   });
 
   group('coligny to gregorian', () {

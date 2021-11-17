@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:calunedar/moon_phase/julian.dart';
-import 'package:calunedar/moon_phase/moon_phase.dart';
+import 'package:calunedar/celestial_math/julian.dart';
+import 'package:calunedar/celestial_math/moon_phase.dart';
 import 'package:calunedar/redux/date_formatter.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:enum_to_string/enum_to_string.dart';
