@@ -79,7 +79,8 @@ ThunkAction<AppState> changeMonth([bool forward = true]) {
             ? atticDate.lastDayOfMonth().addDays(1)
             : atticDate.firstDayOfMonth().addDays(-1).firstDayOfMonth();
         final diff = atticDate.differenceInDays(targetDate);
-        final gregorianTarget = currentDate.addDays(forward ? diff : -diff);
+        final gregorianTarget =
+            currentDate.addDays(forward ? diff : -diff, true);
 
         store.dispatch(SetDateAction(gregorianTarget));
         break;
@@ -90,7 +91,7 @@ ThunkAction<AppState> changeMonth([bool forward = true]) {
 void updatePosition(Store<AppState> store) async {
   // only bother with position if its null or older than a day
   if (store.state.position?.timestamp == null ||
-      store.state.position!.timestamp! <= DateTime.now().addDays(-1)) {
+      store.state.position!.timestamp! <= DateTime.now().addDays(-1, true)) {
     final position = await getPosition().catchError((_, __) => null);
 
     store.dispatch(SetPositionAction(position));

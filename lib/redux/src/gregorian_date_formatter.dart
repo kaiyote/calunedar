@@ -48,7 +48,7 @@ class GregorianDateFormatter extends DateFormatter {
   @override
   DateTime getFirstDayForDisplay(DateTime date) {
     return date.startOfMonth.isSunday
-        ? date.startOfMonth
-        : date.startOfMonth.startOfWeek;
+        ? date.startOfMonth.startOfDay
+        : date.startOfMonth.startOfWeek.startOfDay;
   }
 }

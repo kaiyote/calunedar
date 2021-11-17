@@ -40,8 +40,8 @@ class ColignyDateFormatter extends DateFormatter {
   @override
   EventPinDates generatePinDates(DateTime date) {
     final colignyDate = ColignyDate.fromDateTime(date, _metonic);
-    final firstDay = date.addDays(-(colignyDate.day - 1)).startOfDay;
-    final lastDay = firstDay.addDays(colignyDate.monthLength).startOfDay;
+    final firstDay = date.addDays(-(colignyDate.day - 1), true).startOfDay;
+    final lastDay = firstDay.addDays(colignyDate.monthLength, true).startOfDay;
     return EventPinDates(start: firstDay, end: lastDay);
   }
 
@@ -54,7 +54,9 @@ class ColignyDateFormatter extends DateFormatter {
   @override
   DateTime getFirstDayForDisplay(DateTime date) {
     final colignyDate = ColignyDate.fromDateTime(date, _metonic);
-    final firstDay = date.addDays(-(colignyDate.day - 1));
-    return firstDay.isSunday ? firstDay : firstDay.startOfWeek;
+    final firstDay = date.addDays(-(colignyDate.day - 1), true);
+    return firstDay.isSunday
+        ? firstDay.startOfDay
+        : firstDay.startOfWeek.startOfDay;
   }
 }

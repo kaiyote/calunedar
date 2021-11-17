@@ -117,6 +117,7 @@ class _SettingsDisplay extends StatelessWidget {
               },
               isDense: true,
               items: CalendarType.values
+                  .where((element) => element != CalendarType.attic)
                   .map(
                     (e) => DropdownMenuItem(
                       child: Text(

@@ -72,7 +72,7 @@ class ReadoutImpl extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 5.0),
             child: Text(
-              formatDate(dateInfo.when.toLocal()),
+              formatDate(dateInfo.when),
               style: const TextStyle(fontSize: 16.0),
               textAlign: TextAlign.center,
             ),

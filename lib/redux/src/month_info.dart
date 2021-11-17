@@ -42,13 +42,13 @@ class DateInfo implements Comparable {
   }) {
     var str = "";
 
+    if (this.phase == Event.none) return "";
+
     if (date) {
       str += DateFormat.yMMMMd().format(when);
     }
     if (phase) {
-      str += this.phase == Event.none
-          ? ""
-          : " " + EnumToString.convertToString(this.phase, camelCase: true);
+      str += " " + EnumToString.convertToString(this.phase, camelCase: true);
     }
     if (time) {
       str += " at " +
@@ -132,12 +132,12 @@ class MonthInfo {
   ) {
     var pinDates = dateFormatter.generatePinDates(date);
     var midDate = pinDates.start
-        .addDays(pinDates.end.differenceInDays(pinDates.start) ~/ 2);
+        .addDays(pinDates.end.differenceInDays(pinDates.start) ~/ 2, true);
 
     var dates = <DateInfo>{};
     pinDates.end.eachDay(pinDates.start).forEach((date) {
       final calcForDay = SolarCalculator(
-        Instant.fromDateTime(date.startOfDay.addHours(12)),
+        Instant.fromDateTime(date.startOfDay.addHours(12, true)),
         position.latitude,
         position.longitude,
       );

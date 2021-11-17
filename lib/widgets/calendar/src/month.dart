@@ -25,7 +25,7 @@ class Month extends StatelessWidget {
   List<DateTime> _eachWeekOfMonth() {
     return List.generate(
       6,
-      (index) => firstWeek.addWeeks(index),
+      (index) => firstWeek.addDays(index * 7, true).startOfDay,
       growable: false,
     );
   }

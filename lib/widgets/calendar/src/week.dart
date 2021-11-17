@@ -24,7 +24,7 @@ class Week extends StatelessWidget {
   Widget build(BuildContext context) {
     var dates = List.generate(
       7,
-      (index) => start.addDays(index),
+      (index) => start.addDays(index, true).startOfDay,
       growable: false,
     );
 
