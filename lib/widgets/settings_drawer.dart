@@ -54,7 +54,10 @@ class SettingsDrawer extends StatelessWidget {
                               '- All calendar implementations start the day at local midnight',
                             ),
                             const Text(
-                              '- The Attic Implementation has only been tested in EST',
+                              '- The Attic Implementation is based on when the solstices/moons are in Athens',
+                            ),
+                            const Text(
+                              '- The Attic Implementation has only been officially tested in EST',
                             ),
                             const Text('- There are almost certainly bugs'),
                             TextButton(

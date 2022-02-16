@@ -8,7 +8,7 @@ import 'package:geolocator/geolocator.dart';
 const latitude = 44.799565;
 const longitude = -82.420758;
 
-final northernHemisphere = Position(
+final position = Position(
   latitude: latitude,
   longitude: longitude,
   timestamp: DateTime.now(),
@@ -28,7 +28,7 @@ void assertMonth(AtticMonth month, int days, String name, String greekName) {
 void main() {
   group('attic year tests', () {
     test('Attic Year for 2022/2023 makes sense', () {
-      final result = AtticYear(2022, northernHemisphere);
+      final result = AtticYear(2022);
 
       expect(result.daysInYear, equals(383));
       expect(result.months.length, equals(13));
@@ -37,8 +37,8 @@ void main() {
       assertMonth(result.months[1], 30, "Metageitniṓn", "Μεταγειτνιών");
       assertMonth(result.months[2], 29, "Boēdromiṓn", "Βοηδρομιών");
       assertMonth(result.months[3], 30, "Puanopsiṓn", "Πυανοψιών");
-      assertMonth(result.months[4], 30, "Maimaktēriṓn", "Μαιμακτηριών");
-      assertMonth(result.months[5], 29, "Posideiṓn", "Ποσιδειών");
+      assertMonth(result.months[4], 29, "Maimaktēriṓn", "Μαιμακτηριών");
+      assertMonth(result.months[5], 30, "Posideiṓn", "Ποσιδειών");
       assertMonth(
         result.months[6],
         29,
@@ -56,13 +56,11 @@ void main() {
 
   group('gregorian to attic', () {
     test('2/15/2022 is 8/14/(2021/2022)', () {
-      final result =
-          AtticDate.fromDateTime(DateTime(2022, 2, 15), northernHemisphere);
+      final result = AtticDate.fromDateTime(DateTime(2022, 2, 15));
 
       expect(result.month, equals(8));
       expect(result.monthName, equals("Anthestēriṓn"));
       expect(result.day, equals(13));
-      // i really need to do something about this
       expect(result.year, equals(2021));
     });
   });

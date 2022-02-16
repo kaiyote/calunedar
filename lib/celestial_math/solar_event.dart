@@ -38,16 +38,6 @@ double _dateToYearFraction(DateTime date) {
   return date.year + (daysBetween / 356.25);
 }
 
-bool _isAfterSunset(DateTime date, Position position) {
-  final sunsetInstant = SolarCalculator(
-    Instant.fromDateTime(date),
-    position.latitude,
-    position.longitude,
-  ).sunsetTime.toUtcDateTime().local;
-
-  return date.isAfter(sunsetInstant);
-}
-
 ///
 /// These are named by month instead of season so that the code makes sense even
 /// for people in the southern hemisphere. I'm not going to tackle shifting the
@@ -84,20 +74,27 @@ Instant decemberSolstice(Position position, int year) {
 
 List<DateTime> visibleNewMoonsForYear(
   Instant start,
+  Instant end,
   Position position, [
   int offset = 2,
 ]) {
-  final startDateTime = start.toUtcDateTime().local.startOfDay;
+  final startDateTime = start.toUtcDateTime().startOfDay;
+  final endDateTime = end.toUtcDateTime().startOfDay;
+  final endMoon = Iterable.generate(2, _generateMoon(endDateTime))
+      .where((element) => element.isSameOrAfter(endDateTime))
+      .first;
 
-  final newMoons = Iterable.generate(14, (i) {
-    final testDate = startDateTime.addDays(29 * i).addHours(12 * 5);
-    return jdToDateTime(newMoon(_dateToYearFraction(testDate))).local;
-  }).where((element) => element.isSameOrAfter(startDateTime));
+  final newMoons = Iterable.generate(14, _generateMoon(startDateTime)).where(
+      (element) =>
+          element.isSameOrAfter(startDateTime) &&
+          element.isSameOrBefore(endMoon));
 
-  return newMoons
-      .map((e) =>
-          _isAfterSunset(e, position) ? e.nextDay.startOfDay : e.startOfDay)
-      .map((e) => e.addDays(offset))
-      .toSet()
-      .toList();
+  return newMoons.map((e) => e.startOfDay.addDays(offset)).toSet().toList();
+}
+
+DateTime Function(int i) _generateMoon(DateTime startDate) {
+  return (i) {
+    final testDate = startDate.addDays(29 * i).addHours(12 * i);
+    return jdToDateTime(newMoon(_dateToYearFraction(testDate)));
+  };
 }

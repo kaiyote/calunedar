@@ -1,3 +1,4 @@
+import 'package:calunedar/calendar/attic_date.dart';
 import 'package:calunedar/celestial_math/solar_event.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dart_date/dart_date.dart';
@@ -10,9 +11,10 @@ class AtticYear {
   late List<AtticMonth> _months;
   late int _yearDays;
 
-  AtticYear(this._year, this._position) {
+  AtticYear(this._year, [this._position = athens]) {
     final visibleMoons = visibleNewMoonsForYear(
       juneSolstice(position, year),
+      juneSolstice(position, year + 1),
       position,
     );
     // the function ships one extra for counting days of last month

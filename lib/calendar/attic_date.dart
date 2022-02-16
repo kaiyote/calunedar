@@ -188,10 +188,10 @@ class AtticDate {
     }
   }
 
-  static AtticDate fromDateTime(DateTime dt, Position position) {
+  static AtticDate fromDateTime(DateTime dt, [Position position = athens]) {
     final solsticeForCalendarYear = juneSolstice(position, dt.year);
-    final startSolstice = dt.startOfDay
-            .isBefore(solsticeForCalendarYear.toUtcDateTime().local.startOfDay)
+    final startSolstice = dt.utc.startOfDay
+            .isBefore(solsticeForCalendarYear.toUtcDateTime().startOfDay)
         ? juneSolstice(position, dt.year - 1)
         : solsticeForCalendarYear;
 
@@ -209,3 +209,14 @@ class AtticDate {
     return AtticDate.fromDateTime(DateTime.now(), position);
   }
 }
+
+const athens = Position(
+  longitude: 23.727806,
+  latitude: 37.983972,
+  accuracy: 0.0,
+  altitude: 0.0,
+  heading: 0.0,
+  speed: 0.0,
+  speedAccuracy: 0.0,
+  timestamp: null,
+);

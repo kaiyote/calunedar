@@ -1,3 +1,4 @@
+import 'package:calunedar/calendar/attic_date.dart';
 import 'package:calunedar/celestial_math/solar_event.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
@@ -154,8 +155,9 @@ void main() {
 
   test('visible moons between two instants for attic year starting in 2021',
       () {
-    final start = juneSolstice(northernHemisphere, 2021);
-    final result = visibleNewMoonsForYear(start, northernHemisphere);
+    final start = juneSolstice(athens, 2021);
+    final end = juneSolstice(athens, 2022);
+    final result = visibleNewMoonsForYear(start, end, athens);
 
     // its one longer than the number of months, since we need the moon after the end for month length
     expect(result.length, equals(13));
@@ -176,8 +178,9 @@ void main() {
 
   test('visible moons between two instants for attic year starting in 2022',
       () {
-    final start = juneSolstice(northernHemisphere, 2022);
-    final result = visibleNewMoonsForYear(start, northernHemisphere);
+    final start = juneSolstice(athens, 2022);
+    final end = juneSolstice(athens, 2023);
+    final result = visibleNewMoonsForYear(start, end, athens);
 
     // its one longer than the number of months, since we need the moon after the end for month length
     expect(result.length, equals(14));
@@ -187,9 +190,7 @@ void main() {
     expect(result[2], equals(DateTime(2022, 8, 29)));
     expect(result[3], equals(DateTime(2022, 9, 27)));
     expect(result[4], equals(DateTime(2022, 10, 27)));
-    // this is a day off from heniautos, dunno why, the "after sundown" logic worked for the 2021 test
-    // here the time is after sundown on the 25th, so it pushes it forward to the 26th, which disagrees w/ heniautos
-    expect(result[5], equals(DateTime(2022, 11, 26)));
+    expect(result[5], equals(DateTime(2022, 11, 25)));
     expect(result[6], equals(DateTime(2022, 12, 25)));
     expect(result[7], equals(DateTime(2023, 1, 23)));
     expect(result[8], equals(DateTime(2023, 2, 22)));
