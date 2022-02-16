@@ -8,15 +8,19 @@ const RESOURCES = {
 "assets/assets/license_texts/mit.txt": "6a01e8ccc65bea4e8bfa79b09ea1444c",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
 "assets/fonts/MaterialIcons-Regular.otf": "4e6447691c9509f7acdbf8a931a85ca1",
-"assets/NOTICES": "12231bd7968e76da28672d28f8adac6b",
+"assets/NOTICES": "3595bc56d0ad5686c1f32496a980d7c6",
+"canvaskit/canvaskit.js": "62b9906717d7215a6ff4cc24efbd1b5c",
+"canvaskit/canvaskit.wasm": "b179ba02b7a9f61ebc108f82c5a1ecdb",
+"canvaskit/profiling/canvaskit.js": "3783918f48ef691e230156c251169480",
+"canvaskit/profiling/canvaskit.wasm": "6d1b0fc1ec88c3110db88caa3393c580",
 "favicon.png": "d49372c9281e8a692da0657da98408c0",
 "icons/Icon-192.png": "53eb3b3a91cb32c0b052c2ca77df1427",
 "icons/Icon-512.png": "ffb9050bd3de9fc517ef36a18ea488fc",
-"index.html": "f1aec35fc0adcf212d052d425d400c79",
-"/": "f1aec35fc0adcf212d052d425d400c79",
-"main.dart.js": "d41c23dedd145f1a3df2ed0a5c6a097f",
+"index.html": "394d80c24ee7feb625f6ff9f44a650ff",
+"/": "394d80c24ee7feb625f6ff9f44a650ff",
+"main.dart.js": "3937391ebbecf7ffb94521d5bdde0791",
 "manifest.json": "f978d7c041b4b0641adaab06b97fb315",
-"version.json": "ce38d5e6e618d095cc3e15463f56050e"
+"version.json": "5d778f8dde5211ead489c9301988a098"
 };
 
 // The application shell files that are downloaded before a service worker can
