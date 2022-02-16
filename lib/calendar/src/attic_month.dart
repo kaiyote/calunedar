@@ -1,9 +1,16 @@
 class AtticMonth {
+  final DateTime startGregorian;
   final String _name;
+  final bool _intercalated;
   int days;
   late int index;
 
-  AtticMonth(this._name, this.days) {
+  AtticMonth(
+    this.startGregorian,
+    this._name,
+    this.days, [
+    this._intercalated = false,
+  ]) {
     if (days != 30 && days != 29) {
       throw RangeError('Months have only 29 or 30 days');
     }
@@ -11,11 +18,15 @@ class AtticMonth {
     index = 0;
   }
 
-  String get name => _name;
+  String get name => _name + (isIntercalated ? intercalatedPostfix : "");
 
-  String get greekName => monthNamesGreek[monthNames.indexOf(_name)];
+  String get greekName =>
+      monthNamesGreek[monthNames.indexOf(_name)] +
+      (isIntercalated ? intercalatedGreekPostfix : "");
 
   bool get isHollow => days != 30;
+
+  bool get isIntercalated => _intercalated;
 }
 
 const monthNames = <String>[
@@ -47,3 +58,6 @@ const monthNamesGreek = <String>[
   "Θαργηλιών",
   "Σκιροφοριών",
 ];
+
+const intercalatedPostfix = " hústeros";
+const intercalatedGreekPostfix = " ὕστερος";

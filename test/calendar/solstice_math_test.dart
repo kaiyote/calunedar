@@ -151,4 +151,51 @@ void main() {
                 .inMinutes,
             maxAllowableDifference));
   });
+
+  test('visible moons between two instants for attic year starting in 2021',
+      () {
+    final start = juneSolstice(northernHemisphere, 2021);
+    final result = visibleNewMoonsForYear(start, northernHemisphere);
+
+    // its one longer than the number of months, since we need the moon after the end for month length
+    expect(result.length, equals(13));
+
+    expect(result[0], equals(DateTime(2021, 7, 12)));
+    expect(result[1], equals(DateTime(2021, 8, 10)));
+    expect(result[2], equals(DateTime(2021, 9, 9)));
+    expect(result[3], equals(DateTime(2021, 10, 8)));
+    expect(result[4], equals(DateTime(2021, 11, 6)));
+    expect(result[5], equals(DateTime(2021, 12, 6)));
+    expect(result[6], equals(DateTime(2022, 1, 4)));
+    expect(result[7], equals(DateTime(2022, 2, 3)));
+    expect(result[8], equals(DateTime(2022, 3, 4)));
+    expect(result[9], equals(DateTime(2022, 4, 3)));
+    expect(result[10], equals(DateTime(2022, 5, 2)));
+    expect(result[11], equals(DateTime(2022, 6, 1)));
+  });
+
+  test('visible moons between two instants for attic year starting in 2022',
+      () {
+    final start = juneSolstice(northernHemisphere, 2022);
+    final result = visibleNewMoonsForYear(start, northernHemisphere);
+
+    // its one longer than the number of months, since we need the moon after the end for month length
+    expect(result.length, equals(14));
+
+    expect(result[0], equals(DateTime(2022, 7, 1)));
+    expect(result[1], equals(DateTime(2022, 7, 30)));
+    expect(result[2], equals(DateTime(2022, 8, 29)));
+    expect(result[3], equals(DateTime(2022, 9, 27)));
+    expect(result[4], equals(DateTime(2022, 10, 27)));
+    // this is a day off from heniautos, dunno why, the "after sundown" logic worked for the 2021 test
+    // here the time is after sundown on the 25th, so it pushes it forward to the 26th, which disagrees w/ heniautos
+    expect(result[5], equals(DateTime(2022, 11, 26)));
+    expect(result[6], equals(DateTime(2022, 12, 25)));
+    expect(result[7], equals(DateTime(2023, 1, 23)));
+    expect(result[8], equals(DateTime(2023, 2, 22)));
+    expect(result[9], equals(DateTime(2023, 3, 23)));
+    expect(result[10], equals(DateTime(2023, 4, 22)));
+    expect(result[11], equals(DateTime(2023, 5, 21)));
+    expect(result[12], equals(DateTime(2023, 6, 20)));
+  });
 }

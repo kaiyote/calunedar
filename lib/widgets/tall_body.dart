@@ -13,7 +13,7 @@ class TallBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, Position?>(
       onInit: (store) => store.dispatch(updatePosition),
-      converter: (store) => store.state.position,
+      converter: (store) => store.state.position ?? defaultPosition,
       builder: (context, position) {
         if (position != null) {
           return ListView.separated(

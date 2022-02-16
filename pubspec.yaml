@@ -7,27 +7,28 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   dart_date: ^1.0.9
   enum_to_string: ^2.0.1
-  geolocator: ^7.4.0
-  solar_calculator: ^1.0.2
-  visibility_detector: ^0.2.0
-  url_launcher: ^6.0.9
-  redux: ^5.0.0
+  flutter:
+    sdk: flutter
   flutter_redux: ^0.8.2
-  redux_persist_flutter: ^0.9.0
-  redux_persist: ^0.9.0
+  geolocator: ^8.0.5
+  redux: ^5.0.0
   redux_logging: ^0.5.0
+  redux_persist: ^0.9.0
+  redux_persist_flutter: ^0.9.0
   redux_thunk: ^0.4.0
   reselect: ^0.5.0
+  solar_calculator: ^1.0.2
+  tuple: ^2.0.0
+  url_launcher: ^6.0.9
+  visibility_detector: ^0.2.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   flutter_launcher_icons: ^0.9.0
   flutter_lints: ^1.0.4
+  flutter_test:
+    sdk: flutter
 
 flutter_icons:
   android: true
@@ -37,5 +38,4 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
-    - assets/license_texts/gplv3.txt
-    - assets/license_texts/mit.txt
+    - assets/license_texts/

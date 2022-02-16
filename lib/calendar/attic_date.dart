@@ -1,21 +1,34 @@
 import 'package:calunedar/calendar/src/attic_month.dart';
 import 'package:calunedar/calendar/src/attic_year.dart';
+import 'package:calunedar/celestial_math/solar_event.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:reselect/reselect.dart';
+import 'package:tuple/tuple.dart';
+
+final atticYearSelector =
+    createSelector2<Tuple2<int, Position>, int, Position, AtticYear>(
+  (t) => t.item1,
+  (t) => t.item2,
+  (year, position) => AtticYear(year, position),
+);
 
 class AtticDate {
   final int _year;
+  final Position _position;
   int _day;
   late AtticYear _fullYear;
   late AtticMonth _month;
 
   AtticDate(
+    this._position,
     this._year, [
     int month = 1,
     this._day = 1,
   ]) {
     if (year < 0) throw RangeError('Year must be positive');
 
-    _fullYear = AtticYear(_year);
+    _fullYear = atticYearSelector(Tuple2(_year, _position));
     if (month < 0 || month > _fullYear.months.length) {
       throw RangeError("Invalid Month");
     } else {
@@ -37,8 +50,7 @@ class AtticDate {
 
   int get month => _month.index + 1;
 
-  String monthName([useGreekName = false]) =>
-      useGreekName ? _month.greekName : _month.name;
+  String get monthName => _month.name;
 
   String get greekMonthName => _month.greekName;
 
@@ -57,6 +69,8 @@ class AtticDate {
 
   int get yearLength => _fullYear.daysInYear;
 
+  Position get position => _position;
+
   int compareTo(AtticDate other) {
     if (this == other) return 0;
     if (year != other.year) return year < other.year ? -1 : 1;
@@ -66,7 +80,7 @@ class AtticDate {
   }
 
   AtticDate copy() {
-    return AtticDate(year, month, day);
+    return AtticDate(position, year, month, day);
   }
 
   @override
@@ -92,19 +106,20 @@ class AtticDate {
   }
 
   AtticDate firstDayOfMonth() {
-    return AtticDate(year, month, 1);
+    return AtticDate(position, year, month, 1);
   }
 
   AtticDate lastDayOfMonth() {
-    return AtticDate(year, month, _month.days);
+    return AtticDate(position, year, month, _month.days);
   }
 
   AtticDate firstDayOfYear() {
-    return AtticDate(year, 1, 1);
+    return AtticDate(position, year, 1, 1);
   }
 
   AtticDate lastDayOfYear() {
     return AtticDate(
+      position,
       year,
       _fullYear.months.length,
       _fullYear.months.last.days,
@@ -117,21 +132,39 @@ class AtticDate {
 
     while (output.day > output._month.days) {
       if (output._month.index == output._fullYear.months.length - 1) {
-        output = AtticDate(output.year + 1, 1, output.day - output._month.days);
+        output = AtticDate(
+          output.position,
+          output.year + 1,
+          1,
+          output.day - output._month.days,
+        );
       } else {
         output = AtticDate(
-            output.year, output.month + 1, output.day - output._month.days);
+          output.position,
+          output.year,
+          output.month + 1,
+          output.day - output._month.days,
+        );
       }
     }
 
     while (output.day < 1) {
       if (output.month == 1) {
-        var newMonthLength = AtticYear(output.year - 1).months.length;
-        output = AtticDate(output.year - 1, newMonthLength - 1,
-            output.day + output._month.days);
+        var newMonthLength =
+            AtticYear(output.year - 1, output.position).months.length;
+        output = AtticDate(
+          output.position,
+          output.year - 1,
+          newMonthLength - 1,
+          output.day + output._month.days,
+        );
       } else {
         output = AtticDate(
-            output.year, output.month - 1, output.day + output._month.days);
+          output.position,
+          output.year,
+          output.month - 1,
+          output.day + output._month.days,
+        );
       }
     }
 
@@ -147,7 +180,7 @@ class AtticDate {
       int count = yearLength - dayOfYear + target.dayOfYear;
 
       for (int i = year + 1; i < target.year; i++) {
-        AtticYear current = AtticYear(i);
+        AtticYear current = AtticYear(i, position);
         count += current.daysInYear;
       }
 
@@ -155,19 +188,24 @@ class AtticDate {
     }
   }
 
-  // TODO
-  static AtticDate fromDateTime(DateTime dt) {
-    AtticDate output;
-    int diffInDays = 0;
+  static AtticDate fromDateTime(DateTime dt, Position position) {
+    final solsticeForCalendarYear = juneSolstice(position, dt.year);
+    final startSolstice = dt.startOfDay
+            .isBefore(solsticeForCalendarYear.toUtcDateTime().local.startOfDay)
+        ? juneSolstice(position, dt.year - 1)
+        : solsticeForCalendarYear;
 
-    // so very wrong
-    diffInDays += dt.differenceInDays(DateTime(1998, 5, 3));
-    output = AtticDate(1, 1, 1);
+    AtticDate output = AtticDate(position, startSolstice.year);
+    int diffInDays = (dt.local.startOfDay
+                .difference(output._fullYear.months[0].startGregorian)
+                .inHours /
+            24)
+        .round();
 
     return output.addDays(diffInDays);
   }
 
-  static AtticDate now() {
-    return AtticDate.fromDateTime(DateTime.now());
+  static AtticDate now(Position position) {
+    return AtticDate.fromDateTime(DateTime.now(), position);
   }
 }

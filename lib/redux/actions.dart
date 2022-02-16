@@ -74,7 +74,8 @@ ThunkAction<AppState> changeMonth([bool forward = true]) {
         store.dispatch(SetDateAction(targetDate.toDateTime()));
         break;
       case CalendarType.attic:
-        final atticDate = AtticDate.fromDateTime(currentDate);
+        final atticDate = AtticDate.fromDateTime(
+            currentDate, store.state.position ?? defaultPosition);
         final targetDate = forward
             ? atticDate.lastDayOfMonth().addDays(1)
             : atticDate.firstDayOfMonth().addDays(-1).firstDayOfMonth();

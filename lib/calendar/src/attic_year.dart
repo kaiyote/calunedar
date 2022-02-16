@@ -1,36 +1,63 @@
+import 'package:calunedar/celestial_math/solar_event.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:dart_date/dart_date.dart';
+
 import 'attic_month.dart';
 
-// TODO
 class AtticYear {
   final int _year;
+  final Position _position;
   late List<AtticMonth> _months;
   late int _yearDays;
 
-  AtticYear(this._year) {
-    _months = <AtticMonth>[
-      AtticMonth('Hekatombaiṓn', 30),
-      AtticMonth('Metageitniṓn', 29),
-      AtticMonth('Boēdromiṓn', 30),
-      AtticMonth('Puanopsiṓn', 29),
-      AtticMonth('Maimaktēriṓn', 30),
-      AtticMonth('Posideiṓn', 30),
-      AtticMonth('Gamēliṓn', 29),
-      AtticMonth('Anthestēriṓn', 30),
-      AtticMonth('Elaphēboliṓn', 29),
-      AtticMonth('Mounuchiṓn', 30),
-      AtticMonth('Thargēliṓn', 29),
-      AtticMonth('Skirophoriṓn', 30)
-    ];
+  AtticYear(this._year, this._position) {
+    final visibleMoons = visibleNewMoonsForYear(
+      juneSolstice(position, year),
+      position,
+    );
+    // the function ships one extra for counting days of last month
+    // so 13 for regular years, 14 for intercalated ones
+    final needsIntercalation = visibleMoons.length > 13;
 
-    _yearDays = 0;
+    _months = visibleMoons
+        .take(visibleMoons.length - 1)
+        .toList()
+        .asMap()
+        .entries
+        .map<AtticMonth>(
+      (entry) {
+        // doing it inHours / 24 and rounded instead of inDays because fuk DST
+        final length =
+            (visibleMoons[entry.key + 1].difference(entry.value).inHours / 24)
+                .round();
 
-    for (int i = 0; i < _months.length; i++) {
-      _months[i].index = i;
-      _yearDays += _months[i].days;
-    }
+        final monthName = _nameForMonthIndex(entry.key, needsIntercalation);
+
+        final month = AtticMonth(
+          entry.value,
+          monthName,
+          length,
+          needsIntercalation && entry.key == 6,
+        );
+        month.index = entry.key;
+
+        return month;
+      },
+    ).toList();
+
+    _yearDays = visibleMoons.first.differenceInDays(visibleMoons.last).abs();
+  }
+
+  _nameForMonthIndex(int month, bool requiresIntercalation) {
+    return month < 6
+        ? monthNames[month]
+        : requiresIntercalation
+            ? monthNames[month - 1]
+            : monthNames[month];
   }
 
   int get year => _year;
   List<AtticMonth> get months => _months;
   int get daysInYear => _yearDays;
+  Position get position => _position;
 }

@@ -22,7 +22,7 @@ void main() async {
           ? FlutterSaveLocation.sharedPreferences
           : FlutterSaveLocation.documentFile,
     ),
-    serializer: JsonSerializer<AppState>(AppState.fromJson)
+    serializer: JsonSerializer<AppState>(AppState.fromJson),
   );
 
   final initialState = await persistor.load();
@@ -54,7 +54,6 @@ class _Root extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.teal,
-          backgroundColor: Colors.white,
         ),
         home: const Calunedar(),
       ),

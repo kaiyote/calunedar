@@ -6,6 +6,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const _sourceUrl = "https://github.com/kaiyote/calunedar";
+const _bugReportUrl =
+    "https://github.com/kaiyote/calunedar/issues/new?assignees=kaiyote&labels=&template=bug_report.md&title=";
 
 class SettingsDrawer extends StatelessWidget {
   const SettingsDrawer({Key? key}) : super(key: key);
@@ -36,19 +38,54 @@ class SettingsDrawer extends StatelessWidget {
                     ),
                     _SettingsDisplay(),
                     Expanded(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: AboutListTile(
-                          applicationName: 'Calunedar',
-                          applicationLegalese: 'Copyright (c) 2021 Tim Huddle',
-                          aboutBoxChildren: [
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text(
+                              'A few Notes:',
+                              style: TextStyle(
+                                inherit: true,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text(
+                              '- All calendar implementations start the day at local midnight',
+                            ),
+                            const Text(
+                              '- The Attic Implementation has only been tested in EST',
+                            ),
+                            const Text('- There are almost certainly bugs'),
                             TextButton(
-                              child: const Text('Source'),
-                              onPressed: _launchUrl,
+                              child: const Text('REPORT A BUG'),
+                              onPressed: () {
+                                _launchUrl(_bugReportUrl);
+                              },
                             ),
                           ],
                         ),
                       ),
+                    ),
+                    AboutListTile(
+                      applicationName: 'Calunedar',
+                      applicationLegalese: 'Copyright (c) 2021 Tim Huddle',
+                      child: const Text(
+                        'About Calunedar',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          inherit: true,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      aboutBoxChildren: [
+                        TextButton(
+                          child: const Text('Source'),
+                          onPressed: () {
+                            _launchUrl(_sourceUrl);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -60,9 +97,8 @@ class SettingsDrawer extends StatelessWidget {
     );
   }
 
-  void _launchUrl() async => await canLaunch(_sourceUrl)
-      ? launch(_sourceUrl)
-      : throw 'Could not launch $_sourceUrl';
+  void _launchUrl(String url) async =>
+      await canLaunch(url) ? launch(url) : throw 'Could not launch $url';
 }
 
 class _ViewModel {
@@ -117,7 +153,6 @@ class _SettingsDisplay extends StatelessWidget {
               },
               isDense: true,
               items: CalendarType.values
-                  .where((element) => element != CalendarType.attic)
                   .map(
                     (e) => DropdownMenuItem(
                       child: Text(
@@ -150,7 +185,7 @@ class _SettingsDisplay extends StatelessWidget {
         if (state.calendarType == CalendarType.attic) {
           calendarList.add(
             ListTile(
-              title: Icon(!state.metonic
+              title: Icon(!state.useGreekNames
                   ? Icons.check_circle_outline
                   : Icons.check_circle),
               leading: const Text('Use Greek Names: '),

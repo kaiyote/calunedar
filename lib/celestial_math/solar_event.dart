@@ -1,5 +1,8 @@
+import 'package:calunedar/celestial_math/julian.dart';
+import 'package:calunedar/celestial_math/moon_phase.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:solar_calculator/solar_calculator.dart';
+import 'package:dart_date/dart_date.dart';
 
 Instant _getInstantNearestHourAngle(
     Position position, Instant bestGuess, HourAngle target) {
@@ -28,6 +31,21 @@ Instant _getInstantNearestHourAngle(
   } else {
     return _getInstantNearestHourAngle(position, updatedGuess, target);
   }
+}
+
+double _dateToYearFraction(DateTime date) {
+  final daysBetween = date.differenceInDays(date.startOfYear);
+  return date.year + (daysBetween / 356.25);
+}
+
+bool _isAfterSunset(DateTime date, Position position) {
+  final sunsetInstant = SolarCalculator(
+    Instant.fromDateTime(date),
+    position.latitude,
+    position.longitude,
+  ).sunsetTime.toUtcDateTime().local;
+
+  return date.isAfter(sunsetInstant);
 }
 
 ///
@@ -62,4 +80,24 @@ Instant decemberSolstice(Position position, int year) {
 
   return _getInstantNearestHourAngle(
       position, initialGuess, HourAngle.fromDegrees(270));
+}
+
+List<DateTime> visibleNewMoonsForYear(
+  Instant start,
+  Position position, [
+  int offset = 2,
+]) {
+  final startDateTime = start.toUtcDateTime().local.startOfDay;
+
+  final newMoons = Iterable.generate(14, (i) {
+    final testDate = startDateTime.addDays(29 * i).addHours(12 * 5);
+    return jdToDateTime(newMoon(_dateToYearFraction(testDate))).local;
+  }).where((element) => element.isSameOrAfter(startDateTime));
+
+  return newMoons
+      .map((e) =>
+          _isAfterSunset(e, position) ? e.nextDay.startOfDay : e.startOfDay)
+      .map((e) => e.addDays(offset))
+      .toSet()
+      .toList();
 }
