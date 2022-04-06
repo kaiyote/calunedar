@@ -80,4 +80,16 @@ class AtticDateFormatter extends DateFormatter {
 
     return '$monthName $eventType';
   }
+
+  @override
+  String subTextForDay(DateTime date, [DateInfo? event]) {
+    String eventSubText = '';
+
+    if (event != null) {
+      eventSubText =
+          '${formatEvent(event)} at ${_dateFormatter.format(event.when)} ${DateFormatter.timeZoneAbbr(event.when)}';
+    }
+
+    return '${dateSubText(date)}\n$eventSubText'.trim();
+  }
 }

@@ -33,9 +33,7 @@ class Calendar extends StatelessWidget {
         getTextForDay: state.formatter.dateText,
         isCurrentMonth: (testDate) =>
             state.formatter.isSameMonth(state.date, testDate),
-        getSubTextForDay: (date, [event]) =>
-            '${state.formatter.dateSubText(date) ?? ''}\n${event?.toString(date: state.calendarType == CalendarType.gregorian, use24hr: state.use24hr)}'
-                .trim(),
+        getSubTextForDay: state.formatter.subTextForDay,
       ),
       converter: (store) => _ViewModel(
         monthInfo: monthInfoSelector(store.state),

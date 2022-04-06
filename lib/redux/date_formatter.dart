@@ -9,6 +9,7 @@ abstract class DateFormatter {
   bool isSameMonth(DateTime testDate, DateTime otherDate);
   DateTime getFirstDayForDisplay(DateTime date);
   String formatEvent(DateInfo event);
+  String subTextForDay(DateTime date, [DateInfo? event]);
 
   static timeZoneAbbr(DateTime date) =>
       date.timeZoneName.replaceAll(RegExp('[a-z ]'), '');

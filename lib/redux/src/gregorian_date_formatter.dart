@@ -7,11 +7,13 @@ import '../date_formatter.dart';
 
 class GregorianDateFormatter extends DateFormatter {
   final DateFormat _dateFormatter;
+  final DateFormat _timeFormatter;
 
   GregorianDateFormatter(bool use24hr)
       : _dateFormatter = use24hr
             ? DateFormat.MMMMd().addPattern("'at'").add_Hm()
-            : DateFormat.MMMMd().addPattern("'at'").add_jm();
+            : DateFormat.MMMMd().addPattern("'at'").add_jm(),
+        _timeFormatter = use24hr ? DateFormat.Hm() : DateFormat.jm();
 
   @override
   String? dateSubText(DateTime date) {
@@ -56,5 +58,17 @@ class GregorianDateFormatter extends DateFormatter {
   @override
   String formatEvent(DateInfo event) {
     return EnumToString.convertToString(event.phase, camelCase: true);
+  }
+
+  @override
+  String subTextForDay(DateTime date, [DateInfo? event]) {
+    String eventSubText = '';
+
+    if (event != null) {
+      eventSubText =
+          '${formatEvent(event)} at ${_timeFormatter.format(event.when)} ${DateFormatter.timeZoneAbbr(event.when)}';
+    }
+
+    return eventSubText.trim();
   }
 }
