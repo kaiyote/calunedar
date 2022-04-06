@@ -1,5 +1,4 @@
 import 'package:calunedar/redux/src/month_info.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 
 class ReadoutImpl extends StatelessWidget {
@@ -7,10 +6,12 @@ class ReadoutImpl extends StatelessWidget {
     Key? key,
     required this.monthInfo,
     required this.formatDate,
+    required this.formatEvent,
   }) : super(key: key);
 
   final MonthInfo monthInfo;
   final String Function(DateTime) formatDate;
+  final String Function(DateInfo) formatEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class ReadoutImpl extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  EnumToString.convertToString(dateInfo.phase, camelCase: true),
+                  formatEvent(dateInfo),
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,

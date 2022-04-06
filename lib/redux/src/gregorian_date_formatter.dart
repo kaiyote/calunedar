@@ -1,4 +1,5 @@
 import 'package:dart_date/dart_date.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:intl/intl.dart';
 
 import './month_info.dart';
@@ -50,5 +51,10 @@ class GregorianDateFormatter extends DateFormatter {
     return date.startOfMonth.isSunday
         ? date.startOfMonth.startOfDay
         : date.startOfMonth.startOfWeek.startOfDay;
+  }
+
+  @override
+  String formatEvent(DateInfo event) {
+    return EnumToString.convertToString(event.phase, camelCase: true);
   }
 }

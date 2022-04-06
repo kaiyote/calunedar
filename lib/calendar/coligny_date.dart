@@ -45,7 +45,7 @@ class ColignyDate {
       if (output.month == 1) {
         var newMonthLength =
             ColignyYear(output.year - 1, output._metonic).months.length;
-        output = ColignyDate(output.year - 1, newMonthLength - 1,
+        output = ColignyDate(output.year - 1, newMonthLength,
             output.day + output._month.days, output._metonic);
       } else {
         output = ColignyDate(output.year, output.month - 1,

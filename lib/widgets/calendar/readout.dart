@@ -42,6 +42,7 @@ class Readout extends StatelessWidget {
         child: ReadoutImpl(
           monthInfo: state.monthInfo,
           formatDate: state.formatter.formatForReadout,
+          formatEvent: state.formatter.formatEvent,
         ),
       ),
       converter: (store) => _ViewModel(

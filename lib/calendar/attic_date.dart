@@ -155,7 +155,7 @@ class AtticDate {
         output = AtticDate(
           output.position,
           output.year - 1,
-          newMonthLength - 1,
+          newMonthLength,
           output.day + output._month.days,
         );
       } else {
@@ -189,13 +189,11 @@ class AtticDate {
   }
 
   static AtticDate fromDateTime(DateTime dt, [Position position = athens]) {
-    final solsticeForCalendarYear = juneSolstice(position, dt.year);
-    final startSolstice = dt.utc.startOfDay
-            .isBefore(solsticeForCalendarYear.toUtcDateTime().startOfDay)
-        ? juneSolstice(position, dt.year - 1)
-        : solsticeForCalendarYear;
+    AtticDate output = AtticDate(position, dt.year);
+    if (output.firstDayOfYear()._month.startGregorian.isAfter(dt.startOfDay)) {
+      output = AtticDate(position, dt.year - 1);
+    }
 
-    AtticDate output = AtticDate(position, startSolstice.year);
     int diffInDays = (dt.local.startOfDay
                 .difference(output._fullYear.months[0].startGregorian)
                 .inHours /

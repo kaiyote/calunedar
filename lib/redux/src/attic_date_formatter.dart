@@ -1,5 +1,6 @@
 import 'package:calunedar/calendar/attic_date.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
@@ -59,5 +60,24 @@ class AtticDateFormatter extends DateFormatter {
     return firstDay.isSunday
         ? firstDay.startOfDay
         : firstDay.startOfWeek.startOfDay;
+  }
+
+  @override
+  String formatEvent(DateInfo event) {
+    if (event.phase == Event.none) return '';
+
+    if ([Event.firstQuarter, Event.fullMoon, Event.thirdQuarter, Event.newMoon]
+        .contains(event.phase)) {
+      return EnumToString.convertToString(event.phase, camelCase: true);
+    }
+
+    final month = AtticDate.fromDateTime(event.when, _position);
+    final monthName = _useGreekName ? month.greekMonthName : month.monthName;
+    final eventType =
+        [Event.decemberSolstice, Event.juneSolstice].contains(event.phase)
+            ? 'solstice'
+            : 'equinox';
+
+    return '$monthName $eventType';
   }
 }

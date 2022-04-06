@@ -8,6 +8,7 @@ abstract class DateFormatter {
   EventPinDates generatePinDates(DateTime date);
   bool isSameMonth(DateTime testDate, DateTime otherDate);
   DateTime getFirstDayForDisplay(DateTime date);
+  String formatEvent(DateInfo event);
 
   static timeZoneAbbr(DateTime date) =>
       date.timeZoneName.replaceAll(RegExp('[a-z ]'), '');

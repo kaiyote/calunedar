@@ -1,5 +1,6 @@
 import 'package:calunedar/calendar/coligny_date.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:intl/intl.dart';
 
 import './month_info.dart';
@@ -58,5 +59,23 @@ class ColignyDateFormatter extends DateFormatter {
     return firstDay.isSunday
         ? firstDay.startOfDay
         : firstDay.startOfWeek.startOfDay;
+  }
+
+  @override
+  String formatEvent(DateInfo event) {
+    if (event.phase == Event.none) return '';
+
+    if ([Event.firstQuarter, Event.fullMoon, Event.thirdQuarter, Event.newMoon]
+        .contains(event.phase)) {
+      return EnumToString.convertToString(event.phase, camelCase: true);
+    }
+
+    final monthName = ColignyDate.fromDateTime(event.when, _metonic).monthName;
+    final eventType =
+        [Event.decemberSolstice, Event.juneSolstice].contains(event.phase)
+            ? 'solstice'
+            : 'equinox';
+
+    return '$monthName $eventType';
   }
 }

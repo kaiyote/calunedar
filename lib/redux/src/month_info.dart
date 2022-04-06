@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:calunedar/celestial_math/julian.dart';
 import 'package:calunedar/celestial_math/moon_phase.dart';
+import 'package:calunedar/celestial_math/solar_event.dart';
 import 'package:calunedar/redux/date_formatter.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -15,10 +16,10 @@ enum Event {
   fullMoon,
   thirdQuarter,
   newMoon,
-  vernalEquinox,
-  summerSolstice,
-  autumnalEquinox,
-  winterSolstice,
+  marchEquinox,
+  juneSolstice,
+  septemberEquinox,
+  decemberSolstice,
   none
 }
 
@@ -86,12 +87,12 @@ class DateInfo implements Comparable {
       case Event.newMoon:
         icon = Icons.brightness_1;
         break;
-      case Event.vernalEquinox:
-      case Event.autumnalEquinox:
+      case Event.marchEquinox:
+      case Event.septemberEquinox:
         icon = Icons.brightness_5;
         break;
-      case Event.summerSolstice:
-      case Event.winterSolstice:
+      case Event.juneSolstice:
+      case Event.decemberSolstice:
         icon = Icons.brightness_7;
         break;
       case Event.none:
@@ -167,6 +168,25 @@ class MonthInfo {
       dates.add(DateInfo(
         phase: Event.newMoon,
         when: jdToDateTime(newMoon(yearFraction)).local,
+      ));
+    }
+
+    for (final year in [pinDates.start.year, pinDates.end.year]) {
+      dates.add(DateInfo(
+        phase: Event.marchEquinox,
+        when: marchEquinox(position, year).toUtcDateTime().local,
+      ));
+      dates.add(DateInfo(
+        phase: Event.juneSolstice,
+        when: juneSolstice(position, year).toUtcDateTime().local,
+      ));
+      dates.add(DateInfo(
+        phase: Event.septemberEquinox,
+        when: septemberEquinox(position, year).toUtcDateTime().local,
+      ));
+      dates.add(DateInfo(
+        phase: Event.decemberSolstice,
+        when: decemberSolstice(position, year).toUtcDateTime().local,
       ));
     }
 
