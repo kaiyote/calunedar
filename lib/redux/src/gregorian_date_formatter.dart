@@ -64,7 +64,7 @@ class GregorianDateFormatter extends DateFormatter {
   String subTextForDay(DateTime date, [DateInfo? event]) {
     String eventSubText = '';
 
-    if (event != null) {
+    if (event != null && event.phase != Event.none) {
       eventSubText =
           '${formatEvent(event)} at ${_timeFormatter.format(event.when)} ${DateFormatter.timeZoneAbbr(event.when)}';
     }

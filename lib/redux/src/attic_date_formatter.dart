@@ -18,8 +18,9 @@ class AtticDateFormatter extends DateFormatter {
   @override
   String? dateSubText(DateTime date) {
     final atticDate = AtticDate.fromDateTime(date, _position);
+    final holidays = atticDate.holidays.join(" | ").trim();
 
-    return "${_useGreekName ? atticDate.greekMonthName : atticDate.monthName} ${atticDate.day}, ${atticDate.year}/${atticDate.year + 1}";
+    return "${_useGreekName ? atticDate.greekMonthName : atticDate.monthName} ${atticDate.day}, ${atticDate.year}/${atticDate.year + 1}: $holidays";
   }
 
   @override
@@ -85,7 +86,7 @@ class AtticDateFormatter extends DateFormatter {
   String subTextForDay(DateTime date, [DateInfo? event]) {
     String eventSubText = '';
 
-    if (event != null) {
+    if (event != null && event.phase != Event.none) {
       eventSubText =
           '${formatEvent(event)} at ${_dateFormatter.format(event.when)} ${DateFormatter.timeZoneAbbr(event.when)}';
     }

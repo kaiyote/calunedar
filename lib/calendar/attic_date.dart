@@ -1,6 +1,6 @@
+import 'package:calunedar/calendar/src/attic_holidays.dart';
 import 'package:calunedar/calendar/src/attic_month.dart';
 import 'package:calunedar/calendar/src/attic_year.dart';
-import 'package:calunedar/celestial_math/solar_event.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:reselect/reselect.dart';
@@ -186,6 +186,49 @@ class AtticDate {
 
       return count.abs();
     }
+  }
+
+  List<String> get holidays {
+    final List<String> holidays = [];
+
+    switch (day) {
+      case 1:
+        holidays.add("Noumenia");
+        break;
+      case 2:
+        holidays.add("Agathos Daimon");
+        break;
+      case 3:
+        holidays.add("Athene");
+        break;
+      case 4:
+        holidays.add("Aphrodite, Hermes, Herakles, Eros");
+        break;
+      case 6:
+        holidays.add("Artemis");
+        break;
+      case 7:
+        holidays.add("Apollon");
+        break;
+      case 8:
+        holidays.add("Poseidon");
+        break;
+      case 9:
+        holidays.add("Helios, the Muses and Rhea");
+        break;
+    }
+
+    if (compareTo(lastDayOfMonth()) == 0) {
+      holidays.add("Hekate's Deipnon");
+    }
+
+    holidays.addAll(atticHolidays[monthName]![day - 1]);
+
+    if (monthName == "Puanopsiṓn" && day == 29 && monthLength == 30) {
+      holidays.remove("Khalkeia");
+    }
+
+    return holidays;
   }
 
   static AtticDate fromDateTime(DateTime dt, [Position position = athens]) {
