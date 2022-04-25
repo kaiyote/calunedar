@@ -1,5 +1,5 @@
 name: calunedar
-description: does calendar stuff + moon phases, good for gregorian and coligny right now
+description: does calendar stuff + moon phases, good for gregorian, coligny, and attic (probably) right now
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -25,7 +25,7 @@ dependencies:
   visibility_detector: ^0.2.0
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons_maker: ^0.10.1
   flutter_lints: ^1.0.4
   flutter_test:
     sdk: flutter
@@ -33,6 +33,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: false
+  macos: false
+  web: true
+  windows: true
   image_path: "assets/icon/icon.png"
 
 flutter:
