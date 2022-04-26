@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:calunedar/calunedar.dart';
 import 'package:calunedar/extra_licenses.dart';
 import 'package:calunedar/redux/models.dart';
@@ -10,6 +11,7 @@ import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:window_size/window_size.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,10 @@ void main() async {
       LoggingMiddleware.printer(),
     ],
   );
+
+  if (!kIsWeb && Platform.isWindows) {
+    setWindowMinSize(const Size(370, 780));
+  }
 
   runApp(_Root(store: store));
 }
