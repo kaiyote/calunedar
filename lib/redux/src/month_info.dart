@@ -49,13 +49,11 @@ class DateInfo implements Comparable {
       str += DateFormat.yMMMMd().format(when);
     }
     if (phase) {
-      str += " " + EnumToString.convertToString(this.phase, camelCase: true);
+      str += " ${EnumToString.convertToString(this.phase, camelCase: true)}";
     }
     if (time) {
-      str += " at " +
-          (use24hr ? DateFormat.Hm() : DateFormat.jm()).format(when) +
-          " " +
-          DateFormatter.timeZoneAbbr(when);
+      str +=
+          " at ${(use24hr ? DateFormat.Hm() : DateFormat.jm()).format(when)} ${DateFormatter.timeZoneAbbr(when)}";
     }
 
     return str.trim();

@@ -34,9 +34,9 @@ class TallBody extends StatelessWidget {
           );
         } else {
           return const SizedBox(
-            child: CircularProgressIndicator(),
             width: 60,
             height: 60,
+            child: CircularProgressIndicator(),
           );
         }
       },

@@ -46,12 +46,6 @@ class Day extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             alignment: Alignment.center,
-            child: _Day(
-              date: date,
-              isCurrentMonth: isCurrentMonth,
-              event: event,
-              getTextForDay: getTextForDay,
-            ),
             decoration: BoxDecoration(
               border: Border.all(
                 color: isToday ? theme.colorScheme.secondary : Colors.black,
@@ -60,6 +54,12 @@ class Day extends StatelessWidget {
               color: !isCurrentMonth
                   ? theme.disabledColor
                   : theme.scaffoldBackgroundColor,
+            ),
+            child: _Day(
+              date: date,
+              isCurrentMonth: isCurrentMonth,
+              event: event,
+              getTextForDay: getTextForDay,
             ),
           ),
         ),
@@ -92,9 +92,9 @@ class _Day extends StatelessWidget {
         Text(getTextForDay(date)),
         Expanded(child: Container()),
         event.icon(
-          size: width >= 375
+          size: width > 500
               ? 20
-              : width > 320
+              : width > 400
                   ? 18
                   : 16,
         ),

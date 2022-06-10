@@ -62,8 +62,8 @@ class ReadoutImpl extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  child: dateInfo.icon(),
                   margin: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: dateInfo.icon(),
                 ),
               ],
             ),

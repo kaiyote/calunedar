@@ -1,5 +1,6 @@
 name: calunedar
-description: does calendar stuff + moon phases, good for gregorian, coligny, and attic (probably) right now
+description: does calendar stuff + moon phases, good for gregorian, coligny, and
+  attic (probably) right now
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -11,8 +12,9 @@ dependencies:
   enum_to_string: ^2.0.1
   flutter:
     sdk: flutter
-  flutter_redux: ^0.8.2
+  flutter_redux: ^0.10.0
   geolocator: ^8.0.5
+  intl: ^0.17.0
   redux: ^5.0.0
   redux_logging: ^0.5.0
   redux_persist: ^0.9.0
@@ -22,7 +24,7 @@ dependencies:
   solar_calculator: ^1.0.2
   tuple: ^2.0.0
   url_launcher: ^6.0.9
-  visibility_detector: ^0.2.0
+  visibility_detector: ^0.3.3
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git
@@ -30,7 +32,7 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons_maker: ^0.10.1
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 

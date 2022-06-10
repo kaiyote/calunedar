@@ -114,7 +114,7 @@ class ColignyDate {
 
   @override
   String toString() {
-    return toIS08601String() + " metonic: $_metonic";
+    return "${toIS08601String()} metonic: $_metonic";
   }
 
   int get day => _day;

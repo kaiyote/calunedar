@@ -3,7 +3,7 @@ import 'package:calunedar/redux/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 const _sourceUrl = "https://github.com/kaiyote/calunedar";
 const _bugReportUrl =
@@ -27,14 +27,14 @@ class SettingsDrawer extends StatelessWidget {
                 child: Column(
                   children: [
                     const DrawerHeader(
+                      margin: EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
                       child: Center(
                         child: Text(
                           'Settings',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
-                      margin: EdgeInsets.zero,
-                      padding: EdgeInsets.zero,
                     ),
                     _SettingsDisplay(),
                     Expanded(
@@ -72,15 +72,7 @@ class SettingsDrawer extends StatelessWidget {
                     ),
                     AboutListTile(
                       applicationName: 'Calunedar',
-                      applicationLegalese: 'Copyright (c) 2021 Tim Huddle',
-                      child: const Text(
-                        'About Calunedar',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          inherit: true,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
+                      applicationLegalese: 'Copyright (c) 2022 Tim Huddle',
                       aboutBoxChildren: [
                         TextButton(
                           child: const Text('Source'),
@@ -89,6 +81,14 @@ class SettingsDrawer extends StatelessWidget {
                           },
                         ),
                       ],
+                      child: const Text(
+                        'About Calunedar',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          inherit: true,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -100,8 +100,9 @@ class SettingsDrawer extends StatelessWidget {
     );
   }
 
-  void _launchUrl(String url) async =>
-      await canLaunch(url) ? launch(url) : throw 'Could not launch $url';
+  void _launchUrl(String url) async => await canLaunchUrlString(url)
+      ? launchUrlString(url)
+      : throw 'Could not launch $url';
 }
 
 class _ViewModel {
@@ -158,11 +159,11 @@ class _SettingsDisplay extends StatelessWidget {
               items: CalendarType.values
                   .map(
                     (e) => DropdownMenuItem(
+                      value: e,
                       child: Text(
                         describeEnum(e)[0].toUpperCase() +
                             describeEnum(e).substring(1),
                       ),
-                      value: e,
                     ),
                   )
                   .toList(),
