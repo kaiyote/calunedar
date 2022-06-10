@@ -37483,7 +37483,7 @@ case 1:return A.V(q,r)}})
 return A.W($async$ni,r)}}
 A.a2k.prototype={
 $2(a,b){var s=null,r=this.a,q=t.p
-return A.ale(new A.cR(b.HX(1/0,b.d),new A.Gh(A.r_(!0,A.f5(A.a([B.Ck,new A.Ow(s),A.vW(A.bY(s,A.f5(A.a([B.SC,B.SE,B.SJ,B.Sz,B.SG,A.a4K(B.SH,new A.a2i(r))],q),B.aj,B.ik,B.al),B.r,s,s,s,s,s,s,s,B.CF,s,s,s),1),new A.Ds(B.SD,"Calunedar","Copyright (c) 2021 Tim Huddle",A.a([A.a4K(B.SF,new A.a2j(r))],q),s)],q),B.aj,B.at,B.al),B.a2,!0),s),s))},
+return A.ale(new A.cR(b.HX(1/0,b.d),new A.Gh(A.r_(!0,A.f5(A.a([B.Ck,new A.Ow(s),A.vW(A.bY(s,A.f5(A.a([B.SC,B.SE,B.SJ,B.Sz,B.SG,A.a4K(B.SH,new A.a2i(r))],q),B.aj,B.ik,B.al),B.r,s,s,s,s,s,s,s,B.CF,s,s,s),1),new A.Ds(B.SD,"Calunedar","Copyright (c) 2022 Tim Huddle",A.a([A.a4K(B.SF,new A.a2j(r))],q),s)],q),B.aj,B.at,B.al),B.a2,!0),s),s))},
 $S:165}
 A.a2i.prototype={
 $0(){this.a.ni("https://github.com/kaiyote/calunedar/issues/new?assignees=kaiyote&labels=&template=bug_report.md&title=")},
