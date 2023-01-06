@@ -8,13 +8,19 @@ const RESOURCES = {
 "assets/assets/license_texts/mit.txt": "6a01e8ccc65bea4e8bfa79b09ea1444c",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
 "assets/fonts/MaterialIcons-Regular.otf": "95db9098c58fd6db106f1116bae85a0b",
-"assets/NOTICES": "53b5c8c176089593fbb095c929f6cf82",
+"assets/NOTICES": "77a13826d90a37edf3170f0d98ab2bce",
+"assets/shaders/ink_sparkle.frag": "99f4021f91c2ab3ca80e83a953749ff6",
+"canvaskit/canvaskit.js": "2bc454a691c631b07a9307ac4ca47797",
+"canvaskit/canvaskit.wasm": "bf50631470eb967688cca13ee181af62",
+"canvaskit/profiling/canvaskit.js": "38164e5a72bdad0faa4ce740c9b8e564",
+"canvaskit/profiling/canvaskit.wasm": "95a45378b69e77af5ed2bc72b2209b94",
 "favicon.png": "a6e7413e6579a7d8e7ef002aa428d433",
+"flutter.js": "f85e6fb278b0fd20c349186fb46ae36d",
 "icons/Icon-192.png": "53eb3b3a91cb32c0b052c2ca77df1427",
 "icons/Icon-512.png": "fefe833ed359e5d055e2474e1997ba2c",
-"index.html": "82e62245b3d6ba6bfe5bd4dda974de05",
-"/": "82e62245b3d6ba6bfe5bd4dda974de05",
-"main.dart.js": "041031fa0a2a784a219a00aea30cb523",
+"index.html": "e6795f3b3aefa808e87f75f41e5c2143",
+"/": "e6795f3b3aefa808e87f75f41e5c2143",
+"main.dart.js": "95c642e7a71ef914ca4b353157d4d306",
 "manifest.json": "f978d7c041b4b0641adaab06b97fb315",
 "version.json": "5d778f8dde5211ead489c9301988a098"
 };
@@ -24,7 +30,6 @@ const RESOURCES = {
 const CORE = [
   "main.dart.js",
 "index.html",
-"assets/NOTICES",
 "assets/AssetManifest.json",
 "assets/FontManifest.json"];
 // During install, the TEMP cache is populated with the application shell files.
@@ -123,9 +128,11 @@ self.addEventListener("fetch", (event) => {
     .then((cache) =>  {
       return cache.match(event.request).then((response) => {
         // Either respond with the cached resource, or perform a fetch and
-        // lazily populate the cache.
+        // lazily populate the cache only if the resource was successfully fetched.
         return response || fetch(event.request).then((response) => {
-          cache.put(event.request, response.clone());
+          if (response && Boolean(response.ok)) {
+            cache.put(event.request, response.clone());
+          }
           return response;
         });
       })
