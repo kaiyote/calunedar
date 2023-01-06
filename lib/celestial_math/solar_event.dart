@@ -79,17 +79,23 @@ List<DateTime> visibleNewMoonsForYear(
   int offset = 2,
 ]) {
   final startDateTime = start.toUtcDateTime().startOfDay;
+  final startMoon = Iterable.generate(2, _generateMoon(startDateTime))
+      .where((element) => element.isSameOrAfter(startDateTime))
+      .first;
+
   final endDateTime = end.toUtcDateTime().startOfDay;
   final endMoon = Iterable.generate(2, _generateMoon(endDateTime))
       .where((element) => element.isSameOrAfter(endDateTime))
       .first;
 
-  final newMoons = Iterable.generate(14, _generateMoon(startDateTime)).where(
+  final newMoons = Iterable.generate(14, _generateMoon(startMoon)).where(
       (element) =>
-          element.isSameOrAfter(startDateTime) &&
-          element.isSameOrBefore(endMoon));
+          element.isSameOrAfter(startMoon) && element.isSameOrBefore(endMoon));
 
-  return newMoons.map((e) => e.startOfDay.addDays(offset)).toSet().toList();
+  return newMoons
+      .map((e) => e.startOfDay.addDays(offset).startOfDay)
+      .toSet()
+      .toList();
 }
 
 DateTime Function(int i) _generateMoon(DateTime startDate) {

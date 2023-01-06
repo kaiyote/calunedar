@@ -99,6 +99,38 @@ void main() {
       assertMonth(result.months[12], 29, "Skirophoriṓn", "Σκιροφοριών",
           DateTime(2023, 6, 20));
     });
+
+    test('Attic Year for 2023/2024 makes sense', () {
+      final result = AtticYear(2023);
+
+      expect(result.daysInYear, equals(354));
+      expect(result.months.length, equals(12));
+
+      assertMonth(result.months[0], 30, "Hekatombaiṓn", "Ἑκατομβαιών",
+          DateTime(2023, 7, 19));
+      assertMonth(result.months[1], 30, "Metageitniṓn", "Μεταγειτνιών",
+          DateTime(2023, 8, 18));
+      assertMonth(result.months[2], 29, "Boēdromiṓn", "Βοηδρομιών",
+          DateTime(2023, 9, 17));
+      assertMonth(result.months[3], 30, "Puanopsiṓn", "Πυανοψιών",
+          DateTime(2023, 10, 16));
+      assertMonth(result.months[4], 29, "Maimaktēriṓn", "Μαιμακτηριών",
+          DateTime(2023, 11, 15));
+      assertMonth(result.months[5], 30, "Posideiṓn", "Ποσιδειών",
+          DateTime(2023, 12, 14));
+      assertMonth(
+          result.months[6], 29, "Gamēliṓn", "Γαμηλιών", DateTime(2024, 1, 13));
+      assertMonth(result.months[7], 30, "Anthestēriṓn", "Ἀνθεστηριών",
+          DateTime(2024, 2, 11));
+      assertMonth(result.months[8], 29, "Elaphēboliṓn", "Ἑλαφηβολιών",
+          DateTime(2024, 3, 12));
+      assertMonth(result.months[9], 30, "Mounuchiṓn", "Μουνυχιών",
+          DateTime(2024, 4, 10));
+      assertMonth(result.months[10], 29, "Thargēliṓn", "Θαργηλιών",
+          DateTime(2024, 5, 10));
+      assertMonth(result.months[11], 29, "Skirophoriṓn", "Σκιροφοριών",
+          DateTime(2024, 6, 8));
+    });
   });
 
   group('gregorian to attic', () {
